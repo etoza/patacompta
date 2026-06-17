@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PataCompta — Mon Profil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <style>
+    :root { --bg:#0d0f1a; --surface:#131629; --border:rgba(255,255,255,0.08); --accent:#6c63ff; --accent2:#00d4ff; --text:#f0f0f8; --muted:rgba(240,240,248,0.4); }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Outfit',sans-serif; min-height:100vh; background:var(--bg); color:var(--text); display:flex; flex-direction:column; }
+
+    /* NAV */
+    nav { position:sticky; top:0; z-index:50; background:rgba(13,15,26,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 20px; height:58px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .nav-logo-text { font-weight:800; font-size:1.1em; letter-spacing:-0.3px; }
+    .nav-logo-text .pa{color:#3b82f6;} .nav-logo-text .ta{color:#22c55e;} .nav-logo-text .com{color:#eab308;} .nav-logo-text .pta{color:#ef4444;}
+    .nav-back { display:flex; align-items:center; gap:6px; font-size:0.82em; font-weight:600; color:var(--muted); background:rgba(255,255,255,0.05); border:1px solid var(--border); padding:7px 14px; border-radius:8px; text-decoration:none; transition:all 0.2s; }
+    .nav-back:hover { color:var(--text); background:rgba(255,255,255,0.09); }
+
+    /* HERO PROFIL */
+    .hero-profil { background:linear-gradient(160deg,#12162e 0%,#1a1f3a 60%,#0f1228 100%); border-bottom:1px solid var(--border); padding:32px 20px 28px; }
+    .hero-inner { max-width:480px; margin:0 auto; display:flex; align-items:center; gap:18px; }
+    .avatar-grand { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#8b83ff); display:flex; align-items:center; justify-content:center; font-size:1.6em; font-weight:800; color:white; flex-shrink:0; box-shadow:0 0 30px rgba(108,99,255,0.3); position:relative; cursor:pointer; overflow:hidden; }
+    .avatar-grand img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .avatar-cam { position:absolute; bottom:-2px; right:-2px; width:24px; height:24px; border-radius:50%; background:#131629; border:2px solid #0d0f1a; display:flex; align-items:center; justify-content:center; font-size:0.7em; }
+    .hero-info h1 { font-size:1.4em; font-weight:800; letter-spacing:-0.3px; }
+    .hero-info .email { font-size:0.78em; color:var(--muted); margin-top:2px; font-family:'DM Mono',monospace; }
+    .hero-info .membre { font-size:0.72em; color:rgba(108,99,255,0.7); margin-top:4px; }
+    .badge-total { margin-top:12px; display:inline-flex; align-items:baseline; gap:6px; background:rgba(108,99,255,0.12); border:1px solid rgba(108,99,255,0.25); border-radius:12px; padding:8px 16px; }
+    .badge-total .montant { font-size:2em; font-weight:800; color:var(--accent2); text-shadow:0 0 20px rgba(0,212,255,0.3); font-family:'DM Mono',monospace; }
+    .badge-total .label { font-size:0.75em; color:var(--muted); }
+
+    /* CONTENU */
+    main { flex:1; padding:0 16px; max-width:480px; width:100%; margin:0 auto; }
+    .section-titre { font-size:0.72em; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; padding-left:4px; margin-top:24px; }
+
+    /* STATS RAPIDES */
+    .stats-4 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:4px; }
+    .stat-card { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:14px; padding:14px 16px; }
+    .stat-card .val { font-size:1.5em; font-weight:800; color:var(--text); }
+    .stat-card .lbl { font-size:0.7em; color:var(--muted); margin-top:3px; }
+
+    /* RUBRIQUES BILAN */
+    .rub-bilan { display:flex; flex-direction:column; gap:8px; }
+    .rub-ligne { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:14px; padding:12px 16px; }
+    .rub-haut { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .rub-emoji { font-size:1.3em; }
+    .rub-rang { width:22px; height:22px; border-radius:50%; background:rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; font-size:0.7em; font-weight:800; color:rgba(255,255,255,0.8); flex-shrink:0; }
+    .rub-nom { font-size:0.88em; font-weight:600; flex:1; }
+    .rub-montant { font-size:1em; font-weight:700; }
+    .rub-bar { height:5px; background:rgba(255,255,255,0.1); border-radius:99px; overflow:hidden; }
+    .rub-bar-fill { height:100%; border-radius:99px; transition:width 0.8s cubic-bezier(0.22,1,0.36,1); }
+    .rub-detail { font-size:0.72em; color:var(--muted); margin-top:4px; }
+    .c-rouge .rub-bar-fill { background:linear-gradient(90deg,#c0392b,#e74c3c); }
+    .c-orange .rub-bar-fill { background:linear-gradient(90deg,#e67e22,#f39c12); }
+    .c-jaune .rub-bar-fill { background:linear-gradient(90deg,#d4a017,#f6c90e); }
+    .c-vert .rub-bar-fill { background:linear-gradient(90deg,#27ae60,#2ecc71); }
+    .c-bleuclair .rub-bar-fill { background:linear-gradient(90deg,#2980b9,#4fc3f7); }
+    .c-indigo .rub-bar-fill { background:linear-gradient(90deg,#3f51b5,#7c4dff); }
+    .c-violet .rub-bar-fill { background:linear-gradient(90deg,#6a0572,#9b59b6); }
+
+    /* DONUT */
+    .donut-wrap { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:4px; }
+    .donut-titre { font-size:0.78em; font-weight:600; color:var(--muted); text-align:center; margin-bottom:12px; }
+
+    /* TOP DÉPENSES */
+    .top-liste { display:flex; flex-direction:column; gap:6px; }
+    .top-item { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:12px; padding:10px 14px; }
+    .top-rank { font-size:0.72em; font-weight:700; color:var(--muted); width:18px; text-align:center; flex-shrink:0; font-family:'DM Mono',monospace; }
+    .top-info { flex:1; }
+    .top-cat { font-size:0.82em; font-weight:600; }
+    .top-date { font-size:0.7em; color:var(--muted); margin-top:1px; }
+    .top-montant { font-size:0.95em; font-weight:700; color:var(--accent2); white-space:nowrap; }
+
+    /* ACTIVITÉ HEBDO */
+    .activite-wrap { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:4px; }
+
+    /* TIMELINE SEMAINES */
+    .timeline { display:flex; flex-direction:column; gap:6px; }
+    .sem-item { display:flex; align-items:center; gap:12px; }
+    .sem-label { font-size:0.7em; font-family:'DM Mono',monospace; color:var(--muted); width:80px; flex-shrink:0; }
+    .sem-bar-wrap { flex:1; background:rgba(255,255,255,0.07); border-radius:99px; height:8px; overflow:hidden; }
+    .sem-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.8s cubic-bezier(0.22,1,0.36,1); }
+    .sem-val { font-size:0.72em; font-weight:600; color:var(--muted); width:60px; text-align:right; flex-shrink:0; font-family:'DM Mono',monospace; }
+
+    /* ONGLETS établissement / catégorie */
+    .acc-onglets { display:flex; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:3px; margin:10px 12px 6px; }
+    .acc-onglet-btn { flex:1; padding:7px; border-radius:8px; border:none; font-family:'Outfit',sans-serif; font-size:0.78em; font-weight:600; cursor:pointer; transition:all 0.2s; background:transparent; color:rgba(255,255,255,0.5); }
+    .acc-onglet-btn.actif { background:linear-gradient(135deg,var(--accent),#8b83ff); color:white; }
+    .rub-ligne { cursor:pointer; user-select:none; }
+    .rub-ligne:hover { filter:brightness(1.05); }
+    .rub-fleche { font-size:0.7em; opacity:0.5; transition:transform 0.3s; display:inline-block; margin-left:6px; }
+    .rub-fleche.ouvert { transform:rotate(180deg); }
+    .acc-etab { overflow:hidden; max-height:0; transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1); background:rgba(13,15,26,0.97); border:1px solid rgba(255,255,255,0.07); border-top:none; border-radius:0 0 14px 14px; margin-bottom:8px; }
+    .etab-item { display:flex; align-items:center; gap:10px; padding:8px 14px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .etab-item:last-child { border-bottom:none; }
+    .etab-rang { font-size:0.68em; font-weight:700; color:var(--muted); width:22px; text-align:center; flex-shrink:0; font-family:'DM Mono',monospace; }
+    .etab-info { flex:1; }
+    .etab-nom { font-size:0.82em; font-weight:600; color:var(--text); }
+    .etab-cat { font-size:0.7em; color:var(--muted); margin-top:1px; }
+    .etab-montant { font-size:0.9em; font-weight:700; color:var(--accent2); white-space:nowrap; flex-shrink:0; }
+    .etab-nb { font-size:0.68em; color:var(--muted); white-space:nowrap; flex-shrink:0; margin-left:6px; }
+    .etab-vide { text-align:center; font-size:0.8em; color:var(--muted); padding:12px 0; }
+    .acc-etab-header { padding:10px 14px 4px; font-size:0.68em; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); }
+    .profil-footer a { color:#a89fff; text-decoration:none; }
+
+    /* HISTORIQUE PAR RUBRIQUE */
+    .histo-rub-wrap { margin-bottom:10px; }
+    .histo-rub-btn { display:flex; align-items:center; gap:12px; padding:13px 16px; border-radius:16px; border:none; width:100%; text-align:left; cursor:pointer; font-family:'Outfit',sans-serif; font-size:0.88em; font-weight:600; color:white; transition:filter 0.15s; }
+    .histo-rub-btn:hover { filter:brightness(1.08); }
+    .histo-rub-fleche { font-size:0.75em; opacity:0.5; transition:transform 0.3s; display:inline-block; margin-left:auto; }
+    .histo-rub-fleche.ouvert { transform:rotate(180deg); }
+    .histo-rub-acc { overflow:hidden; max-height:0; transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1); background:rgba(13,15,26,0.97); border:1px solid rgba(255,255,255,0.07); border-top:none; border-radius:0 0 14px 14px; }
+    .histo-sem-titre { font-size:0.7em; font-weight:700; color:var(--muted); letter-spacing:1px; padding:8px 14px 4px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .histo-dep-ligne { display:flex; align-items:center; gap:6px; padding:5px 14px; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.78em; }
+    .histo-dep-date { color:var(--muted); white-space:nowrap; flex-shrink:0; width:80px; }
+    .histo-dep-cat { flex:1; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .histo-dep-montant { font-weight:700; color:var(--accent2); white-space:nowrap; flex-shrink:0; }
+
+    /* INFOS PERSONNELLES */
+    .infos-card { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:4px; }
+    .infos-ligne { display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid rgba(255,255,255,0.05); cursor:pointer; transition:background 0.15s; }
+    .infos-ligne:last-child { border-bottom:none; }
+    .infos-ligne:hover { background:rgba(255,255,255,0.04); }
+    .infos-icone { font-size:1.2em; flex-shrink:0; width:28px; text-align:center; }
+    .infos-contenu { flex:1; }
+    .infos-label { font-size:0.7em; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--muted); }
+    .infos-valeur { font-size:0.88em; font-weight:600; color:var(--text); margin-top:2px; }
+    .infos-valeur.vide { color:var(--muted); font-style:italic; font-weight:400; }
+    .infos-edit { font-size:0.75em; color:var(--muted); flex-shrink:0; }
+    /* MODALE EDIT */
+    .edit-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:400; justify-content:center; align-items:flex-end; }
+    .edit-overlay.actif { display:flex; }
+    .edit-sheet { background:#131629; border:1px solid rgba(255,255,255,0.1); border-radius:20px 20px 0 0; padding:24px 20px 36px; width:100%; max-width:480px; margin:0 auto; }
+    .edit-titre { font-size:1em; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .edit-champ label { font-size:0.7em; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:5px; }
+    .edit-champ input, .edit-champ select { width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.07); color:var(--text); font-family:'Outfit',sans-serif; font-size:0.92em; outline:none; margin-bottom:14px; transition:border-color 0.2s; }
+    .edit-champ input:focus { border-color:rgba(108,99,255,0.5); }
+    .edit-champ input::placeholder { color:var(--muted); }
+    .edit-champ .mdp-wrap { position:relative; margin-bottom:14px; }
+    .edit-champ .mdp-wrap input { padding-right:42px; margin-bottom:0; }
+    .edit-champ .mdp-oeil { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--muted); font-size:1.1em; padding:0; }
+    .edit-champ .mdp-oeil:hover { color:var(--text); }
+    .edit-btns { display:flex; gap:10px; margin-top:4px; }
+    .edit-btn-save { flex:1; padding:12px; border-radius:10px; border:none; background:linear-gradient(135deg,var(--accent),#8b83ff); color:white; font-family:'Outfit',sans-serif; font-size:0.92em; font-weight:700; cursor:pointer; }
+    .edit-btn-cancel { padding:12px 20px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:'Outfit',sans-serif; font-size:0.92em; font-weight:600; cursor:pointer; }
+    .edit-erreur { background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; border-radius:9px; padding:8px 12px; font-size:0.8em; margin-bottom:12px; display:none; }
+    .edit-erreur.visible { display:block; }
+
+    /* NON CONNECTÉ */
+    .non-connecte { text-align:center; padding:60px 20px; max-width:400px; margin:0 auto; }
+    .non-connecte .icon { font-size:3em; margin-bottom:16px; }
+    .non-connecte h2 { font-size:1.2em; font-weight:700; margin-bottom:8px; }
+    .non-connecte p { font-size:0.85em; color:var(--muted); margin-bottom:24px; line-height:1.6; }
+    .btn-retour { display:inline-flex; align-items:center; gap:8px; padding:13px 28px; border-radius:12px; background:linear-gradient(135deg,var(--accent),#8b83ff); color:white; text-decoration:none; font-weight:600; font-size:0.92em; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-text"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></span>
+  </a>
+  <a href="index.html" class="nav-back">← Retour</a>
+</nav>
+
+<div id="contenuProfil"></div>
+
+<script>
+Chart.register(ChartDataLabels);
+
+const RUBRIQUES = [
+  { cle:"depensesAlimentations", nom:"Consommations",   emoji:"🛒", cls:"c-rouge"     },
+  { cle:"depensesRestaurants",   nom:"Restaurations",   emoji:"🍽️", cls:"c-orange"    },
+  { cle:"depensesServices",      nom:"Services",        emoji:"🔧", cls:"c-jaune"     },
+  { cle:"depensesFactures",      nom:"Prélèvements",    emoji:"🧾", cls:"c-vert"      },
+  { cle:"depensesMateriels",     nom:"Achats",          emoji:"📦", cls:"c-bleuclair" },
+  { cle:"depensesTransports",    nom:"Déplacements",    emoji:"🚇", cls:"c-indigo"    },
+  { cle:"depensesSorties",       nom:"Divertissements", emoji:"🎉", cls:"c-violet"    },
+];
+const COULEURS = ["#ef4444","#f7971e","#eab308","#22c55e","#4fc3f7","#7c4dff","#a855f7"];
+const MOIS_NOMS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+
+const { createClient } = supabase;
+const supa = createClient(
+  'https://twgqnqbwefvddmnngert.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3FucWJ3ZWZ2ZGRtbm5nZXJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMDQ3MTUsImV4cCI6MjA5Njc4MDcxNX0.yW-FNFt3hLbtnlnO16okbgUP937dfR3gdskdXMgYF9c'
+);
+
+async function getSession() {
+  const { data: { session } } = await supa.auth.getSession();
+  if (session) return { id: session.user.id, prenom: session.user.user_metadata?.prenom || "", nom: session.user.user_metadata?.nom || "", email: session.user.email };
+  return null;
+}
+
+function getNumSem(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const j = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - j);
+  const db = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return { semaine: Math.ceil((((d - db) / 86400000) + 1) / 7), annee: d.getUTCFullYear() };
+}
+function getCle(dateStr) {
+  if (!dateStr) return null;
+  const { semaine, annee } = getNumSem(new Date(dateStr));
+  return annee + "-S" + String(semaine).padStart(2, "0");
+}
+function labelSem(cle) {
+  const [a, s] = cle.split("-S");
+  return "S" + parseInt(s) + " / " + a;
+}
+
+function switchOnglet(uid, mode) {
+  const btnEtab = document.getElementById(`btn_etab_${uid}`);
+  const btnCat  = document.getElementById(`btn_cat_${uid}`);
+  const listeEtab = document.getElementById(`liste_etab_${uid}`);
+  const listeCat  = document.getElementById(`liste_cat_${uid}`);
+  if (mode === 'etab') {
+    btnEtab.classList.add('actif'); btnCat.classList.remove('actif');
+    listeEtab.style.display = ''; listeCat.style.display = 'none';
+  } else {
+    btnCat.classList.add('actif'); btnEtab.classList.remove('actif');
+    listeCat.style.display = ''; listeEtab.style.display = 'none';
+  }
+}
+
+async function toggleInfosPerso() {
+  const acc = document.getElementById("infosAccordeon");
+  const fleche = document.getElementById("flecheInfos");
+  const ouvert = acc.style.maxHeight !== "0px" && acc.style.maxHeight !== "";
+  acc.style.maxHeight = ouvert ? "0" : "99999px";
+  if (fleche) fleche.style.transform = ouvert ? "rotate(0deg)" : "rotate(180deg)";
+}
+
+function switchVueRub(uid, mode) {
+  const btnHisto = document.getElementById(`btn_histo_${uid}`);
+  const btnClass = document.getElementById(`btn_class_${uid}`);
+  const vueHisto = document.getElementById(`vue_histo_${uid}`);
+  const vueClass = document.getElementById(`vue_class_${uid}`);
+  if (mode === 'histo') {
+    btnHisto.classList.add('actif'); btnClass.classList.remove('actif');
+    vueHisto.style.display = ''; vueClass.style.display = 'none';
+  } else {
+    btnClass.classList.add('actif'); btnHisto.classList.remove('actif');
+    vueClass.style.display = ''; vueHisto.style.display = 'none';
+  }
+}
+
+// ── PHOTO DE PROFIL ──
+async function changerPhoto(event) {
+  const fichier = event.target.files[0];
+  if (!fichier) return;
+  if (!fichier.type.startsWith("image/")) { alert("Merci de choisir une image."); return; }
+
+  const session = await getSession();
+  if (!session) return;
+
+  // Redimensionner l'image côté client (200x200, JPEG) pour limiter la taille
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = async () => {
+      const taille = 200;
+      const canvas = document.createElement("canvas");
+      canvas.width = taille; canvas.height = taille;
+      const ctx = canvas.getContext("2d");
+      // Recadrage centré (cover)
+      const ratio = Math.max(taille / img.width, taille / img.height);
+      const w = img.width * ratio, h = img.height * ratio;
+      ctx.drawImage(img, (taille - w) / 2, (taille - h) / 2, w, h);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+
+      const { error } = await supa.from("profils").upsert({ id: session.id, photo: dataUrl });
+      if (error) { alert("Erreur lors de l'enregistrement de la photo : " + error.message); return; }
+
+      // Mettre à jour l'affichage immédiatement
+      const av = document.querySelector(".avatar-grand");
+      if (av) av.innerHTML = `<img src="${dataUrl}" alt="Photo de profil"><span class="avatar-cam">📷</span>`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(fichier);
+}
+
+async function init() {
+  const session = await getSession();
+  const div = document.getElementById("contenuProfil");
+
+  if (!session) {
+    div.innerHTML = `<div class="non-connecte">
+      <div class="icon">🔒</div>
+      <h2>Accès réservé aux membres</h2>
+      <p>Connecte-toi ou crée un compte pour voir le récapitulatif de tes dépenses.</p>
+      <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
+    </div>`;
+    return;
+  }
+
+  // ── Calculs depuis Supabase ──
+  let toutes = [];
+
+  // Charger le profil (infos perso + photo)
+  const { data: profilDB } = await supa.from("profils").select("*").eq("id", session.id).single();
+  const profil = profilDB || {};
+
+  // Charger toutes les dépenses depuis Supabase
+  const { data: depensesDB, error } = await supa.from("depenses")
+    .select("*")
+    .eq("user_id", session.id)
+    .order("date", { ascending: false });
+
+  if (!error && depensesDB) {
+    depensesDB.forEach(d => {
+      const rubrique = RUBRIQUES.find(r => r.cle === d.rubrique);
+      if (rubrique) {
+        toutes.push({
+          date: d.date,
+          montant: d.montant,
+          categorie: d.categorie,
+          categorieBase: d.categorie_base,
+          etablissement: d.etablissement,
+          rubrique: rubrique.nom,
+          emoji: rubrique.emoji,
+          cls: rubrique.cls,
+          cle: d.rubrique,
+          _id: d.id
+        });
+      }
+    });
+  }
+
+  const totauxRub = RUBRIQUES.map(r => {
+    const deps = toutes.filter(x => x.cle === r.cle);
+    return deps.reduce((s, x) => s + parseFloat(x.montant || 0), 0);
+  });
+
+  const totalGlobal = totauxRub.reduce((a, b) => a + b, 0);
+  const maxRub = Math.max(...totauxRub, 1);
+  const nbEntrees = toutes.length;
+  const jours = new Set(toutes.map(x => x.date?.slice(0, 10)).filter(Boolean));
+
+  // Semaines
+  const semMap = {};
+  toutes.forEach(x => {
+    const c = getCle(x.date); if (!c) return;
+    semMap[c] = (semMap[c] || 0) + parseFloat(x.montant || 0);
+  });
+  const semTriees = Object.entries(semMap).sort((a,b) => b[0].localeCompare(a[0]));
+  const maxSem = Math.max(...semTriees.map(s => s[1]), 1);
+  const moyHebdo = semTriees.length ? semTriees.reduce((s,x)=>s+x[1],0)/semTriees.length : 0;
+
+  // Top 5 des catégories par montant total cumulé (toutes rubriques confondues)
+  const catGlobalMap = {};
+  toutes.forEach(d => {
+    const cat = (d.categorieBase || d.categorie || "").split("—")[0].split(" - ")[0].trim() || "Sans catégorie";
+    if (!catGlobalMap[cat]) catGlobalMap[cat] = { total: 0, nb: 0, emoji: d.emoji, rubrique: d.rubrique };
+    catGlobalMap[cat].total += parseFloat(d.montant || 0);
+    catGlobalMap[cat].nb++;
+  });
+  const top5 = Object.entries(catGlobalMap)
+    .sort((a,b) => b[1].total - a[1].total)
+    .slice(0, 5);
+
+  // Top 5 des établissements par montant total cumulé (toutes rubriques confondues)
+  const etabGlobalMap = {};
+  toutes.forEach(d => {
+    const etab = (d.etablissement || "").trim() || "Sans enseigne";
+    if (!etabGlobalMap[etab]) etabGlobalMap[etab] = { total: 0, nb: 0, emoji: d.emoji, rubrique: d.rubrique };
+    etabGlobalMap[etab].total += parseFloat(d.montant || 0);
+    etabGlobalMap[etab].nb++;
+  });
+  const top5Etab = Object.entries(etabGlobalMap)
+    .filter(([nom]) => nom !== "Sans enseigne")
+    .sort((a,b) => b[1].total - a[1].total)
+    .slice(0, 5);
+
+  // Membre depuis Supabase Auth
+  const { data: { user } } = await supa.auth.getUser();
+  const depuis = user?.created_at ? new Date(user.created_at).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}) : "—";
+  const initiales = ((session.prenom?.[0] || "") + (session.nom?.[0] || "")).toUpperCase() || "?";
+
+  // ── HTML ──
+  const avatarContenu = profil.photo
+    ? `<img src="${profil.photo}" alt="Photo de profil">`
+    : initiales;
+  div.innerHTML = `
+  <div class="hero-profil">
+    <div class="hero-inner">
+      <div class="avatar-grand" onclick="document.getElementById('inputPhoto').click()">
+        ${avatarContenu}
+        <span class="avatar-cam">📷</span>
+      </div>
+      <input type="file" id="inputPhoto" accept="image/*" style="display:none;" onchange="changerPhoto(event)">
+      <div class="hero-info">
+        <h1>${session.prenom} ${session.nom}</h1>
+        <div class="email">${session.email}</div>
+        <div class="membre">Membre depuis ${depuis}</div>
+      </div>
+    </div>
+    <div style="max-width:480px;margin:0 auto;">
+      <div class="badge-total">
+        <span class="montant">${totalGlobal.toFixed(2)} €</span>
+        <span class="label">dépensés au total</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div style="margin-bottom:4px;">
+      <button onclick="toggleInfosPerso()" id="btnInfosPerso" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:16px;border:none;background:linear-gradient(135deg,#3f51b5,#7c4dff);color:white;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;width:100%;text-align:left;">
+        <span style="font-size:1.5em;flex-shrink:0;">👤</span>
+        <span style="flex:1;">Informations personnelles</span>
+        <span id="flecheInfos" style="font-size:0.75em;opacity:0.5;transition:transform 0.3s;display:inline-block;flex-shrink:0;">▼</span>
+      </button>
+      <div id="infosAccordeon" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-radius:0 0 14px 14px;margin-top:-4px;">
+        <div class="infos-card" id="infosCard" style="border:none;border-radius:0;background:transparent;"></div>
+      </div>
+    </div>
+
+    <div class="section-titre">Résumé</div>
+    <div class="stats-4">
+      <div class="stat-card"><div class="val">${nbEntrees}</div><div class="lbl">Dépenses enregistrées</div></div>
+      <div class="stat-card"><div class="val">${jours.size}</div><div class="lbl">Jours actifs</div></div>
+      <div class="stat-card"><div class="val">${semTriees.length}</div><div class="lbl">Semaines tracées</div></div>
+      <div class="stat-card"><div class="val">${moyHebdo.toFixed(0)} €</div><div class="lbl">Moyenne hebdo</div></div>
+    </div>
+
+    <div class="section-titre">Répartition par rubrique</div>
+    <div class="rub-bilan" id="rubBilan"></div>
+
+    <div class="section-titre">Vue globale</div>
+    <div class="donut-wrap">
+      <div class="donut-titre">Toutes rubriques confondues</div>
+      <canvas id="canvasDonut" width="400" height="380"></canvas>
+    </div>
+
+    <div class="section-titre">Activité hebdomadaire</div>
+    <div class="activite-wrap">
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="section-titre">Top 5 des rubriques</div>
+    <div class="top-liste" id="topRubListe"></div>
+
+    <div class="section-titre">Top 5 des catégories de dépenses</div>
+    <div class="top-liste" id="topListe"></div>
+
+    <div class="section-titre">Top 5 des établissements</div>
+    <div class="top-liste" id="topEtabListe"></div>
+
+    <div style="height:32px;"></div>
+  </main>
+
+  <div class="profil-footer">
+    <a href="index.html">← Retour à l'accueil</a> · PataCompta ${new Date().getFullYear()}
+  </div>`;
+
+  // Modale édition
+  document.body.insertAdjacentHTML("beforeend", `
+  <div class="edit-overlay" id="editOverlay" onclick="if(event.target===this)fermerEdit()">
+    <div class="edit-sheet">
+      <div class="edit-titre" id="editTitre"></div>
+      <div class="edit-erreur" id="editErreur"></div>
+      <div class="edit-champ" id="editChampWrap"></div>
+      <div class="edit-btns">
+        <button class="edit-btn-cancel" onclick="fermerEdit()">Annuler</button>
+        <button class="edit-btn-save" onclick="sauvegarderEdit()">✅ Enregistrer</button>
+      </div>
+    </div>
+  </div>`);
+
+  // ── Rubriques bilan ──
+  const rubBilan = document.getElementById("rubBilan");
+  // Classement par montant total décroissant (toutes dépenses confondues)
+  const ordreClassement = RUBRIQUES.map((r, i) => i).sort((a, b) => totauxRub[b] - totauxRub[a]);
+  let rang = 0;
+  ordreClassement.forEach(i => {
+    const r = RUBRIQUES[i];
+    const montant = totauxRub[i];
+    rang++;
+    const pct = montant > 0 ? Math.min(100, (montant / maxRub) * 100) : 0;
+    const depenses = toutes.filter(x => x.cle === r.cle);
+    const nb = depenses.length;
+
+    // Grouper par établissement
+    const etabMap = {};
+    depenses.forEach(d => {
+      const etab = (d.etablissement || "").trim() || "Sans enseigne";
+      if (!etabMap[etab]) etabMap[etab] = { total: 0, nb: 0 };
+      etabMap[etab].total += parseFloat(d.montant || 0);
+      etabMap[etab].nb++;
+    });
+    const etabTri = Object.entries(etabMap).sort((a,b) => b[1].total - a[1].total);
+
+    // Grouper par catégorie
+    const catMap = {};
+    depenses.forEach(d => {
+      const cat = (d.categorieBase || d.categorie || "").split("—")[0].split(" - ")[0].trim() || "Sans catégorie";
+      if (!catMap[cat]) catMap[cat] = { total: 0, nb: 0 };
+      catMap[cat].total += parseFloat(d.montant || 0);
+      catMap[cat].nb++;
+    });
+    const catTri = Object.entries(catMap).sort((a,b) => b[1].total - a[1].total);
+
+    // Carte rubrique
+    const wrap = document.createElement("div");
+
+    const card = document.createElement("div");
+    card.className = "rub-ligne " + r.cls;
+    card.innerHTML = `<div class="rub-haut">
+        <span class="rub-rang">${rang}</span>
+        <span class="rub-emoji">${r.emoji}</span>
+        <span class="rub-nom">${r.nom}</span>
+        <span class="rub-montant">${montant.toFixed(2)} €</span>
+        <span class="rub-fleche">▼</span>
+      </div>
+      <div class="rub-bar"><div class="rub-bar-fill" style="width:0%" data-pct="${pct}"></div></div>
+      <div class="rub-detail">${nb} dépense${nb>1?"s":""} · ${totalGlobal > 0 ? ((montant/totalGlobal)*100).toFixed(1) : 0}% du total</div>`;
+
+    // Accordéon avec onglets
+    const acc = document.createElement("div");
+    acc.className = "acc-etab";
+
+    function buildListe(tri, type) {
+      if (tri.length === 0) return `<div class="etab-vide">Aucune donnée</div>`;
+      return tri.map(([nom, data], idx) => `
+        <div class="etab-item">
+          <span class="etab-rang">${idx + 1}</span>
+          <div class="etab-info"><div class="etab-nom">${nom}</div></div>
+          <span class="etab-montant">${data.total.toFixed(2)} €</span>
+          <span class="etab-nb">${data.nb}×</span>
+        </div>`).join("");
+    }
+
+    // ── Vue Classement (établissements / catégories) ──
+    const htmlClassement = `
+      <div class="acc-etab-header" style="padding:10px 14px 4px;">🏠 Par établissement</div>
+      <div>${buildListe(etabTri, 'etab')}</div>
+      <div class="acc-etab-header" style="padding:12px 14px 4px;border-top:1px solid rgba(255,255,255,0.07);margin-top:4px;">📂 Par catégorie</div>
+      <div style="padding-bottom:6px;">${buildListe(catTri, 'cat')}</div>`;
+
+    // ── Vue Historique (dépenses groupées par semaine) ──
+    const depsTriees = [...depenses].sort((a,b) => new Date(b.date) - new Date(a.date));
+    const semMap2 = {};
+    depsTriees.forEach(d => { const c = getCle(d.date); if (!c) return; if (!semMap2[c]) semMap2[c] = []; semMap2[c].push(d); });
+    const semsTriees = Object.keys(semMap2).sort((a,b) => b.localeCompare(a));
+    let htmlHistorique = "";
+    if (depsTriees.length === 0) {
+      htmlHistorique = `<div class="etab-vide">Aucune dépense enregistrée</div>`;
+    } else {
+      semsTriees.forEach(cleS => {
+        const items = semMap2[cleS];
+        const [, s] = cleS.split("-S");
+        const totSem = items.reduce((a,d) => a + parseFloat(d.montant||0), 0);
+        // Mois / Trimestre / Année déduits de la date la plus récente de la semaine
+        const dRef = new Date(items[0].date);
+        const mois = MOIS_NOMS[dRef.getMonth()];
+        const trimestre = Math.floor(dRef.getMonth() / 3) + 1;
+        const annee = dRef.getFullYear();
+        htmlHistorique += `<div class="histo-sem-titre">📅 Semaine ${parseInt(s)} · ${mois} · T${trimestre} · ${annee} · <span style="color:#fff;font-weight:800;">${totSem.toFixed(2)} €</span></div>`;
+        items.forEach(d => {
+          htmlHistorique += `<div class="histo-dep-ligne">
+            <span class="histo-dep-date">${d.date}</span>
+            <span class="histo-dep-cat">${d.categorie||"—"}</span>
+            <span class="histo-dep-montant">${parseFloat(d.montant||0).toFixed(2)} €</span>
+          </div>`;
+        });
+      });
+    }
+
+    const uid = r.cle;
+    acc.innerHTML = `
+      <div class="acc-onglets">
+        <button class="acc-onglet-btn actif" id="btn_histo_${uid}" onclick="switchVueRub('${uid}','histo')">📋 Historique</button>
+        <button class="acc-onglet-btn" id="btn_class_${uid}" onclick="switchVueRub('${uid}','class')">🏆 Classement</button>
+      </div>
+      <div id="vue_histo_${uid}">${htmlHistorique}</div>
+      <div id="vue_class_${uid}" style="display:none;">${htmlClassement}</div>`;
+
+    let ouvert = false;
+    card.addEventListener("click", () => {
+      document.querySelectorAll(".acc-etab").forEach(a => {
+        if (a !== acc) {
+          a.style.maxHeight = "0";
+          a.previousSibling.querySelector(".rub-fleche").classList.remove("ouvert");
+        }
+      });
+      ouvert = !ouvert;
+      if (ouvert) {
+        acc.style.maxHeight = "99999px";
+        card.querySelector(".rub-fleche").classList.add("ouvert");
+      } else {
+        acc.style.maxHeight = "0";
+        card.querySelector(".rub-fleche").classList.remove("ouvert");
+      }
+    });
+
+    wrap.appendChild(card);
+    wrap.appendChild(acc);
+    rubBilan.appendChild(wrap);
+  });
+
+  // Animer barres
+  setTimeout(() => {
+    document.querySelectorAll(".rub-bar-fill").forEach(el => {
+      el.style.width = el.dataset.pct + "%";
+    });
+  }, 100);
+
+  // ── Donut ──
+  const dataDonut = totauxRub.filter(v => v > 0);
+  const labelsDonut = RUBRIQUES.filter((_, i) => totauxRub[i] > 0).map(r => r.emoji + " " + r.nom);
+  const couleursDonut = COULEURS.filter((_, i) => totauxRub[i] > 0);
+
+  if (dataDonut.length > 0) {
+    new Chart(document.getElementById("canvasDonut"), {
+      type: "doughnut",
+      data: { labels: labelsDonut, datasets: [{ data: dataDonut, backgroundColor: couleursDonut, cutout: "50%", borderWidth: 1.5, borderColor: "#0d0f1a", borderRadius: 2 }] },
+      options: {
+        responsive: false, maintainAspectRatio: false,
+        layout: { padding: 85 },
+        plugins: { legend: { display: false }, datalabels: { display: false }, tooltip: { enabled: false } }
+      },
+      plugins: [{
+        id: "centre", afterDatasetsDraw(chart) {
+          const meta = chart.getDatasetMeta(0); if (!meta.data.length) return;
+          const {x,y} = meta.data[0]; const c = chart.ctx;
+          c.save(); c.textAlign = "center"; c.textBaseline = "middle";
+          c.fillStyle = "rgba(255,255,255,0.5)"; c.font = "12px Outfit,Arial"; c.fillText("Total", x, y-12);
+          c.fillStyle = "#fff"; c.font = "bold 16px Outfit,Arial"; c.fillText(totalGlobal.toFixed(2)+" €", x, y+8);
+          c.restore();
+        }
+      }, {
+        id: "labels", afterDatasetsDraw(chart) {
+          const meta = chart.getDatasetMeta(0); if (!meta.data.length) return;
+          const c = chart.ctx, cx = meta.data[0].x, cy = meta.data[0].y, re = meta.data[0].outerRadius;
+          meta.data.forEach((arc, i) => {
+            if (dataDonut[i] === 0) return;
+            const angle = (arc.startAngle + arc.endAngle) / 2;
+            const xT = cx + Math.cos(angle) * (re + 16), yT = cy + Math.sin(angle) * (re + 16);
+            c.textAlign = Math.cos(angle) >= 0 ? "left" : "right"; c.textBaseline = "middle";
+            const parts = labelsDonut[i].split(" ");
+            const emoji = parts[0];
+            const nom = parts.slice(1).join(" ");
+            const align = c.textAlign;
+            // Emoji + nom rubrique sur la même ligne, emoji devant
+            if (align === "left") {
+              c.fillStyle = "#fff"; c.font = "bold 13px Arial"; c.fillText(emoji, xT, yT - 7);
+              c.font = "bold 11px Outfit,Arial";
+              const wEmoji = c.measureText(emoji).width;
+              c.fillText(nom, xT + wEmoji + 4, yT - 7);
+            } else {
+              c.fillStyle = "#fff"; c.font = "bold 11px Outfit,Arial"; c.fillText(nom, xT, yT - 7);
+              const wNom = c.measureText(nom).width;
+              c.font = "bold 13px Arial";
+              c.fillText(emoji, xT - wNom - 4, yT - 7);
+            }
+            // Montant
+            c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "10px Arial"; c.fillText(dataDonut[i].toFixed(2)+"€", xT, yT + 9);
+          });
+        }
+      }]
+    });
+  }
+
+  // ── Timeline semaines ──
+  const tl = document.getElementById("timeline");
+  if (semTriees.length === 0) {
+    tl.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:0.85em;padding:10px 0;">Aucune donnée</div>';
+  } else {
+    semTriees.forEach(([cle, val]) => {
+      const pct = Math.min(100, (val / maxSem) * 100);
+      const div2 = document.createElement("div"); div2.className = "sem-item";
+      div2.innerHTML = `<span class="sem-label">${labelSem(cle)}</span>
+        <div class="sem-bar-wrap"><div class="sem-bar-fill" style="width:0%" data-pct="${pct}"></div></div>
+        <span class="sem-val">${val.toFixed(0)} €</span>`;
+      tl.appendChild(div2);
+    });
+    setTimeout(() => {
+      document.querySelectorAll(".sem-bar-fill").forEach(el => { el.style.width = el.dataset.pct + "%"; });
+    }, 150);
+  }
+
+  // ── Top 5 des rubriques ──
+  const topRubListe = document.getElementById("topRubListe");
+  const top5Rub = ordreClassement.slice(0, 5).filter(i => totauxRub[i] > 0);
+  if (top5Rub.length === 0) {
+    topRubListe.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:0.85em;padding:10px 0;">Aucune dépense enregistrée</div>';
+  } else {
+    const medaillesRub = ["🥇","🥈","🥉","4️⃣","5️⃣"];
+    top5Rub.forEach((i, idx2) => {
+      const r = RUBRIQUES[i];
+      const montant = totauxRub[i];
+      const nb = toutes.filter(x => x.cle === r.cle).length;
+      const div2 = document.createElement("div"); div2.className = "top-item";
+      div2.innerHTML = `<span class="top-rank">${medaillesRub[idx2]}</span>
+        <div class="top-info">
+          <div class="top-cat">${r.emoji} ${r.nom}</div>
+          <div class="top-date">${nb} dépense${nb>1?"s":""} · ${totalGlobal > 0 ? ((montant/totalGlobal)*100).toFixed(1) : 0}% du total</div>
+        </div>
+        <span class="top-montant">${montant.toFixed(2)} €</span>`;
+      topRubListe.appendChild(div2);
+    });
+  }
+
+  // ── Top 5 ──
+  const topListe = document.getElementById("topListe");
+  if (top5.length === 0) {
+    topListe.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:0.85em;padding:10px 0;">Aucune dépense enregistrée</div>';
+  } else {
+    top5.forEach(([cat, data], i) => {
+      const medailles = ["🥇","🥈","🥉","4️⃣","5️⃣"];
+      const div2 = document.createElement("div"); div2.className = "top-item";
+      div2.innerHTML = `<span class="top-rank">${medailles[i]}</span>
+        <div class="top-info">
+          <div class="top-cat">${cat}</div>
+          <div class="top-date">${data.emoji || ""} ${data.rubrique || ""} · ${data.nb} dépense${data.nb>1?"s":""}</div>
+        </div>
+        <span class="top-montant">${data.total.toFixed(2)} €</span>`;
+      topListe.appendChild(div2);
+    });
+  }
+
+  // ── Top 5 établissements ──
+  const topEtabListe = document.getElementById("topEtabListe");
+  if (top5Etab.length === 0) {
+    topEtabListe.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:0.85em;padding:10px 0;">Aucun établissement enregistré</div>';
+  } else {
+    const medaillesEtab = ["🥇","🥈","🥉","4️⃣","5️⃣"];
+    top5Etab.forEach(([etab, data], i) => {
+      const div2 = document.createElement("div"); div2.className = "top-item";
+      div2.innerHTML = `<span class="top-rank">${medaillesEtab[i]}</span>
+        <div class="top-info">
+          <div class="top-cat">${etab}</div>
+          <div class="top-date">${data.emoji || ""} ${data.rubrique || ""} · ${data.nb} dépense${data.nb>1?"s":""}</div>
+        </div>
+        <span class="top-montant">${data.total.toFixed(2)} €</span>`;
+      topEtabListe.appendChild(div2);
+    });
+  }
+  // ── INFOS PERSONNELLES ──
+  const infosCard = document.getElementById("infosCard");
+
+  const CHAMPS = [
+    { key:"prenom",    label:"Prénom",       icone:"👤", valeur: session.prenom,          type:"text",     placeholder:"Votre prénom" },
+    { key:"nom",       label:"Nom",          icone:"👤", valeur: session.nom,             type:"text",     placeholder:"Votre nom" },
+    { key:"email",     label:"Email",        icone:"✉️",  valeur: session.email,           type:"email",    placeholder:"email@exemple.com" },
+    { key:"age",       label:"Âge",          icone:"🎂", valeur: profil.age||"",          type:"number",   placeholder:"Votre âge" },
+    { key:"ville",     label:"Ville",        icone:"📍", valeur: profil.ville||"",        type:"text",     placeholder:"Votre ville" },
+    { key:"pays",      label:"Pays",         icone:"🌍", valeur: profil.pays||"",         type:"text",     placeholder:"Votre pays" },
+    { key:"telephone", label:"Téléphone",    icone:"📱", valeur: profil.telephone||"",    type:"tel",      placeholder:"Votre numéro" },
+    { key:"profession",label:"Profession",   icone:"💼", valeur: profil.profession||"",   type:"text",     placeholder:"Votre profession" },
+    { key:"mdp",       label:"Mot de passe", icone:"🔒", valeur: "••••••••",              type:"password", placeholder:"Nouveau mot de passe" },
+  ];
+
+  CHAMPS.forEach(champ => {
+    const ligne = document.createElement("div");
+    ligne.className = "infos-ligne";
+    const valAff = champ.valeur && champ.valeur !== "••••••••" ? champ.valeur : null;
+    ligne.innerHTML = `
+      <span class="infos-icone">${champ.icone}</span>
+      <div class="infos-contenu">
+        <div class="infos-label">${champ.label}</div>
+        <div class="infos-valeur${valAff ? "" : " vide"}" id="val_${champ.key}">${valAff || "Non renseigné"}</div>
+      </div>
+      <span class="infos-edit">✏️</span>`;
+    ligne.addEventListener("click", () => ouvrirEdit(champ));
+    infosCard.appendChild(ligne);
+  });
+}
+
+// ── ÉDITION INFOS ──
+let champEnCours = null;
+
+async function ouvrirEdit(champ) {
+  champEnCours = champ;
+  document.getElementById("editTitre").textContent = champ.icone + " Modifier — " + champ.label;
+  document.getElementById("editErreur").classList.remove("visible");
+
+  const session = await getSession();
+  let valActuelle = "";
+  if (["prenom","nom","email"].includes(champ.key)) {
+    valActuelle = session[champ.key] || "";
+  } else if (champ.key !== "mdp") {
+    const { data: profilDB } = await supa.from("profils").select(champ.key).eq("id", session.id).single();
+    valActuelle = (profilDB && profilDB[champ.key]) || "";
+  }
+
+  let champHTML = "";
+  if (champ.key === "mdp") {
+    champHTML = `<label>Nouveau mot de passe</label>
+      <div class="mdp-wrap"><input type="password" id="editMdpNouv" placeholder="8 caractères minimum"><button type="button" class="mdp-oeil" onclick="toggleEditMdp('editMdpNouv',this)">👁️</button></div>
+      <label>Confirmer le nouveau mot de passe</label>
+      <div class="mdp-wrap" style="margin-bottom:0;"><input type="password" id="editMdpConf" placeholder="Répéter le nouveau mot de passe"><button type="button" class="mdp-oeil" onclick="toggleEditMdp('editMdpConf',this)">👁️</button></div>`;
+  } else {
+    champHTML = `<label>${champ.label}</label><input type="${champ.type}" id="editValeur" placeholder="${champ.placeholder}" value="${valActuelle}">`;
+  }
+  document.getElementById("editChampWrap").innerHTML = champHTML;
+  document.getElementById("editOverlay").classList.add("actif");
+  setTimeout(() => { const el = document.getElementById("editValeur") || document.getElementById("editMdpNouv"); if (el) el.focus(); }, 100);
+}
+
+function fermerEdit() {
+  document.getElementById("editOverlay").classList.remove("actif");
+  champEnCours = null;
+}
+
+function toggleEditMdp(id, btn) {
+  const input = document.getElementById(id);
+  if (!input) return;
+  input.type = input.type === "password" ? "text" : "password";
+  btn.textContent = input.type === "password" ? "👁️" : "🙈";
+}
+
+async function sauvegarderEdit() {
+  if (!champEnCours) return;
+  const session = await getSession();
+  const errEl = document.getElementById("editErreur");
+  errEl.classList.remove("visible");
+
+  if (champEnCours.key === "mdp") {
+    const nouv = document.getElementById("editMdpNouv").value;
+    const conf = document.getElementById("editMdpConf").value;
+    if (nouv.length < 8) { errEl.textContent = "Le mot de passe doit faire 8 caractères minimum."; errEl.classList.add("visible"); return; }
+    if (nouv !== conf)   { errEl.textContent = "Les mots de passe ne correspondent pas."; errEl.classList.add("visible"); return; }
+    const { error } = await supa.auth.updateUser({ password: nouv });
+    if (error) { errEl.textContent = error.message; errEl.classList.add("visible"); return; }
+    fermerEdit();
+    return;
+  }
+
+  const valeur = document.getElementById("editValeur")?.value.trim();
+  if (!valeur) { errEl.textContent = "Ce champ ne peut pas être vide."; errEl.classList.add("visible"); return; }
+
+  if (["prenom","nom"].includes(champEnCours.key)) {
+    await supa.auth.updateUser({ data: { [champEnCours.key]: valeur } });
+    await supa.from("profils").update({ [champEnCours.key]: valeur }).eq("id", session.id);
+    session[champEnCours.key] = valeur;
+    localStorage.setItem("patacompta_session", JSON.stringify(session));
+  } else if (champEnCours.key === "email") {
+    const { error } = await supa.auth.updateUser({ email: valeur });
+    if (error) { errEl.textContent = error.message; errEl.classList.add("visible"); return; }
+    session.email = valeur;
+    localStorage.setItem("patacompta_session", JSON.stringify(session));
+  } else {
+    await supa.from("profils").upsert({ id: session.id, [champEnCours.key]: valeur });
+  }
+
+  const valEl = document.getElementById("val_" + champEnCours.key);
+  if (valEl) { valEl.textContent = valeur; valEl.classList.remove("vide"); }
+  fermerEdit();
+}
+
+init();
+</script>
+</body>
+</html>
