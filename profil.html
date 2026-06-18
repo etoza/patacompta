@@ -12,6 +12,14 @@
     :root { --bg:#0d0f1a; --surface:#131629; --border:rgba(255,255,255,0.08); --accent:#6c63ff; --accent2:#00d4ff; --text:#f0f0f8; --muted:rgba(240,240,248,0.4); }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:'Outfit',sans-serif; min-height:100vh; background:var(--bg); color:var(--text); display:flex; flex-direction:column; }
+    /* SPINNER DE CHARGEMENT */
+    .loading-overlay { position:fixed; inset:0; background:#0d0f1a; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; transition:opacity 0.4s ease; }
+    .loading-overlay.masquer { opacity:0; pointer-events:none; }
+    .loading-logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:2em; letter-spacing:-0.5px; }
+    .loading-logo .pa{color:#3b82f6;} .loading-logo .ta{color:#22c55e;} .loading-logo .com{color:#eab308;} .loading-logo .pta{color:#ef4444;}
+    .loading-spinner { width:40px; height:40px; border:3px solid rgba(108,99,255,0.2); border-top-color:#6c63ff; border-radius:50%; animation:spin 0.8s linear infinite; }
+    .loading-text { font-size:0.82em; color:rgba(255,255,255,0.4); font-family:'Outfit',sans-serif; }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
     /* NAV */
     nav { position:sticky; top:0; z-index:50; background:rgba(13,15,26,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 20px; height:58px; display:flex; align-items:center; justify-content:space-between; }
@@ -123,6 +131,7 @@
 
     /* INFOS PERSONNELLES */
     .infos-card { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:4px; }
+    #infosAccordeon .infos-card { background:transparent; border:none; border-radius:0; margin-bottom:0; }
     .infos-ligne { display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid rgba(255,255,255,0.05); cursor:pointer; transition:background 0.15s; }
     .infos-ligne:last-child { border-bottom:none; }
     .infos-ligne:hover { background:rgba(255,255,255,0.04); }
@@ -160,6 +169,11 @@
   </style>
 </head>
 <body>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-logo"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></div>
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Chargement de votre profil...</div>
+</div>
 
 <nav>
   <a href="index.html" class="nav-logo">
@@ -410,23 +424,15 @@ async function init() {
   </div>
 
   <main>
-    <div style="margin-bottom:4px;">
-      <button onclick="toggleInfosPerso()" id="btnInfosPerso" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:16px;border:none;background:linear-gradient(135deg,#3f51b5,#7c4dff);color:white;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;width:100%;text-align:left;">
-        <span style="font-size:1.5em;flex-shrink:0;">👤</span>
+    <div style="margin-bottom:10px;">
+      <button onclick="toggleInfosPerso()" id="btnInfosPerso" style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:none;background:linear-gradient(135deg,#3f51b5,#7c4dff);color:white;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;width:100%;text-align:left;">
+        <span style="font-size:1.6em;flex-shrink:0;">👤</span>
         <span style="flex:1;">Informations personnelles</span>
         <span id="flecheInfos" style="font-size:0.75em;opacity:0.5;transition:transform 0.3s;display:inline-block;flex-shrink:0;">▼</span>
       </button>
-      <div id="infosAccordeon" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-radius:0 0 14px 14px;margin-top:-4px;">
-        <div class="infos-card" id="infosCard" style="border:none;border-radius:0;background:transparent;"></div>
+      <div id="infosAccordeon" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 16px 16px;">
+        <div id="infosCard"></div>
       </div>
-    </div>
-
-    <div class="section-titre">Résumé</div>
-    <div class="stats-4">
-      <div class="stat-card"><div class="val">${nbEntrees}</div><div class="lbl">Dépenses enregistrées</div></div>
-      <div class="stat-card"><div class="val">${jours.size}</div><div class="lbl">Jours actifs</div></div>
-      <div class="stat-card"><div class="val">${semTriees.length}</div><div class="lbl">Semaines tracées</div></div>
-      <div class="stat-card"><div class="val">${moyHebdo.toFixed(0)} €</div><div class="lbl">Moyenne hebdo</div></div>
     </div>
 
     <div class="section-titre">Répartition par rubrique</div>
@@ -451,6 +457,14 @@ async function init() {
 
     <div class="section-titre">Top 5 des établissements</div>
     <div class="top-liste" id="topEtabListe"></div>
+
+    <div class="section-titre">Résumé</div>
+    <div class="stats-4">
+      <div class="stat-card"><div class="val">${nbEntrees}</div><div class="lbl">Dépenses enregistrées</div></div>
+      <div class="stat-card"><div class="val">${jours.size}</div><div class="lbl">Jours actifs</div></div>
+      <div class="stat-card"><div class="val">${semTriees.length}</div><div class="lbl">Semaines tracées</div></div>
+      <div class="stat-card"><div class="val">${moyHebdo.toFixed(0)} €</div><div class="lbl">Moyenne hebdo</div></div>
+    </div>
 
     <div style="height:32px;"></div>
   </main>
@@ -853,6 +867,9 @@ async function sauvegarderEdit() {
   const valEl = document.getElementById("val_" + champEnCours.key);
   if (valEl) { valEl.textContent = valeur; valEl.classList.remove("vide"); }
   fermerEdit();
+  // Masquer le spinner
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) { overlay.classList.add("masquer"); setTimeout(() => overlay.remove(), 400); }
 }
 
 init();
