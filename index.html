@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PataCompta — Mes Dépenses hebdo </title>
+  <title>PataCompta — Mes Dépenses</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root { --bg: #0d0f1a; --surface: #131629; --border: rgba(255,255,255,0.08); --accent: #6c63ff; --accent2: #00d4ff; --text: #f0f0f8; --muted: rgba(240,240,248,0.4); }
@@ -96,7 +96,17 @@
     .footer-liens a { font-size: 0.75em; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .footer-liens a:hover { color: var(--text); }
     .footer-bas { display: flex; justify-content: space-between; align-items: center; font-size: 0.7em; color: rgba(255,255,255,0.2); border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 4px; }
-    .banniere-cgu { background: rgba(108,99,255,0.08); border-top: 1px solid rgba(108,99,255,0.2); padding: 10px 20px; text-align: center; font-size: 0.72em; color: var(--muted); }
+    /* SPINNER ARC-EN-CIEL */
+    .loading-overlay { position:fixed; inset:0; background:#0d0f1a; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; transition:opacity 0.5s ease; }
+    .loading-overlay.masquer { opacity:0; pointer-events:none; }
+    .loading-logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:2em; letter-spacing:-0.5px; }
+    .loading-logo .pa{color:#3b82f6;} .loading-logo .ta{color:#22c55e;} .loading-logo .com{color:#eab308;} .loading-logo .pta{color:#ef4444;}
+    .loading-text { font-size:0.82em; color:rgba(255,255,255,0.4); font-family:'Outfit',sans-serif; }
+    .rainbow-circle { position:relative; width:70px; height:70px; }
+    .rainbow-circle svg { transform:rotate(-90deg); }
+    .rainbow-circle .track { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:6; }
+    .rainbow-circle .progress { fill:none; stroke-width:6; stroke-linecap:round; stroke:url(#rainbowGrad); stroke-dasharray:188; stroke-dashoffset:188; animation:fillCircle 2s ease-in-out forwards; }
+    @keyframes fillCircle { from { stroke-dashoffset:188; } to { stroke-dashoffset:0; } } border-top: 1px solid rgba(108,99,255,0.2); padding: 10px 20px; text-align: center; font-size: 0.72em; color: var(--muted); }
     .banniere-cgu a { color: #a89fff; text-decoration: none; }
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; justify-content: center; align-items: center; padding: 12px; }
     .modal-overlay.actif { display: flex; }
@@ -171,6 +181,28 @@
 </head>
 <body>
 <nav>
+  <!-- Cercle arc-en-ciel de chargement -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-logo"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></div>
+    <div class="rainbow-circle">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <defs>
+          <linearGradient id="rainbowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#ef4444"/>
+            <stop offset="17%"  stop-color="#f97316"/>
+            <stop offset="33%"  stop-color="#eab308"/>
+            <stop offset="50%"  stop-color="#22c55e"/>
+            <stop offset="67%"  stop-color="#3b82f6"/>
+            <stop offset="83%"  stop-color="#6c63ff"/>
+            <stop offset="100%" stop-color="#a855f7"/>
+          </linearGradient>
+        </defs>
+        <circle class="track" cx="35" cy="35" r="30"/>
+        <circle class="progress" cx="35" cy="35" r="30"/>
+      </svg>
+    </div>
+    <div class="loading-text">Chargement de vos données...</div>
+  </div>
   <a href="index.html" class="nav-logo">
     <span class="nav-logo-text"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></span>
   </a>
@@ -2062,6 +2094,12 @@ async function majNavbar() {
   await chargerCatsPerso();
   semaines = getAllSem();
   afficher();
+  // Masquer le spinner avec une transition douce
+  const overlay = document.getElementById("loadingOverlay");
+  if (overlay) {
+    overlay.classList.add("masquer");
+    setTimeout(() => overlay.remove(), 400);
+  }
 })();
 </script>
 </body>
