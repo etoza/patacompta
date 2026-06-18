@@ -105,8 +105,11 @@
     .rainbow-circle { position:relative; width:70px; height:70px; }
     .rainbow-circle svg { transform:rotate(-90deg); }
     .rainbow-circle .track { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:6; }
-    .rainbow-circle .progress { fill:none; stroke-width:6; stroke-linecap:round; stroke:url(#rainbowGrad); stroke-dasharray:188; stroke-dashoffset:188; animation:fillCircle 2s ease-in-out forwards; }
-    @keyframes fillCircle { from { stroke-dashoffset:188; } to { stroke-dashoffset:0; } } border-top: 1px solid rgba(108,99,255,0.2); padding: 10px 20px; text-align: center; font-size: 0.72em; color: var(--muted); }
+      stroke-dashoffset: 188;
+      animation: fillCircle var(--load-duration, 3s) ease-in-out forwards;
+    }
+    @keyframes fillCircle { from { stroke-dashoffset:188; } to { stroke-dashoffset:0; } }
+    .banniere-cgu { background: rgba(108,99,255,0.08); border-top: 1px solid rgba(108,99,255,0.2); padding: 10px 20px; text-align: center; font-size: 0.72em; color: var(--muted); }
     .banniere-cgu a { color: #a89fff; text-decoration: none; }
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; justify-content: center; align-items: center; padding: 12px; }
     .modal-overlay.actif { display: flex; }
@@ -2089,16 +2092,22 @@ async function majNavbar() {
   } else {
     localStorage.removeItem("patacompta_session");
   }
+  const startTime = performance.now();
   majNavbar();
   await chargerDepenses();
   await chargerCatsPerso();
   semaines = getAllSem();
   afficher();
-  // Masquer le spinner avec une transition douce
+  // Synchroniser la durée du cercle avec le temps de chargement réel
+  const elapsed = performance.now() - startTime;
   const overlay = document.getElementById("loadingOverlay");
   if (overlay) {
-    overlay.classList.add("masquer");
-    setTimeout(() => overlay.remove(), 400);
+    const progress = overlay.querySelector(".progress");
+    if (progress) progress.style.setProperty("--load-duration", Math.max(elapsed, 500) + "ms");
+    progress?.addEventListener("animationend", () => {
+      overlay.classList.add("masquer");
+      setTimeout(() => overlay.remove(), 500);
+    }, { once: true });
   }
 })();
 </script>
