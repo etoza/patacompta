@@ -12,22 +12,8 @@
     :root { --bg:#0d0f1a; --surface:#131629; --border:rgba(255,255,255,0.08); --accent:#6c63ff; --accent2:#00d4ff; --text:#f0f0f8; --muted:rgba(240,240,248,0.4); }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family:'Outfit',sans-serif; min-height:100vh; background:var(--bg); color:var(--text); display:flex; flex-direction:column; }
-    /* SPINNER ARC-EN-CIEL */
-    .loading-overlay { position:fixed; inset:0; background:#0d0f1a; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; transition:opacity 0.5s ease; }
-    .loading-overlay.masquer { opacity:0; pointer-events:none; }
-    .loading-logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:2em; letter-spacing:-0.5px; }
-    .loading-logo .pa{color:#3b82f6;} .loading-logo .ta{color:#22c55e;} .loading-logo .com{color:#eab308;} .loading-logo .pta{color:#ef4444;}
-    .loading-text { font-size:0.82em; color:rgba(255,255,255,0.4); font-family:'Outfit',sans-serif; }
-    .rainbow-circle { position:relative; width:70px; height:70px; }
-    .rainbow-circle svg { transform:rotate(-90deg); }
-    .rainbow-circle .track { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:6; }
-    .rainbow-circle .progress { fill:none; stroke-width:6; stroke-linecap:round;
-      stroke:url(#rainbowGrad);
-      stroke-dasharray: 188;
-      stroke-dashoffset: 188;
-      animation: fillCircle var(--load-duration, 3s) ease-in-out forwards;
-    }
-    @keyframes fillCircle { from { stroke-dashoffset:188; } to { stroke-dashoffset:0; } }
+    .nav-mini-spinner { width:16px; height:16px; border:2px solid rgba(108,99,255,0.25); border-top-color:#6c63ff; border-radius:50%; animation:spin 0.8s linear infinite; margin-left:6px; flex-shrink:0; }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
     /* NAV */
     nav { position:sticky; top:0; z-index:50; background:rgba(13,15,26,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 20px; height:58px; display:flex; align-items:center; justify-content:space-between; }
@@ -36,6 +22,29 @@
     .nav-logo-text .pa{color:#3b82f6;} .nav-logo-text .ta{color:#22c55e;} .nav-logo-text .com{color:#eab308;} .nav-logo-text .pta{color:#ef4444;}
     .nav-back { display:flex; align-items:center; gap:6px; font-size:0.82em; font-weight:600; color:var(--muted); background:rgba(255,255,255,0.05); border:1px solid var(--border); padding:7px 14px; border-radius:8px; text-decoration:none; transition:all 0.2s; }
     .nav-back:hover { color:var(--text); background:rgba(255,255,255,0.09); }
+    .nav-actions { display:flex; align-items:center; gap:10px; }
+    .nav-btn { font-family:'Outfit',sans-serif; font-size:0.82em; font-weight:600; padding:7px 16px; border-radius:8px; cursor:pointer; text-decoration:none; transition:all 0.2s; border:none; }
+    .nav-btn-ghost { background:transparent; border:1px solid var(--border); color:var(--muted); }
+    .nav-btn-ghost:hover { border-color:rgba(255,255,255,0.25); color:var(--text); }
+    .nav-btn-primary { background:linear-gradient(135deg,var(--accent),#8b83ff); color:white; padding:7px 28px; }
+    .nav-btn-primary:hover { opacity:0.88; transform:translateY(-1px); }
+    .nav-menu-btn { display:flex; align-items:center; gap:8px; padding:6px 14px 6px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.06); cursor:pointer; transition:all 0.2s; font-family:'Outfit',sans-serif; color:var(--text); }
+    .nav-menu-btn:hover { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.22); }
+    .nav-menu-avatar { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#8b83ff); display:flex; align-items:center; justify-content:center; font-size:0.72em; font-weight:700; color:white; flex-shrink:0; overflow:hidden; }
+    .nav-menu-name { font-size:0.82em; font-weight:600; max-width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .nav-menu-chevron { font-size:0.6em; opacity:0.5; transition:transform 0.25s; }
+    .nav-menu-chevron.ouvert { transform:rotate(180deg); }
+    .nav-dropdown { position:fixed; top:62px; right:16px; width:220px; background:rgba(18,20,38,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:16px; box-shadow:0 16px 48px rgba(0,0,0,0.5); z-index:200; overflow:hidden; backdrop-filter:blur(20px); opacity:0; transform:translateY(-8px) scale(0.97); transition:opacity 0.2s, transform 0.2s; pointer-events:none; }
+    .nav-dropdown.visible { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+    .nav-dropdown-header { padding:14px 16px 10px; border-bottom:1px solid rgba(255,255,255,0.07); }
+    .nav-dropdown-nom { font-size:0.88em; font-weight:700; color:var(--text); }
+    .nav-dropdown-email { font-size:0.72em; color:var(--muted); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .nav-dropdown-item { display:flex; align-items:center; gap:10px; padding:11px 16px; font-size:0.85em; font-weight:600; color:var(--text); cursor:pointer; transition:background 0.15s; text-decoration:none; font-family:'Outfit',sans-serif; border:none; background:none; width:100%; text-align:left; }
+    .nav-dropdown-item:hover { background:rgba(255,255,255,0.07); }
+    .nav-dropdown-item .ico { font-size:1.1em; width:22px; text-align:center; flex-shrink:0; }
+    .nav-dropdown-sep { height:1px; background:rgba(255,255,255,0.07); margin:4px 0; }
+    .nav-dropdown-item.danger { color:#f87171; }
+    .nav-dropdown-item.danger:hover { background:rgba(239,68,68,0.1); }
 
     /* HERO PROFIL */
     .hero-profil { background:linear-gradient(160deg,#12162e 0%,#1a1f3a 60%,#0f1228 100%); border-bottom:1px solid var(--border); padding:32px 20px 28px; }
@@ -131,15 +140,15 @@
     .histo-rub-fleche { font-size:0.75em; opacity:0.5; transition:transform 0.3s; display:inline-block; margin-left:auto; }
     .histo-rub-fleche.ouvert { transform:rotate(180deg); }
     .histo-rub-acc { overflow:hidden; max-height:0; transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1); background:rgba(13,15,26,0.97); border:1px solid rgba(255,255,255,0.07); border-top:none; border-radius:0 0 14px 14px; }
-    .histo-sem-titre { font-size:0.7em; font-weight:700; color:var(--muted); letter-spacing:1px; padding:8px 14px 4px; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .histo-sem-titre { font-size:0.7em; font-weight:700; letter-spacing:1px; padding:8px 14px 6px; border-bottom:1px solid rgba(255,255,255,0.05); border-left:3px solid; border-radius:0 6px 6px 0; margin:6px 0 2px; }
     .histo-dep-ligne { display:flex; align-items:center; gap:6px; padding:5px 14px; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.78em; }
-    .histo-dep-date { color:var(--muted); white-space:nowrap; flex-shrink:0; width:80px; }
+    .histo-dep-ligne:hover { background:rgba(255,255,255,0.03); }
+    .histo-dep-date { color:var(--muted); white-space:nowrap; flex-shrink:0; width:80px; font-family:'DM Mono',monospace; font-size:0.9em; }
     .histo-dep-cat { flex:1; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .histo-dep-montant { font-weight:700; color:var(--accent2); white-space:nowrap; flex-shrink:0; }
 
     /* INFOS PERSONNELLES */
     .infos-card { background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:4px; }
-    #infosAccordeon .infos-card { background:transparent; border:none; border-radius:0; margin-bottom:0; }
     .infos-ligne { display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid rgba(255,255,255,0.05); cursor:pointer; transition:background 0.15s; }
     .infos-ligne:last-child { border-bottom:none; }
     .infos-ligne:hover { background:rgba(255,255,255,0.04); }
@@ -152,7 +161,7 @@
     /* MODALE EDIT */
     .edit-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:400; justify-content:center; align-items:flex-end; }
     .edit-overlay.actif { display:flex; }
-    .edit-sheet { background:#131629; border:1px solid rgba(255,255,255,0.1); border-radius:20px 20px 0 0; padding:24px 20px 36px; width:100%; max-width:480px; margin:0 auto; }
+    .edit-sheet { background:#131629; border:1px solid rgba(255,255,255,0.1); border-radius:20px 20px 0 0; padding:24px 20px 36px; width:100%; max-width:480px; margin:0 auto; max-height:85vh; overflow-y:auto; }
     .edit-titre { font-size:1em; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
     .edit-champ label { font-size:0.7em; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:5px; }
     .edit-champ input, .edit-champ select { width:100%; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.07); color:var(--text); font-family:'Outfit',sans-serif; font-size:0.92em; outline:none; margin-bottom:14px; transition:border-color 0.2s; }
@@ -177,36 +186,29 @@
   </style>
 </head>
 <body>
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-logo"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></div>
-  <div class="rainbow-circle">
-    <svg width="70" height="70" viewBox="0 0 70 70">
-      <defs>
-        <linearGradient id="rainbowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#ef4444"/>
-          <stop offset="17%"  stop-color="#f97316"/>
-          <stop offset="33%"  stop-color="#eab308"/>
-          <stop offset="50%"  stop-color="#22c55e"/>
-          <stop offset="67%"  stop-color="#3b82f6"/>
-          <stop offset="83%"  stop-color="#6c63ff"/>
-          <stop offset="100%" stop-color="#a855f7"/>
-        </linearGradient>
-      </defs>
-      <circle class="track" cx="35" cy="35" r="30"/>
-      <circle class="progress" cx="35" cy="35" r="30"/>
-    </svg>
-  </div>
-  <div class="loading-text">Chargement de votre profil...</div>
-</div>
-
 <nav>
   <a href="index.html" class="nav-logo">
     <span class="nav-logo-text"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></span>
+    <span class="nav-mini-spinner" id="navMiniSpinner"></span>
   </a>
-  <a href="index.html" class="nav-back">← Retour</a>
+  <div class="nav-actions" id="navActions"></div>
 </nav>
 
-<div id="contenuProfil"></div>
+<!-- DROPDOWN MENU -->
+<div id="navDropdown" class="nav-dropdown">
+  <div class="nav-dropdown-header">
+    <div class="nav-dropdown-nom" id="dropdownNom">—</div>
+    <div class="nav-dropdown-email" id="dropdownEmail">—</div>
+  </div>
+  <a href="index.html" class="nav-dropdown-item"><span class="ico">🏠</span> Mes Dépenses</a>
+  <a href="index.html?ouvrir=vue" class="nav-dropdown-item"><span class="ico">⭕</span> Vue d'ensemble</a>
+  <a href="index.html?ouvrir=nouvelle" class="nav-dropdown-item"><span class="ico">➕</span> Nouvelle dépense</a>
+  <a href="index.html?ouvrir=ticket" class="nav-dropdown-item"><span class="ico">🧾</span> Scanner un ticket</a>
+  <div class="nav-dropdown-sep"></div>
+  <button class="nav-dropdown-item danger" onclick="seDeconnecterProfil()"><span class="ico">🚪</span> Se déconnecter</button>
+</div>
+
+<div id="contenuProfil" style="opacity:0;transition:opacity 0.3s ease;"></div>
 
 <script>
 Chart.register(ChartDataLabels);
@@ -233,6 +235,57 @@ async function getSession() {
   const { data: { session } } = await supa.auth.getSession();
   if (session) return { id: session.user.id, prenom: session.user.user_metadata?.prenom || "", nom: session.user.user_metadata?.nom || "", email: session.user.email };
   return null;
+}
+
+async function majNavbarProfil(session) {
+  const nav = document.getElementById("navActions");
+  if (!nav) return;
+  if (session) {
+    const initiales = ((session.prenom?.[0] || "") + (session.nom?.[0] || "")).toUpperCase() || "?";
+    let avatarContenu = initiales;
+    try {
+      const { data: profilDB } = await supa.from("profils").select("photo").eq("id", session.id).single();
+      if (profilDB && profilDB.photo) avatarContenu = `<img src="${profilDB.photo}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    } catch (e) {}
+    nav.innerHTML = `<button class="nav-menu-btn" onclick="toggleDropdown()" id="navMenuBtn">
+      <div class="nav-menu-avatar">${avatarContenu}</div>
+      <span class="nav-menu-name">${session.prenom}</span>
+      <span class="nav-menu-chevron" id="navMenuChevron">▼</span>
+    </button>`;
+    const nomEl   = document.getElementById("dropdownNom");
+    const emailEl = document.getElementById("dropdownEmail");
+    if (nomEl)   nomEl.textContent   = ((session.prenom || "") + " " + (session.nom || "")).trim();
+    if (emailEl) emailEl.textContent = session.email || "";
+  } else {
+    nav.innerHTML = `<a href="index.html" class="nav-btn nav-btn-ghost">Connexion</a>`;
+  }
+}
+
+function toggleDropdown() {
+  const dd = document.getElementById("navDropdown");
+  const chevron = document.getElementById("navMenuChevron");
+  const isVisible = dd.classList.contains("visible");
+  dd.classList.toggle("visible");
+  if (chevron) chevron.classList.toggle("ouvert", !isVisible);
+}
+
+function fermerDropdown() {
+  const dd = document.getElementById("navDropdown");
+  const chevron = document.getElementById("navMenuChevron");
+  if (dd) dd.classList.remove("visible");
+  if (chevron) chevron.classList.remove("ouvert");
+}
+
+document.addEventListener("click", e => {
+  const btn = document.getElementById("navMenuBtn");
+  const dd  = document.getElementById("navDropdown");
+  if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) fermerDropdown();
+});
+
+async function seDeconnecterProfil() {
+  await supa.auth.signOut();
+  localStorage.removeItem("patacompta_session");
+  window.location.href = "index.html";
 }
 
 function getNumSem(date) {
@@ -264,14 +317,6 @@ function switchOnglet(uid, mode) {
     btnCat.classList.add('actif'); btnEtab.classList.remove('actif');
     listeCat.style.display = ''; listeEtab.style.display = 'none';
   }
-}
-
-async function toggleInfosPerso() {
-  const acc = document.getElementById("infosAccordeon");
-  const fleche = document.getElementById("flecheInfos");
-  const ouvert = acc.style.maxHeight !== "0px" && acc.style.maxHeight !== "";
-  acc.style.maxHeight = ouvert ? "0" : "99999px";
-  if (fleche) fleche.style.transform = ouvert ? "rotate(0deg)" : "rotate(180deg)";
 }
 
 function switchVueRub(uid, mode) {
@@ -327,6 +372,7 @@ async function changerPhoto(event) {
 async function init() {
   const session = await getSession();
   const div = document.getElementById("contenuProfil");
+  await majNavbarProfil(session);
 
   if (!session) {
     div.innerHTML = `<div class="non-connecte">
@@ -335,13 +381,14 @@ async function init() {
       <p>Connecte-toi ou crée un compte pour voir le récapitulatif de tes dépenses.</p>
       <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
     </div>`;
+    const spinner = document.getElementById("navMiniSpinner");
+    if (spinner) spinner.style.display = "none";
+    div.style.opacity = "1";
     return;
   }
 
   // ── Calculs depuis Supabase ──
   let toutes = [];
-
-  const startTime = performance.now();
 
   // Charger profil, dépenses et user
   const { data: profilDB } = await supa.from("profils").select("*").eq("id", session.id).single();
@@ -353,14 +400,6 @@ async function init() {
     .order("date", { ascending: false });
 
   const { data: { user } } = await supa.auth.getUser();
-
-  const elapsed = performance.now() - startTime;
-  // Ajuster la durée du cercle au temps réel de chargement
-  const overlay = document.getElementById("loadingOverlay");
-  if (overlay) {
-    const progress = overlay.querySelector(".progress");
-    if (progress) progress.style.setProperty("--load-duration", Math.max(elapsed, 500) + "ms");
-  }
 
   if (!error && depensesDB) {
     depensesDB.forEach(d => {
@@ -402,19 +441,7 @@ async function init() {
   const maxSem = Math.max(...semTriees.map(s => s[1]), 1);
   const moyHebdo = semTriees.length ? semTriees.reduce((s,x)=>s+x[1],0)/semTriees.length : 0;
 
-  // Top 5 des catégories par montant total cumulé (toutes rubriques confondues)
-  const catGlobalMap = {};
-  toutes.forEach(d => {
-    const cat = (d.categorieBase || d.categorie || "").split("—")[0].split(" - ")[0].trim() || "Sans catégorie";
-    if (!catGlobalMap[cat]) catGlobalMap[cat] = { total: 0, nb: 0, emoji: d.emoji, rubrique: d.rubrique };
-    catGlobalMap[cat].total += parseFloat(d.montant || 0);
-    catGlobalMap[cat].nb++;
-  });
-  const top5 = Object.entries(catGlobalMap)
-    .sort((a,b) => b[1].total - a[1].total)
-    .slice(0, 5);
-
-  // Top 5 des établissements par montant total cumulé (toutes rubriques confondues)
+  // Top 7 des établissements par montant total cumulé (toutes rubriques confondues)
   const etabGlobalMap = {};
   toutes.forEach(d => {
     const etab = (d.etablissement || "").trim() || "Sans enseigne";
@@ -425,7 +452,7 @@ async function init() {
   const top5Etab = Object.entries(etabGlobalMap)
     .filter(([nom]) => nom !== "Sans enseigne")
     .sort((a,b) => b[1].total - a[1].total)
-    .slice(0, 5);
+    .slice(0, 7);
 
   // Membre depuis Supabase Auth
   const depuis = user?.created_at ? new Date(user.created_at).toLocaleDateString("fr-FR",{month:"long",year:"numeric"}) : "—";
@@ -444,7 +471,7 @@ async function init() {
       </div>
       <input type="file" id="inputPhoto" accept="image/*" style="display:none;" onchange="changerPhoto(event)">
       <div class="hero-info">
-        <h1>${session.prenom} ${session.nom}</h1>
+        <h1>${session.prenom} ${session.nom} <button onclick="ouvrirEditTout()" style="vertical-align:middle;margin-left:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:white;font-size:0.4em;font-weight:600;padding:5px 11px;border-radius:20px;cursor:pointer;font-family:'Outfit',sans-serif;">✏️ Modifier</button></h1>
         <div class="email">${session.email}</div>
         <div class="membre">Membre depuis ${depuis}</div>
       </div>
@@ -458,17 +485,6 @@ async function init() {
   </div>
 
   <main>
-    <div style="margin-bottom:10px;">
-      <button onclick="toggleInfosPerso()" id="btnInfosPerso" style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:none;background:linear-gradient(135deg,#3f51b5,#7c4dff);color:white;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;width:100%;text-align:left;">
-        <span style="font-size:1.6em;flex-shrink:0;">👤</span>
-        <span style="flex:1;">Informations personnelles</span>
-        <span id="flecheInfos" style="font-size:0.75em;opacity:0.5;transition:transform 0.3s;display:inline-block;flex-shrink:0;">▼</span>
-      </button>
-      <div id="infosAccordeon" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 16px 16px;">
-        <div id="infosCard"></div>
-      </div>
-    </div>
-
     <div class="section-titre">Répartition par rubrique</div>
     <div class="rub-bilan" id="rubBilan"></div>
 
@@ -483,13 +499,10 @@ async function init() {
       <div class="timeline" id="timeline"></div>
     </div>
 
-    <div class="section-titre">Top 5 des rubriques</div>
+    <div class="section-titre">Top 7 des rubriques</div>
     <div class="top-liste" id="topRubListe"></div>
 
-    <div class="section-titre">Top 5 des catégories de dépenses</div>
-    <div class="top-liste" id="topListe"></div>
-
-    <div class="section-titre">Top 5 des établissements</div>
+    <div class="section-titre">Top 7 des établissements</div>
     <div class="top-liste" id="topEtabListe"></div>
 
     <div class="section-titre">Résumé</div>
@@ -516,7 +529,7 @@ async function init() {
       <div class="edit-champ" id="editChampWrap"></div>
       <div class="edit-btns">
         <button class="edit-btn-cancel" onclick="fermerEdit()">Annuler</button>
-        <button class="edit-btn-save" onclick="sauvegarderEdit()">✅ Enregistrer</button>
+        <button class="edit-btn-save" onclick="sauvegarderEditTout()">✅ Enregistrer</button>
       </div>
     </div>
   </div>`);
@@ -543,16 +556,6 @@ async function init() {
       etabMap[etab].nb++;
     });
     const etabTri = Object.entries(etabMap).sort((a,b) => b[1].total - a[1].total);
-
-    // Grouper par catégorie
-    const catMap = {};
-    depenses.forEach(d => {
-      const cat = (d.categorieBase || d.categorie || "").split("—")[0].split(" - ")[0].trim() || "Sans catégorie";
-      if (!catMap[cat]) catMap[cat] = { total: 0, nb: 0 };
-      catMap[cat].total += parseFloat(d.montant || 0);
-      catMap[cat].nb++;
-    });
-    const catTri = Object.entries(catMap).sort((a,b) => b[1].total - a[1].total);
 
     // Carte rubrique
     const wrap = document.createElement("div");
@@ -584,12 +587,10 @@ async function init() {
         </div>`).join("");
     }
 
-    // ── Vue Classement (établissements / catégories) ──
+    // ── Vue Classement (établissements uniquement) ──
     const htmlClassement = `
       <div class="acc-etab-header" style="padding:10px 14px 4px;">🏠 Par établissement</div>
-      <div>${buildListe(etabTri, 'etab')}</div>
-      <div class="acc-etab-header" style="padding:12px 14px 4px;border-top:1px solid rgba(255,255,255,0.07);margin-top:4px;">📂 Par catégorie</div>
-      <div style="padding-bottom:6px;">${buildListe(catTri, 'cat')}</div>`;
+      <div>${buildListe(etabTri, 'etab')}</div>`;
 
     // ── Vue Historique (dépenses groupées par semaine) ──
     const depsTriees = [...depenses].sort((a,b) => new Date(b.date) - new Date(a.date));
@@ -603,17 +604,28 @@ async function init() {
       semsTriees.forEach(cleS => {
         const items = semMap2[cleS];
         const [, s] = cleS.split("-S");
+        const numSem = parseInt(s);
         const totSem = items.reduce((a,d) => a + parseFloat(d.montant||0), 0);
-        // Mois / Trimestre / Année déduits de la date la plus récente de la semaine
         const dRef = new Date(items[0].date);
         const mois = MOIS_NOMS[dRef.getMonth()];
         const trimestre = Math.floor(dRef.getMonth() / 3) + 1;
         const annee = dRef.getFullYear();
-        htmlHistorique += `<div class="histo-sem-titre">📅 Semaine ${parseInt(s)} · ${mois} · T${trimestre} · ${annee} · <span style="color:#fff;font-weight:800;">${totSem.toFixed(2)} €</span></div>`;
+
+        // Palette de 4 couleurs cycliques pour les semaines
+        const PALETTE = ["#4fc3f7","#2ecc71","#f6c90e","#ef4444"]; // bleu, vert, jaune, rouge
+        const couleurSem = PALETTE[(numSem - 1) % 4];
+
+        // Saison du trimestre
+        const SAISONS = { 1:"❄️ Hiver", 2:"🌸 Printemps", 3:"☀️ Été", 4:"🍂 Automne" };
+        const SAISON_COULEURS = { 1:"#4fc3f7", 2:"#2ecc71", 3:"#f6c90e", 4:"#f39c12" };
+        const saisonLabel = SAISONS[trimestre];
+        const couleurSaison = SAISON_COULEURS[trimestre];
+
+        htmlHistorique += `<div class="histo-sem-titre" style="color:${couleurSem};border-left-color:${couleurSem};background:${couleurSem}18;">📅 Semaine ${numSem} · <span style="color:${couleurSem};opacity:0.85;">${mois} ${annee}</span> · <span style="color:${couleurSaison};">${saisonLabel}</span> · <span style="color:#fff;font-weight:800;">${totSem.toFixed(2)} €</span></div>`;
         items.forEach(d => {
           htmlHistorique += `<div class="histo-dep-ligne">
             <span class="histo-dep-date">${d.date}</span>
-            <span class="histo-dep-cat">${d.categorie||"—"}</span>
+            <span class="histo-dep-cat">${d.etablissement||"—"}</span>
             <span class="histo-dep-montant">${parseFloat(d.montant||0).toFixed(2)} €</span>
           </div>`;
         });
@@ -733,13 +745,13 @@ async function init() {
     }, 150);
   }
 
-  // ── Top 5 des rubriques ──
+  // ── Top 7 des rubriques ──
   const topRubListe = document.getElementById("topRubListe");
-  const top5Rub = ordreClassement.slice(0, 5).filter(i => totauxRub[i] > 0);
+  const top5Rub = ordreClassement.slice(0, 7).filter(i => totauxRub[i] > 0);
   if (top5Rub.length === 0) {
     topRubListe.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:0.85em;padding:10px 0;">Aucune dépense enregistrée</div>';
   } else {
-    const medaillesRub = ["🥇","🥈","🥉","4️⃣","5️⃣"];
+    const medaillesRub = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣"];
     top5Rub.forEach((i, idx2) => {
       const r = RUBRIQUES[i];
       const montant = totauxRub[i];
@@ -755,30 +767,12 @@ async function init() {
     });
   }
 
-  // ── Top 5 ──
-  const topListe = document.getElementById("topListe");
-  if (top5.length === 0) {
-    topListe.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:0.85em;padding:10px 0;">Aucune dépense enregistrée</div>';
-  } else {
-    top5.forEach(([cat, data], i) => {
-      const medailles = ["🥇","🥈","🥉","4️⃣","5️⃣"];
-      const div2 = document.createElement("div"); div2.className = "top-item";
-      div2.innerHTML = `<span class="top-rank">${medailles[i]}</span>
-        <div class="top-info">
-          <div class="top-cat">${cat}</div>
-          <div class="top-date">${data.emoji || ""} ${data.rubrique || ""} · ${data.nb} dépense${data.nb>1?"s":""}</div>
-        </div>
-        <span class="top-montant">${data.total.toFixed(2)} €</span>`;
-      topListe.appendChild(div2);
-    });
-  }
-
-  // ── Top 5 établissements ──
+  // ── Top 7 établissements ──
   const topEtabListe = document.getElementById("topEtabListe");
   if (top5Etab.length === 0) {
     topEtabListe.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:0.85em;padding:10px 0;">Aucun établissement enregistré</div>';
   } else {
-    const medaillesEtab = ["🥇","🥈","🥉","4️⃣","5️⃣"];
+    const medaillesEtab = ["🥇","🥈","🥉","4️⃣","5️⃣","6️⃣","7️⃣"];
     top5Etab.forEach(([etab, data], i) => {
       const div2 = document.createElement("div"); div2.className = "top-item";
       div2.innerHTML = `<span class="top-rank">${medaillesEtab[i]}</span>
@@ -790,10 +784,12 @@ async function init() {
       topEtabListe.appendChild(div2);
     });
   }
-  // ── INFOS PERSONNELLES ──
-  const infosCard = document.getElementById("infosCard");
 
-  const CHAMPS = [
+  // ── INFOS PERSONNELLES (utilisées par la pop-up Modifier) ──
+  sessionActuelle = session;
+  profilActuel = profil;
+
+  CHAMPS_PROFIL = [
     { key:"prenom",    label:"Prénom",       icone:"👤", valeur: session.prenom,          type:"text",     placeholder:"Votre prénom" },
     { key:"nom",       label:"Nom",          icone:"👤", valeur: session.nom,             type:"text",     placeholder:"Votre nom" },
     { key:"email",     label:"Email",        icone:"✉️",  valeur: session.email,           type:"email",    placeholder:"email@exemple.com" },
@@ -802,59 +798,82 @@ async function init() {
     { key:"pays",      label:"Pays",         icone:"🌍", valeur: profil.pays||"",         type:"text",     placeholder:"Votre pays" },
     { key:"telephone", label:"Téléphone",    icone:"📱", valeur: profil.telephone||"",    type:"tel",      placeholder:"Votre numéro" },
     { key:"profession",label:"Profession",   icone:"💼", valeur: profil.profession||"",   type:"text",     placeholder:"Votre profession" },
-    { key:"mdp",       label:"Mot de passe", icone:"🔒", valeur: "••••••••",              type:"password", placeholder:"Nouveau mot de passe" },
   ];
 
-  CHAMPS.forEach(champ => {
-    const ligne = document.createElement("div");
-    ligne.className = "infos-ligne";
-    const valAff = champ.valeur && champ.valeur !== "••••••••" ? champ.valeur : null;
-    ligne.innerHTML = `
-      <span class="infos-icone">${champ.icone}</span>
-      <div class="infos-contenu">
-        <div class="infos-label">${champ.label}</div>
-        <div class="infos-valeur${valAff ? "" : " vide"}" id="val_${champ.key}">${valAff || "Non renseigné"}</div>
-      </div>
-      <span class="infos-edit">✏️</span>`;
-    ligne.addEventListener("click", () => ouvrirEdit(champ));
-    infosCard.appendChild(ligne);
-  });
+  // Masquer le mini-spinner et faire apparaître le contenu
+  const spinner = document.getElementById("navMiniSpinner");
+  if (spinner) spinner.style.display = "none";
+  div.style.opacity = "1";
 }
 
-// ── ÉDITION INFOS ──
-let champEnCours = null;
+// ── ÉDITION GROUPÉE DES INFOS PERSONNELLES (pop-up "Modifier") ──
+let sessionActuelle = null, profilActuel = null, CHAMPS_PROFIL = [];
 
-async function ouvrirEdit(champ) {
-  champEnCours = champ;
-  document.getElementById("editTitre").textContent = champ.icone + " Modifier — " + champ.label;
+function ouvrirEditTout() {
+  const wrap = document.getElementById("editChampWrap");
+  document.getElementById("editTitre").textContent = "✏️ Modifier mes informations";
   document.getElementById("editErreur").classList.remove("visible");
 
-  const session = await getSession();
-  let valActuelle = "";
-  if (["prenom","nom","email"].includes(champ.key)) {
-    valActuelle = session[champ.key] || "";
-  } else if (champ.key !== "mdp") {
-    const { data: profilDB } = await supa.from("profils").select(champ.key).eq("id", session.id).single();
-    valActuelle = (profilDB && profilDB[champ.key]) || "";
+  wrap.innerHTML = CHAMPS_PROFIL.map(c => `
+    <label>${c.icone} ${c.label}</label>
+    <input type="${c.type}" id="editAll_${c.key}" placeholder="${c.placeholder}" value="${c.valeur || ""}">
+  `).join("") + `
+    <label>🔒 Nouveau mot de passe <span style="text-transform:none;font-weight:400;opacity:0.6;">(laisser vide pour ne pas changer)</span></label>
+    <div class="mdp-wrap"><input type="password" id="editAll_mdp" placeholder="8 caractères minimum"><button type="button" class="mdp-oeil" onclick="toggleEditMdp('editAll_mdp',this)">👁️</button></div>
+    <label>🔒 Confirmer le nouveau mot de passe</label>
+    <div class="mdp-wrap"><input type="password" id="editAll_mdpConf" placeholder="Répéter le nouveau mot de passe"><button type="button" class="mdp-oeil" onclick="toggleEditMdp('editAll_mdpConf',this)">👁️</button></div>`;
+
+  document.getElementById("editOverlay").classList.add("actif");
+  setTimeout(() => { document.getElementById("editAll_prenom")?.focus(); }, 100);
+}
+
+async function sauvegarderEditTout() {
+  const errEl = document.getElementById("editErreur");
+  errEl.classList.remove("visible");
+
+  const valeurs = {};
+  CHAMPS_PROFIL.forEach(c => { valeurs[c.key] = document.getElementById(`editAll_${c.key}`)?.value.trim() || ""; });
+
+  if (!valeurs.prenom) { errEl.textContent = "Le prénom est obligatoire."; errEl.classList.add("visible"); return; }
+  if (!valeurs.nom)    { errEl.textContent = "Le nom est obligatoire."; errEl.classList.add("visible"); return; }
+  if (!valeurs.email || !valeurs.email.includes("@")) { errEl.textContent = "Adresse email invalide."; errEl.classList.add("visible"); return; }
+
+  // Changement de mot de passe (optionnel)
+  const mdpNouv = document.getElementById("editAll_mdp")?.value || "";
+  const mdpConf = document.getElementById("editAll_mdpConf")?.value || "";
+  if (mdpNouv || mdpConf) {
+    if (mdpNouv.length < 8) { errEl.textContent = "Le mot de passe doit faire 8 caractères minimum."; errEl.classList.add("visible"); return; }
+    if (mdpNouv !== mdpConf) { errEl.textContent = "Les mots de passe ne correspondent pas."; errEl.classList.add("visible"); return; }
+    const { error: errMdp } = await supa.auth.updateUser({ password: mdpNouv });
+    if (errMdp) { errEl.textContent = errMdp.message; errEl.classList.add("visible"); return; }
   }
 
-  let champHTML = "";
-  if (champ.key === "mdp") {
-    champHTML = `<label>Nouveau mot de passe</label>
-      <div class="mdp-wrap"><input type="password" id="editMdpNouv" placeholder="8 caractères minimum"><button type="button" class="mdp-oeil" onclick="toggleEditMdp('editMdpNouv',this)">👁️</button></div>
-      <label>Confirmer le nouveau mot de passe</label>
-      <div class="mdp-wrap" style="margin-bottom:0;"><input type="password" id="editMdpConf" placeholder="Répéter le nouveau mot de passe"><button type="button" class="mdp-oeil" onclick="toggleEditMdp('editMdpConf',this)">👁️</button></div>`;
-  } else {
-    champHTML = `<label>${champ.label}</label><input type="${champ.type}" id="editValeur" placeholder="${champ.placeholder}" value="${valActuelle}">`;
+  // Prénom / nom → auth + table profils
+  if (valeurs.prenom !== sessionActuelle.prenom || valeurs.nom !== sessionActuelle.nom) {
+    await supa.auth.updateUser({ data: { prenom: valeurs.prenom, nom: valeurs.nom } });
+    await supa.from("profils").update({ prenom: valeurs.prenom, nom: valeurs.nom }).eq("id", sessionActuelle.id);
   }
-  document.getElementById("editChampWrap").innerHTML = champHTML;
-  document.getElementById("editOverlay").classList.add("actif");
-  setTimeout(() => { const el = document.getElementById("editValeur") || document.getElementById("editMdpNouv"); if (el) el.focus(); }, 100);
+  // Email → auth (peut nécessiter confirmation selon config Supabase)
+  if (valeurs.email !== sessionActuelle.email) {
+    const { error } = await supa.auth.updateUser({ email: valeurs.email });
+    if (error) { errEl.textContent = error.message; errEl.classList.add("visible"); return; }
+  }
+  // Autres champs → table profils
+  await supa.from("profils").upsert({
+    id: sessionActuelle.id,
+    age: valeurs.age || null,
+    ville: valeurs.ville,
+    pays: valeurs.pays,
+    telephone: valeurs.telephone,
+    profession: valeurs.profession
+  });
+
+  fermerEdit();
+  init(); // recharger la page avec les nouvelles infos
 }
 
 function fermerEdit() {
   document.getElementById("editOverlay").classList.remove("actif");
-  champEnCours = null;
 }
 
 function toggleEditMdp(id, btn) {
@@ -864,57 +883,8 @@ function toggleEditMdp(id, btn) {
   btn.textContent = input.type === "password" ? "👁️" : "🙈";
 }
 
-async function sauvegarderEdit() {
-  if (!champEnCours) return;
-  const session = await getSession();
-  const errEl = document.getElementById("editErreur");
-  errEl.classList.remove("visible");
-
-  if (champEnCours.key === "mdp") {
-    const nouv = document.getElementById("editMdpNouv").value;
-    const conf = document.getElementById("editMdpConf").value;
-    if (nouv.length < 8) { errEl.textContent = "Le mot de passe doit faire 8 caractères minimum."; errEl.classList.add("visible"); return; }
-    if (nouv !== conf)   { errEl.textContent = "Les mots de passe ne correspondent pas."; errEl.classList.add("visible"); return; }
-    const { error } = await supa.auth.updateUser({ password: nouv });
-    if (error) { errEl.textContent = error.message; errEl.classList.add("visible"); return; }
-    fermerEdit();
-    return;
-  }
-
-  const valeur = document.getElementById("editValeur")?.value.trim();
-  if (!valeur) { errEl.textContent = "Ce champ ne peut pas être vide."; errEl.classList.add("visible"); return; }
-
-  if (["prenom","nom"].includes(champEnCours.key)) {
-    await supa.auth.updateUser({ data: { [champEnCours.key]: valeur } });
-    await supa.from("profils").update({ [champEnCours.key]: valeur }).eq("id", session.id);
-    session[champEnCours.key] = valeur;
-    localStorage.setItem("patacompta_session", JSON.stringify(session));
-  } else if (champEnCours.key === "email") {
-    const { error } = await supa.auth.updateUser({ email: valeur });
-    if (error) { errEl.textContent = error.message; errEl.classList.add("visible"); return; }
-    session.email = valeur;
-    localStorage.setItem("patacompta_session", JSON.stringify(session));
-  } else {
-    await supa.from("profils").upsert({ id: session.id, [champEnCours.key]: valeur });
-  }
-
-  const valEl = document.getElementById("val_" + champEnCours.key);
-  if (valEl) { valEl.textContent = valeur; valEl.classList.remove("vide"); }
-  fermerEdit();
-  // Masquer le cercle une fois les données prêtes ET l'animation terminée
-  if (overlay) {
-    const progress = overlay.querySelector(".progress");
-    const elapsed = performance.now() - startTime;
-    const remaining = Math.max(0, elapsed - (performance.now() - startTime));
-    // Attendre que l'animation du cercle soit finie
-    progress?.addEventListener("animationend", () => {
-      overlay.classList.add("masquer");
-      setTimeout(() => overlay.remove(), 500);
-    }, { once: true });
-  }
-}
-
 init();
 </script>
 </body>
 </html>
+
