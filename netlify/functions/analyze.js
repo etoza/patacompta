@@ -1,47 +1,83 @@
-export async function handler(event) {
+exports.handler = async function(event) {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
   try {
     const { image, mediaType } = JSON.parse(event.body);
+    const apiKey = process.env.GEMINI_API_KEY;
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01"
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        messages: [{
-          role: "user",
-          content: [
-            {
-              type: "image",
-              source: { type: "base64", media_type: mediaType, data: image }
-            },
-            {
-              type: "text",
-              text: "Analyse ce ticket de caisse français et retourne UNIQUEMENT un JSON valide sans texte autour : { \"date\": \"YYYY-MM-DD\", \"montant\": 0.00, \"etablissement\": \"Nom enseigne\", \"rubrique\": \"depensesAlimentations|depensesRestaurants|depensesServices|depensesFactures|depensesMateriels|depensesTransports|depensesSorties\", \"categorie\": \"Catégorie\", \"confiance\": \"haute|moyenne|faible\" }. Règles : date du ticket YYYY-MM-DD, montant total à payer, etablissement nom lisible, rubrique la plus appropriée, categorie logique, confiance selon clarté du ticket."
-            }
-          ]
-        }]
-      })
-    });
+    if (!apiKey) {
+      return { statusCode: 500, body: JSON.stringify({ error: "Clé API manquante" }) };
+    }
+
+    const prompt = `Analyse cette photo de ticket de caisse et extrais les informations suivantes en JSON uniquement, sans texte autour :
+{
+  "date": "YYYY-MM-DD",
+  "montant": 12.50,
+  "etablissement": "Nom du magasin ou restaurant",
+  "rubrique": "depensesAlimentations",
+  "categorie": "Grande surface",
+  "confiance": "haute"
+}
+
+Règles :
+- date : la date du ticket au format YYYY-MM-DD. Si absente, mets la date d'aujourd'hui.
+- montant : le montant TOTAL payé (pas un sous-total). Nombre décimal.
+- etablissement : le nom du magasin, restaurant ou enseigne.
+- rubrique : choisis parmi exactement ces valeurs selon le type d'établissement :
+  "depensesAlimentations" pour supermarché, épicerie, boulangerie, pharmacie
+  "depensesRestaurants" pour restaurant, fast food, café, livraison repas
+  "depensesTransports" pour carburant, parking, transport
+  "depensesFactures" pour factures, abonnements, services récurrents
+  "depensesMateriels" pour achats de matériel, vêtements, électronique
+  "depensesServices" pour coiffeur, médecin, réparations, services
+  "depensesSorties" pour cinéma, concert, bar, divertissement
+- categorie : une catégorie précise correspondant à la rubrique choisie
+- confiance : "haute" si tu es sûr, "moyenne" si incertain, "faible" si peu lisible
+
+Réponds UNIQUEMENT avec le JSON, rien d'autre.`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: prompt },
+              { inline_data: { mime_type: mediaType, data: image } }
+            ]
+          }],
+          generationConfig: { temperature: 0.1, maxOutputTokens: 512 }
+        })
+      }
+    );
+
+    if (!response.ok) {
+      const err = await response.text();
+      console.error("Gemini error:", err);
+      return { statusCode: 500, body: JSON.stringify({ error: "Erreur Gemini : " + err }) };
+    }
 
     const data = await response.json();
-    const texte = data.content?.[0]?.text || "";
-    const clean = texte.replace(/```json|```/g, "").trim();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    const clean = text.replace(/```json|```/g, "").trim();
     const resultat = JSON.parse(clean);
 
     return {
       statusCode: 200,
-      headers: { "Access-Control-Allow-Origin": "*" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(resultat)
     };
 
   } catch (err) {
+    console.error("Erreur analyze:", err);
     return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Erreur lors de l'analyse : " + err.message })
+    };
+  }
+};
