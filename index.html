@@ -58,10 +58,8 @@
     .acc-champ label { font-size: 0.7em; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px; }
     .acc-champ input, .acc-champ select { width: 100%; padding: 9px 12px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.07); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.88em; outline: none; }
     .acc-champ input[type="date"] { color-scheme: dark; }
-    .acc-champ input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 40px; height: 100%; cursor: pointer; }
-    .date-wrap { position: relative; display: flex; align-items: center; }
-    .date-wrap input[type="date"] { width: 100%; padding-right: 36px; }
-    .date-wrap .date-icon { position: absolute; right: 10px; font-size: 1em; pointer-events: none; }
+    .date-wrap { position: relative; display: flex; align-items: center; cursor: pointer; }
+    .date-wrap input[type="date"] { width: 100%; cursor: pointer; }
     input[type="date"] { color-scheme: dark; }
     .acc-champ input::placeholder { color: var(--muted); }
     .acc-champ select option { background: #1a1c30; }
@@ -96,19 +94,8 @@
     .footer-liens a { font-size: 0.75em; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .footer-liens a:hover { color: var(--text); }
     .footer-bas { display: flex; justify-content: space-between; align-items: center; font-size: 0.7em; color: rgba(255,255,255,0.2); border-top: 1px solid var(--border); padding-top: 12px; flex-wrap: wrap; gap: 4px; }
-    /* SPINNER ARC-EN-CIEL */
-    .loading-overlay { position:fixed; inset:0; background:#0d0f1a; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; transition:opacity 0.5s ease; }
-    .loading-overlay.masquer { opacity:0; pointer-events:none; }
-    .loading-logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:2em; letter-spacing:-0.5px; }
-    .loading-logo .pa{color:#3b82f6;} .loading-logo .ta{color:#22c55e;} .loading-logo .com{color:#eab308;} .loading-logo .pta{color:#ef4444;}
-    .loading-text { font-size:0.82em; color:rgba(255,255,255,0.4); font-family:'Outfit',sans-serif; }
-    .rainbow-circle { position:relative; width:70px; height:70px; }
-    .rainbow-circle svg { transform:rotate(-90deg); }
-    .rainbow-circle .track { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:6; }
-      stroke-dashoffset: 188;
-      animation: fillCircle var(--load-duration, 3s) ease-in-out forwards;
-    }
-    @keyframes fillCircle { from { stroke-dashoffset:188; } to { stroke-dashoffset:0; } }
+    .nav-mini-spinner { width:16px; height:16px; border:2px solid rgba(108,99,255,0.25); border-top-color:#6c63ff; border-radius:50%; animation:spin 0.8s linear infinite; margin-left:6px; flex-shrink:0; }
+    @keyframes spin { to { transform:rotate(360deg); } }
     .banniere-cgu { background: rgba(108,99,255,0.08); border-top: 1px solid rgba(108,99,255,0.2); padding: 10px 20px; text-align: center; font-size: 0.72em; color: var(--muted); }
     .banniere-cgu a { color: #a89fff; text-decoration: none; }
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; justify-content: center; align-items: center; padding: 12px; }
@@ -119,8 +106,7 @@
     .modal-champ { margin-bottom: 14px; }
     .modal-champ label { font-size: 0.75em; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; }
     .modal-champ input, .modal-champ select { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.92em; outline: none; }
-    .modal-champ input[type="date"] { position: relative; color-scheme: dark; }
-    .modal-champ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1) brightness(2); opacity: 1; cursor: pointer; font-size: 1.1em; }
+    .modal-champ input[type="date"] { color-scheme: dark; cursor: pointer; }
     .modal-champ input::placeholder { color: var(--muted); }
     .modal-champ select option { background: #1a1c30; }
     .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--accent), #8b83ff); color: white; font-family: 'Outfit', sans-serif; font-size: 0.95em; font-weight: 700; cursor: pointer; margin-top: 6px; }
@@ -145,9 +131,25 @@
     .diag-nav-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: white; width: 34px; height: 34px; border-radius: 50%; font-size: 1.3em; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .diag-fermer { position: absolute; top: 12px; right: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); width: 26px; height: 26px; border-radius: 50%; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     /* AUTH MODALES */
+    /* Bordure arc-en-ciel animée autour de la boîte */
+    .auth-rainbow-wrap { position:relative; width:100%; max-width:400px; border-radius:26px; padding:2px; background:conic-gradient(from var(--angle,0deg), #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6c63ff, #a855f7, #ef4444); animation:rotateRainbow 6s linear infinite; }
+    @keyframes rotateRainbow { to { --angle:360deg; } }
+    @property --angle { syntax:'<angle>'; initial-value:0deg; inherits:false; }
+    @keyframes rotateRainbowWrap { to { --angle:360deg; } }
+    .rubrique-rainbow { background:conic-gradient(from var(--angle,0deg), #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6c63ff, #a855f7, #ef4444) !important; animation:rotateRainbowWrap 4s linear infinite; }
+    .auth-social-btn { width:100%; display:flex; align-items:center; justify-content:center; gap:10px; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.05); color:var(--text); font-family:'Outfit',sans-serif; font-size:0.88em; font-weight:600; cursor:pointer; margin-bottom:10px; transition:all 0.2s; }
+    .auth-social-btn:hover { background:rgba(255,255,255,0.1); transform:translateY(-1px); }
+    .auth-social-btn svg { width:18px; height:18px; flex-shrink:0; }
+    .auth-divider { display:flex; align-items:center; gap:10px; margin:18px 0; color:var(--muted); font-size:0.75em; }
+    .auth-divider::before, .auth-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
+    .auth-mdp-oublie { text-align:right; margin-top:-8px; margin-bottom:14px; }
+    .auth-mdp-oublie a { font-size:0.78em; color:#a89fff; text-decoration:none; cursor:pointer; }
+    .auth-mdp-oublie a:hover { color:white; text-decoration:underline; }
+    .auth-titre-gradient { background:linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e,#3b82f6,#6c63ff,#a855f7); background-size:200% auto; -webkit-background-clip:text; background-clip:text; color:transparent; animation:shineGradient 4s linear infinite; font-weight:800; }
+    @keyframes shineGradient { to { background-position:200% center; } }
     .auth-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:300; justify-content:center; align-items:center; padding:16px; }
     .auth-overlay.actif { display:flex; }
-    .auth-box { background:linear-gradient(160deg,#0f1228,#1a1f3a); border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:32px 28px; width:100%; max-width:400px; position:relative; }
+    .auth-box { background:linear-gradient(160deg,#0f1228,#1a1f3a); border-radius:24px; padding:32px 28px; width:100%; position:relative; max-height:88vh; overflow-y:auto; }
     .auth-logo { text-align:center; margin-bottom:24px; }
     .auth-logo .pa{color:#3b82f6;} .auth-logo .ta{color:#22c55e;} .auth-logo .com{color:#eab308;} .auth-logo .pta{color:#ef4444;}
     .auth-titre { font-size:1.3em; font-weight:800; text-align:center; margin-bottom:6px; }
@@ -167,7 +169,8 @@
     .auth-champ .mdp-wrap { position:relative; }
     .auth-champ .mdp-wrap input { padding-right:42px; }
     .auth-champ .mdp-oeil { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--muted); font-size:1.1em; padding:0; line-height:1; transition:color 0.2s; }
-    .auth-champ .mdp-oeil:hover { color:var(--text); } border:1px solid rgba(239,68,68,0.3); color:#fca5a5; border-radius:9px; padding:9px 14px; font-size:0.82em; margin-bottom:12px; display:none; }
+    .auth-champ .mdp-oeil:hover { color:var(--text); }
+    .auth-erreur { background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; border-radius:9px; padding:9px 14px; font-size:0.82em; margin-bottom:12px; display:none; }
     .auth-erreur.visible { display:block; }
     .auth-succes { background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:#86efac; border-radius:9px; padding:9px 14px; font-size:0.82em; margin-bottom:12px; display:none; }
     .auth-succes.visible { display:block; }
@@ -177,6 +180,24 @@
     .nav-username { font-size:0.82em; font-weight:600; color:var(--text); max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .nav-deconnexion { font-size:0.75em; color:var(--muted); background:none; border:none; cursor:pointer; font-family:'Outfit',sans-serif; padding:0; transition:color 0.2s; }
     .nav-deconnexion:hover { color:var(--text); }
+    /* Menu dropdown */
+    .nav-menu-btn { display:flex; align-items:center; gap:8px; padding:6px 14px 6px 8px; border-radius:12px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.06); cursor:pointer; transition:all 0.2s; font-family:'Outfit',sans-serif; color:var(--text); }
+    .nav-menu-btn:hover { background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.22); }
+    .nav-menu-avatar { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#8b83ff); display:flex; align-items:center; justify-content:center; font-size:0.72em; font-weight:700; color:white; flex-shrink:0; overflow:hidden; }
+    .nav-menu-name { font-size:0.82em; font-weight:600; max-width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .nav-menu-chevron { font-size:0.6em; opacity:0.5; transition:transform 0.25s; }
+    .nav-menu-chevron.ouvert { transform:rotate(180deg); }
+    .nav-dropdown { position:fixed; top:62px; right:16px; width:220px; background:rgba(18,20,38,0.98); border:1px solid rgba(255,255,255,0.1); border-radius:16px; box-shadow:0 16px 48px rgba(0,0,0,0.5); z-index:200; overflow:hidden; backdrop-filter:blur(20px); opacity:0; transform:translateY(-8px) scale(0.97); transition:opacity 0.2s, transform 0.2s; pointer-events:none; }
+    .nav-dropdown.visible { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
+    .nav-dropdown-header { padding:14px 16px 10px; border-bottom:1px solid rgba(255,255,255,0.07); }
+    .nav-dropdown-nom { font-size:0.88em; font-weight:700; color:var(--text); }
+    .nav-dropdown-email { font-size:0.72em; color:var(--muted); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .nav-dropdown-item { display:flex; align-items:center; gap:10px; padding:11px 16px; font-size:0.85em; font-weight:600; color:var(--text); cursor:pointer; transition:background 0.15s; text-decoration:none; font-family:'Outfit',sans-serif; border:none; background:none; width:100%; text-align:left; }
+    .nav-dropdown-item:hover { background:rgba(255,255,255,0.07); }
+    .nav-dropdown-item .ico { font-size:1.1em; width:22px; text-align:center; flex-shrink:0; }
+    .nav-dropdown-sep { height:1px; background:rgba(255,255,255,0.07); margin:4px 0; }
+    .nav-dropdown-item.danger { color:#f87171; }
+    .nav-dropdown-item.danger:hover { background:rgba(239,68,68,0.1); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -184,37 +205,44 @@
 </head>
 <body>
 <nav>
-  <!-- Cercle arc-en-ciel de chargement -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-logo"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></div>
-    <div class="rainbow-circle">
-      <svg width="70" height="70" viewBox="0 0 70 70">
-        <defs>
-          <linearGradient id="rainbowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stop-color="#ef4444"/>
-            <stop offset="17%"  stop-color="#f97316"/>
-            <stop offset="33%"  stop-color="#eab308"/>
-            <stop offset="50%"  stop-color="#22c55e"/>
-            <stop offset="67%"  stop-color="#3b82f6"/>
-            <stop offset="83%"  stop-color="#6c63ff"/>
-            <stop offset="100%" stop-color="#a855f7"/>
-          </linearGradient>
-        </defs>
-        <circle class="track" cx="35" cy="35" r="30"/>
-        <circle class="progress" cx="35" cy="35" r="30"/>
-      </svg>
-    </div>
-    <div class="loading-text">Chargement de vos données...</div>
-  </div>
   <a href="index.html" class="nav-logo">
     <span class="nav-logo-text"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></span>
+    <span class="nav-mini-spinner" id="navMiniSpinner"></span>
   </a>
   <div class="nav-actions" id="navActions">
     <a href="#" class="nav-btn nav-btn-ghost" onclick="ouvrirAuth('connexion');return false;">Connexion</a>
     <a href="#" class="nav-btn nav-btn-primary" onclick="ouvrirAuth('inscription');return false;">Créer un compte</a>
   </div>
 </nav>
-<div class="hero"><h1>Mes Dépenses</h1></div>
+<!-- DROPDOWN MENU -->
+<div id="navDropdown" class="nav-dropdown">
+  <div class="nav-dropdown-header">
+    <div class="nav-dropdown-nom" id="dropdownNom">—</div>
+    <div class="nav-dropdown-email" id="dropdownEmail">—</div>
+  </div>
+  <a href="profil.html" class="nav-dropdown-item"><span class="ico">👤</span> Mon profil</a>
+  <div class="nav-dropdown-sep"></div>
+  <a href="index.html?ouvrir=vue" class="nav-dropdown-item"><span class="ico">⭕</span> Vue d'ensemble</a>
+  <a href="index.html?ouvrir=nouvelle" class="nav-dropdown-item"><span class="ico">➕</span> Nouvelle dépense</a>
+  <a href="index.html?ouvrir=ticket" class="nav-dropdown-item"><span class="ico">🧾</span> Scanner un ticket</a>
+  <button class="nav-dropdown-item" onclick="toggleModeAvoirs();fermerDropdown()"><span class="ico">💰</span> Mes Avoirs</button>
+  <div class="nav-dropdown-sep"></div>
+  <button class="nav-dropdown-item danger" onclick="seDeconnecter();fermerDropdown()"><span class="ico">🚪</span> Se déconnecter</button>
+</div>
+<div id="contenuPage" style="opacity:0;transition:opacity 0.3s ease;">
+<div class="hero" style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+  <h1 id="titrePageMode">Mes Dépenses</h1>
+  <button onclick="toggleModeAvoirs()" id="btnToggleAvoirs" title="Basculer entre Dépenses et Avoirs" style="position:relative;width:200px;height:38px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);cursor:pointer;flex-shrink:0;padding:0;overflow:hidden;font-family:'Outfit',sans-serif;">
+    <div id="toggleAvoirsKnob" style="position:absolute;top:2px;left:2px;width:96px;height:32px;border-radius:18px;background:linear-gradient(135deg,var(--accent),#8b83ff);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);z-index:1;"></div>
+    <div style="position:relative;z-index:2;display:flex;width:100%;height:100%;">
+      <span id="toggleAvoirsLabelDep" style="flex:1;display:flex;align-items:center;justify-content:center;font-size:0.78em;font-weight:700;color:white;">💸 Dépenses</span>
+      <span id="toggleAvoirsLabelAvoirs" style="flex:1;display:flex;align-items:center;justify-content:center;font-size:0.78em;font-weight:700;color:rgba(255,255,255,0.5);">💰 Avoirs</span>
+    </div>
+  </button>
+</div>
+
+<!-- VUE MES DÉPENSES -->
+<div id="vueModeDepenses">
 <div class="semaine-card">
   <div class="semaine-inner">
     <button class="nav-semaine-btn" id="btnSemPrev">&#8249;</button>
@@ -228,9 +256,60 @@
     <button class="nav-semaine-btn" id="btnSemNext" disabled>&#8250;</button>
   </div>
 </div>
+</div>
 
+<!-- VUE MES AVOIRS -->
+<div id="vueModeAvoirs" style="display:none;">
+<div class="semaine-card">
+  <div class="semaine-inner">
+    <button class="nav-semaine-btn" id="btnAvoirsPrev">&#8249;</button>
+    <div class="semaine-slider">
+      <div class="semaine-info">
+        <div class="label" id="labelTypeAvoirs">Cette semaine</div>
+        <div class="val" id="totalAvoirs" onclick="ouvrirModifTotal()" title="Modifier le total" style="cursor:pointer;text-decoration:underline dotted rgba(255,255,255,0.3);">—</div>
+        <div class="sub" id="nbComptes">—</div>
+      </div>
+    </div>
+    <button class="nav-semaine-btn" id="btnAvoirsNext" disabled>&#8250;</button>
+  </div>
+</div>
+<div style="max-width:480px;margin:0 auto 16px;padding:0 16px;">
 
-<main>
+  <div id="listeComptes" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;"></div>
+
+  <!-- Bouton accordéon Ajouter un compte (après la liste) -->
+  <div>
+    <button onclick="toggleOutil('ooutil_ajout_compte')" id="btnOutilAjoutCompte" style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--accent),#8b83ff);color:white;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;width:100%;text-align:left;">
+      <span style="font-size:1.6em;flex-shrink:0;">🏦</span>
+      <span style="flex:1;">Ajouter un compte bancaire</span>
+      <span id="flecheAjoutCompte" style="font-size:0.75em;opacity:0.5;transition:transform 0.3s;display:inline-block;flex-shrink:0;">▼</span>
+    </button>
+    <div id="ooutil_ajout_compte" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-radius:0 0 14px 14px;">
+      <div style="padding:16px;">
+        <div class="acc-champ"><label>Nom du compte</label><input type="text" id="nouveauCompteNom" placeholder="Ex: Compte courant BNP"></div>
+        <div class="acc-champ"><label>Type</label>
+          <select id="nouveauCompteType">
+            <option value="banque">🏦 Compte bancaire</option>
+            <option value="especes">💵 Espèces</option>
+            <option value="cheque">📝 Chèque</option>
+            <option value="epargne">🐷 Épargne</option>
+          </select>
+        </div>
+        <div class="acc-champ"><label>Solde de départ (€)</label><input type="text" id="nouveauCompteSolde" placeholder="Ex: 1500"></div>
+        <button onclick="creerCompte()" class="acc-btn">✅ Créer le compte</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<main id="mainDepenses">
+
+  <div class="section-titre">Rubriques — cliquez pour saisir</div>
+  <div class="grid" id="listeRubriques"></div>
+
+  <div class="section-titre" style="margin-top:20px;">Outils — explorez vos finances</div>
   <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
 
     <!-- Bouton Nouvelle dépense -->
@@ -241,81 +320,76 @@
     </button>
     <div id="ooutil_nouvelle" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-radius:0 0 14px 14px;margin-top:-10px;">
       <div style="padding:16px;">
-        <div class="acc-champ"><label>Date</label><div class="date-wrap"><input type="date" id="outilDate"><span class="date-icon">📅</span></div></div>
-        <div class="acc-champ"><label>Rubrique</label>
-          <select id="outilRubrique" onchange="majCatsOutil()">
-            <option value="">-- Choisir --</option>
-            <option value="alimentations">🛒 Consommations</option>
-            <option value="restaurants">🍽️ Restaurations</option>
-            <option value="services">🔧 Services</option>
-            <option value="factures">🧾 Prélèvements</option>
-            <option value="materiels">📦 Achats</option>
-            <option value="transports">🚇 Déplacements</option>
-            <option value="sorties">🎉 Divertissements</option>
-          </select>
-        </div>
-        <div class="acc-champ"><label>Catégorie</label><select id="outilCategorie"><option value="">-- Choisir une rubrique --</option></select></div>
-        <div id="outil_ajouter_cat_wrap" style="display:none;margin-top:-4px;margin-bottom:10px;">
-          <button class="btn-gerer-cats" onclick="toggleAjouterCat()">➕ Ajouter une catégorie</button>
-          <div id="panel_ajouter_cat" style="display:none;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;margin-top:6px;">
-            <div style="display:flex;gap:6px;margin-bottom:8px;">
-              <input type="text" id="new_cat_nom_outil" placeholder="Nom de la catégorie..." style="flex:1;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.07);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.82em;">
-              <button onclick="validerAjoutCatOutil()" style="padding:7px 12px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),#8b83ff);color:white;font-family:'Outfit',sans-serif;font-size:0.8em;font-weight:700;cursor:pointer;white-space:nowrap;">Ajouter</button>
-            </div>
-            <div style="font-size:0.68em;color:var(--muted);margin-bottom:5px;">Choisir un emoji :</div>
-            <div class="emoji-picker-grid" id="epicker_outil"></div>
+        <div class="acc-champ"><label>Date</label><div class="date-wrap" style="cursor:pointer;" onclick="this.querySelector('input').showPicker && this.querySelector('input').showPicker()"><input type="date" id="outilDate" style="cursor:pointer;width:100%;"></div></div>
+        <div class="acc-champ">
+          <label>Rubrique</label>
+          <div id="outilRubriqueWrap" style="border-radius:11px;padding:2px;background:rgba(255,255,255,0.1);transition:background 0.3s;">
+            <select id="outilRubrique" onchange="majCatsOutil()" style="width:100%;padding:9px 12px;border-radius:9px;border:none;background:rgba(13,15,26,0.98);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.88em;outline:none;display:block;">
+              <option value="">-- Choisir --</option>
+              <option value="alimentations">🛒 Consommations</option>
+              <option value="restaurants">🍽️ Restaurations</option>
+              <option value="services">🔧 Services</option>
+              <option value="factures">🧾 Prélèvements</option>
+              <option value="materiels">📦 Achats</option>
+              <option value="transports">🚇 Déplacements</option>
+              <option value="sorties">🎉 Divertissements</option>
+            </select>
           </div>
         </div>
         <div class="acc-champ"><label>Établissement</label><input type="text" id="outilEtablissement" placeholder="Nom du lieu (optionnel)"></div>
+        <div class="acc-champ">
+          <label>Mode de paiement</label>
+          <div id="outilCompteWrap" style="border-radius:11px;padding:2px;background:rgba(255,255,255,0.1);transition:background 0.3s;">
+            <select id="outilCompte" onchange="document.getElementById('outilCompteWrap').classList.toggle('rubrique-rainbow', this.value !== '')" style="width:100%;padding:9px 12px;border-radius:9px;border:none;background:rgba(13,15,26,0.98);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.88em;outline:none;display:block;"><option value="">-- Aucun compte sélectionné --</option></select>
+          </div>
+        </div>
         <div class="acc-champ"><label>Montant (€)</label><input type="text" id="outilMontant" placeholder="Ex: 12.50"></div>
         <button onclick="sauvegarderOutilDepense()" class="acc-btn">✅ Enregistrer</button>
       </div>
     </div>
 
-    <!-- Bouton Description dépenses -->
+    <!-- Bouton Scanner un ticket -->
     <button onclick="toggleOutil('ooutil_import')" id="btnOutilImport" style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:none;background:linear-gradient(135deg,#e67e22,#f39c12);color:#1a0a00;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;width:100%;text-align:left;">
-      <span style="font-size:1.6em;flex-shrink:0;">💬</span>
-      <span style="flex:1;">Description dépenses</span>
+      <span style="font-size:1.6em;flex-shrink:0;">🧾</span>
+      <span style="flex:1;">Scanner un ticket</span>
       <span id="flecheImport" style="font-size:0.75em;opacity:0.5;transition:transform 0.3s;display:inline-block;flex-shrink:0;">▼</span>
     </button>
     <div id="ooutil_import" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-radius:0 0 14px 14px;margin-top:-10px;">
       <div style="padding:16px;">
-        <div id="chatMessages" style="max-height:300px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;"></div>
-        <div id="chatInputZone" style="display:flex;gap:8px;">
-          <input type="text" id="chatInput" placeholder="Décris tes dépenses..." style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.88em;outline:none;" onkeydown="if(event.key==='Enter')envoyerChat()">
-          <button onclick="envoyerChat()" style="padding:10px 16px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),#8b83ff);color:white;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:700;cursor:pointer;">↑</button>
+
+        <div id="ticketZoneUpload">
+          <div style="font-size:0.8em;color:var(--muted);margin-bottom:12px;line-height:1.5;text-align:center;">
+            📸 Prends en photo ton ticket de caisse, l'IA détecte automatiquement la date, le montant et l'établissement.
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button onclick="document.getElementById('ticketInputCamera').click()" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 10px;border-radius:14px;border:1px dashed rgba(230,126,34,0.4);background:rgba(230,126,34,0.08);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.82em;font-weight:600;cursor:pointer;">
+              <span style="font-size:1.8em;">📷</span>
+              Prendre une photo
+            </button>
+            <button onclick="document.getElementById('ticketInputGalerie').click()" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 10px;border-radius:14px;border:1px dashed rgba(230,126,34,0.4);background:rgba(230,126,34,0.08);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.82em;font-weight:600;cursor:pointer;">
+              <span style="font-size:1.8em;">🖼️</span>
+              Choisir une image
+            </button>
+          </div>
+          <input type="file" id="ticketInputCamera" accept="image/*" capture="environment" style="display:none;" onchange="ticketFichierChoisi(this)">
+          <input type="file" id="ticketInputGalerie" accept="image/*" style="display:none;" onchange="ticketFichierChoisi(this)">
+
+          <div id="ticketApercu" style="display:none;margin-top:12px;text-align:center;">
+            <img id="ticketApercuImg" style="max-width:100%;max-height:220px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);">
+          </div>
+
+          <div id="ticketStatut" style="display:none;text-align:center;padding:14px;font-size:0.85em;color:var(--accent2);"></div>
         </div>
-        <div id="chatSuggestions" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
+
         <div id="importPreview" style="display:none;margin-top:12px;">
-          <div style="font-size:0.75em;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Dépenses à enregistrer</div>
-          <div id="importLignes" style="max-height:240px;overflow-y:auto;margin-bottom:10px;"></div>
+          <div style="font-size:0.75em;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Dépense détectée — vérifie avant d'enregistrer</div>
+          <div id="importLignes" style="max-height:300px;overflow-y:auto;margin-bottom:10px;"></div>
           <div style="display:flex;gap:8px;">
-            <button onclick="chatReset()" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--muted);font-family:'Outfit',sans-serif;font-size:0.85em;font-weight:600;cursor:pointer;">✕ Recommencer</button>
+            <button onclick="ticketReset()" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--muted);font-family:'Outfit',sans-serif;font-size:0.85em;font-weight:600;cursor:pointer;">✕ Recommencer</button>
             <button onclick="importValider()" id="btnImportValider" style="flex:2;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),#8b83ff);color:white;font-family:'Outfit',sans-serif;font-size:0.85em;font-weight:700;cursor:pointer;">✅ Enregistrer</button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Bouton Diagramme semaine -->
-    <button onclick="toggleOutil('ooutil_diag')" id="btnOutilDiag" style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:16px;border:none;background:linear-gradient(135deg,#3f51b5,#7c4dff);color:white;font-family:'Outfit',sans-serif;font-size:0.88em;font-weight:600;cursor:pointer;width:100%;text-align:left;">
-      <span style="font-size:1.6em;flex-shrink:0;">📊</span>
-      <span style="flex:1;">Diagramme de la semaine</span>
-      <span id="flecheDiag" style="font-size:0.75em;opacity:0.5;transition:transform 0.3s;display:inline-block;flex-shrink:0;">▼</span>
-    </button>
-    <div id="ooutil_diag" style="overflow:hidden;max-height:0;transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.92);border:1px solid rgba(255,255,255,0.07);border-radius:0 0 14px 14px;margin-top:-10px;">
-      <div style="padding:10px 12px 12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <button onclick="navigDiagSem(1)" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:32px;height:32px;border-radius:50%;font-size:1.2em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" id="diagSemBtnPrev">&#8249;</button>
-          <div style="text-align:center;flex:1;">
-            <div id="diagSemTitre" style="font-size:0.82em;font-weight:700;color:rgba(255,255,255,0.7);"></div>
-            <div id="diagSemTotal" style="font-size:1.2em;font-weight:800;color:var(--accent2);"></div>
-          </div>
-          <button onclick="navigDiagSem(-1)" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:32px;height:32px;border-radius:50%;font-size:1.2em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;" id="diagSemBtnNext">&#8250;</button>
-        </div>
-        <div style="position:relative;width:100%;height:200px;">
-          <canvas id="canvasDiagSem" style="position:absolute;top:0;left:0;width:100%!important;height:200px!important;"></canvas>
-        </div>
       </div>
     </div>
 
@@ -333,22 +407,30 @@
           <button onclick="setPeriodeVE('trimestre')" id="btnVETrimestre" style="flex:1;padding:7px 2px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.68em;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,0.5);transition:all 0.2s;">📊 Trimestre</button>
           <button onclick="setPeriodeVE('annee')" id="btnVEAnnee" style="flex:1;padding:7px 2px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.68em;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,0.5);transition:all 0.2s;">📅 Année</button>
         </div>
-        <div id="veNavSemaine" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <button onclick="navigVE(1)" id="veBtnPrev" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:32px;height:32px;border-radius:50%;font-size:1.2em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">&#8249;</button>
-          <div id="veLabelSemaine" style="font-size:0.82em;font-weight:700;color:rgba(255,255,255,0.7);text-align:center;flex:1;"></div>
-          <button onclick="navigVE(-1)" id="veBtnNext" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:32px;height:32px;border-radius:50%;font-size:1.2em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">&#8250;</button>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <div id="veNavSemaine" style="display:flex;align-items:center;justify-content:space-between;flex:1;">
+            <button onclick="navigVE(1)" id="veBtnPrev" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:32px;height:32px;border-radius:50%;font-size:1.2em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">&#8249;</button>
+            <select id="veSelectPeriode" onchange="navigVESelect(this.value)" style="flex:1;margin:0 6px;padding:5px 8px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(30,32,50,0.95);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.72em;font-weight:600;outline:none;cursor:pointer;height:30px;"></select>
+            <button onclick="navigVE(-1)" id="veBtnNext" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:32px;height:32px;border-radius:50%;font-size:1.2em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">&#8250;</button>
+          </div>
         </div>
-        <canvas id="canvasVueEnsemble" width="450" height="450" style="width:100%;max-width:450px;display:block;margin:0 auto;"></canvas>
+        <div id="veCanvasWrap" style="position:relative;width:100%;max-width:450px;height:280px;margin:0 auto;">
+          <canvas id="canvasVueEnsemble" width="450" height="450"></canvas>
+        </div>
+        <!-- Récapitulatif par rubrique synchronisé -->
+        <div id="blocRecap" style="margin-top:16px;border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;">
+          <div style="font-size:0.72em;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">📋 Récapitulatif — <span id="labelRecapPeriode"></span></div>
+          <div id="recapContenu"><div style="color:var(--muted);font-size:0.82em;text-align:center;padding:12px 0;">Ouvre la Vue d'ensemble pour voir le récapitulatif</div></div>
+        </div>
       </div>
     </div>
 
   </div>
 
-  <div class="section-titre">Rubriques — cliquez pour saisir</div>
-  <div class="grid" id="listeRubriques"></div>
   <div class="bloc"><h3>📊 Moyenne hebdomadaire</h3><div id="compMoyContenu"></div></div>
   <div class="bloc"><h3>🗓️ Statistiques globales</h3><div class="stats-grid" id="statsGrid"></div></div>
 </main>
+</div>
 <div class="modal-overlay" id="modalDiag" onclick="if(event.target===this)fermerDiag()">
   <div class="modal-diag">
     <div class="modal-diag-header">
@@ -367,7 +449,7 @@
   <div class="modal">
     <button class="modal-fermer" onclick="fermerModal()">✕</button>
     <h2 class="modal-titre">➕ Nouvelle dépense</h2>
-    <div class="modal-champ"><label>Date</label><div class="date-wrap"><input type="date" id="modalDate"><span class="date-icon">📅</span></div></div>
+    <div class="modal-champ"><label>Date</label><div class="date-wrap" onclick="this.querySelector('input').showPicker && this.querySelector('input').showPicker()"><input type="date" id="modalDate"></div></div>
     <div class="modal-champ"><label>Rubrique</label><select id="modalRubrique" onchange="majCategoriesModal()"><option value="">-- Choisir --</option><option value="alimentations">🛒 Consommations</option><option value="restaurants">🍽️ Restaurations</option><option value="services">🔧 Services</option><option value="factures">🧾 Prélèvements</option><option value="materiels">📦 Achats</option><option value="transports">🚇 Déplacements</option><option value="sorties">🎉 Divertissements</option></select></div>
     <div class="modal-champ"><label>Catégorie</label><select id="modalCategorie"><option value="">-- Choisir une rubrique d'abord --</option></select></div>
     <div class="modal-champ"><label>Établissement</label><input type="text" id="modalEtablissement" placeholder="Nom du lieu..."></div>
@@ -384,15 +466,41 @@
     <div id="histoRubContenu" style="max-height:60vh;overflow-y:auto;"></div>
   </div>
 </div>
+
+<!-- MODALE NOUVEAU MOT DE PASSE (depuis lien email) -->
+<div class="auth-overlay" id="overlayResetMdp">
+  <div class="auth-rainbow-wrap">
+  <div class="auth-box">
+    <div class="auth-logo"><span style="font-weight:800;font-size:1.4em;"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></span></div>
+    <div class="auth-titre"><span class="auth-titre-gradient">Nouveau mot de passe</span></div>
+    <div class="auth-sous">Choisis un nouveau mot de passe sécurisé</div>
+    <div class="auth-erreur" id="errResetMdp"></div>
+    <div class="auth-succes" id="okResetMdp"></div>
+    <div id="formResetMdp">
+      <div class="auth-champ"><label>Nouveau mot de passe</label><div class="mdp-wrap"><input type="password" id="resetMdp1" placeholder="8 caractères minimum"><button type="button" class="mdp-oeil" onclick="toggleMdp('resetMdp1',this)">👁️</button></div></div>
+      <div class="auth-champ"><label>Confirmer le mot de passe</label><div class="mdp-wrap"><input type="password" id="resetMdp2" placeholder="Répéter le mot de passe"><button type="button" class="mdp-oeil" onclick="toggleMdp('resetMdp2',this)">👁️</button></div></div>
+      <button class="auth-btn" onclick="changerMdpDepuisLien()">✅ Mettre à jour le mot de passe</button>
+    </div>
+  </div>
+  </div>
+</div>
 <!-- MODALE INSCRIPTION -->
 <div class="auth-overlay" id="overlayInscription" onclick="if(event.target===this)fermerAuth()">
+  <div class="auth-rainbow-wrap">
   <div class="auth-box">
     <button class="auth-fermer" onclick="fermerAuth()">✕</button>
     <div class="auth-logo"><span style="font-weight:800;font-size:1.4em;"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></span></div>
-    <div class="auth-titre">Créer un compte</div>
-    <div class="auth-sous">Vos données restent stockées localement sur votre appareil</div>
+    <div class="auth-titre"><span class="auth-titre-gradient">Créer un compte</span></div>
+    <div class="auth-sous">Rejoins PataCompta en quelques secondes</div>
     <div class="auth-erreur" id="errInscription"></div>
     <div class="auth-succes" id="okInscription"></div>
+
+    <button class="auth-social-btn" onclick="connexionGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuer avec Google
+    </button>
+    <div class="auth-divider">ou par email</div>
+
     <div class="auth-champ"><label>Prénom</label><input type="text" id="inscPrenom" placeholder="Votre prénom"></div>
     <div class="auth-champ"><label>Nom</label><input type="text" id="inscNom" placeholder="Votre nom"></div>
     <div class="auth-champ"><label>Email</label><input type="email" id="inscEmail" placeholder="email@exemple.com"></div>
@@ -401,20 +509,68 @@
     <button class="auth-btn" onclick="sInscrire()">✅ Créer mon compte</button>
     <div class="auth-switch">Déjà un compte ? <a onclick="ouvrirAuth('connexion')">Se connecter</a></div>
   </div>
+  </div>
 </div>
 
 <!-- MODALE CONNEXION -->
 <div class="auth-overlay" id="overlayConnexion" onclick="if(event.target===this)fermerAuth()">
+  <div class="auth-rainbow-wrap">
   <div class="auth-box">
     <button class="auth-fermer" onclick="fermerAuth()">✕</button>
     <div class="auth-logo"><span style="font-weight:800;font-size:1.4em;"><span class="pa">Pa</span><span class="ta">ta</span><span class="com">Com</span><span class="pta">pta</span></span></div>
-    <div class="auth-titre">Connexion</div>
-    <div class="auth-sous">Bon retour sur PataCompta</div>
+    <div class="auth-titre"><span class="auth-titre-gradient">Bon retour</span></div>
+    <div class="auth-sous">Connecte-toi à PataCompta</div>
     <div class="auth-erreur" id="errConnexion"></div>
+    <div class="auth-succes" id="okConnexion"></div>
+
+    <button class="auth-social-btn" onclick="connexionGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continuer avec Google
+    </button>
+    <div class="auth-divider">ou par email</div>
+
     <div class="auth-champ"><label>Email</label><input type="email" id="connEmail" placeholder="email@exemple.com"></div>
     <div class="auth-champ"><label>Mot de passe</label><div class="mdp-wrap"><input type="password" id="connMdp" placeholder="Votre mot de passe"><button type="button" class="mdp-oeil" onclick="toggleMdp('connMdp',this)">👁️</button></div></div>
+    <div class="auth-mdp-oublie"><a onclick="demanderResetMdp()">Mot de passe oublié ?</a></div>
     <button class="auth-btn" onclick="seConnecter()">🔓 Se connecter</button>
     <div class="auth-switch">Pas encore de compte ? <a onclick="ouvrirAuth('inscription')">Créer un compte</a></div>
+  </div>
+  </div>
+</div>
+
+
+<!-- MODALE CORRIGER SOLDE COMPTE -->
+<div class="modal-overlay" id="modalCorrectionSolde" onclick="if(event.target===this)fermerCorrectionSolde()">
+  <div class="modal" style="max-width:380px;">
+    <button class="modal-fermer" onclick="fermerCorrectionSolde()">✕</button>
+    <h2 class="modal-titre" id="correctionSoldeTitre">✏️ Corriger le solde</h2>
+    <div class="modal-champ">
+      <label>Solde actuel</label>
+      <div style="font-size:1.3em;font-weight:800;color:var(--accent2);padding:6px 0;" id="correctionSoldeActuel">—</div>
+    </div>
+    <div class="modal-champ">
+      <label>Nouveau solde (€)</label>
+      <input type="number" id="correctionSoldeInput" placeholder="Ex: 1500.00" step="0.01" style="font-size:1em;">
+    </div>
+    <button class="modal-btn" onclick="validerCorrectionSolde()">✅ Mettre à jour</button>
+  </div>
+</div>
+
+<!-- MODALE MODIFIER TOTAL AVOIRS -->
+<div class="modal-overlay" id="modalModifTotal" onclick="if(event.target===this)fermerModifTotal()">
+  <div class="modal" style="max-width:380px;">
+    <button class="modal-fermer" onclick="fermerModifTotal()">✕</button>
+    <h2 class="modal-titre">💰 Mettre à jour le total</h2>
+    <p style="font-size:0.82em;color:var(--muted);margin-bottom:16px;line-height:1.5;">Corrige le total de tes avoirs si le montant calculé ne correspond pas à la réalité.</p>
+    <div class="modal-champ">
+      <label>Total actuel</label>
+      <div style="font-size:1.3em;font-weight:800;color:var(--accent2);padding:6px 0;" id="modifTotalActuel">—</div>
+    </div>
+    <div class="modal-champ">
+      <label>Nouveau montant (€)</label>
+      <input type="number" id="modifTotalInput" placeholder="Ex: 2500.00" step="0.01" style="font-size:1em;">
+    </div>
+    <button class="modal-btn" onclick="validerModifTotal()">✅ Mettre à jour</button>
   </div>
 </div>
 
@@ -435,7 +591,15 @@ Chart.register(ChartDataLabels);
 const { createClient } = supabase;
 const supa = createClient(
   'https://twgqnqbwefvddmnngert.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3FucWJ3ZWZ2ZGRtbm5nZXJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMDQ3MTUsImV4cCI6MjA5Njc4MDcxNX0.yW-FNFt3hLbtnlnO16okbgUP937dfR3gdskdXMgYF9c'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Z3FucWJ3ZWZ2ZGRtbm5nZXJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyMDQ3MTUsImV4cCI6MjA5Njc4MDcxNX0.yW-FNFt3hLbtnlnO16okbgUP937dfR3gdskdXMgYF9c',
+  {
+    auth: {
+      detectSessionInUrl: true,
+      persistSession: true,
+      autoRefreshToken: true,
+      flowType: 'implicit'
+    }
+  }
 );
 const RUBRIQUES = [
   { cle: "depensesAlimentations", nom: "Consommations",   emoji: "🛒", cls: "c-rouge",     lien: "alimentations.html" },
@@ -447,11 +611,11 @@ const RUBRIQUES = [
   { cle: "depensesSorties",       nom: "Divertissements", emoji: "🎉", cls: "c-violet",    lien: "sorties.html" },
 ];
 const CATS = {
-  depensesAlimentations: [["Alcool","🍷"],["Bio","🌿"],["Boissons","🥤"],["Boucherie","🥩"],["Boulangerie","🥖"],["Cosmétique","💄"],["Épicerie","🏪"],["Grande surface","🛒"],["Marché","🌽"],["Petite surface","🏬"],["Pharmacie","💊"],["Poissonnerie","🐟"],["Supermarché","🛒"],["Traiteur","🍱"]],
+  depensesAlimentations: [["Alcool","🍷"],["Animaux","🐾"],["Bio","🌿"],["Boissons","🥤"],["Boucherie","🥩"],["Boulangerie","🥖"],["Cosmétique","💄"],["Épicerie","🏪"],["Grande surface","🛒"],["Marché","🌽"],["Petite surface","🏬"],["Pharmacie","💊"],["Poissonnerie","🐟"],["Supermarché","🛒"],["Traiteur","🍱"]],
   depensesRestaurants:   [["Brasserie","🍺"],["Cafétéria","🥄"],["Cantine","🥗"],["Fast Food","🍔"],["Friterie","🍟"],["Kebab","🥙"],["Pizza","🍕"],["Poulet Braisé","🍗"],["Restaurant","🍽️"],["Resto Indien","🍛"],["Sushi","🍣"]],
-  depensesServices:      [["Activités Sportives","🏊"],["Amende","⚖️"],["Assurance","🛡️"],["Beauté","💄"],["Coiffeur","💇"],["Don","🤲"],["Entretiens","🔧"],["Impôts","🏛️"],["Impression","🖨️"],["Journaux","📰"],["Médias","📺"],["Mutuelle","💊"],["Piscine","🏊"],["Réparations","🛠️"],["Santé","🏥"],["Soins","🩺"],["Studio","🎙️"]],
+  depensesServices:      [["Activités Sportives","🏊"],["Amende","⚖️"],["Assurance","🛡️"],["Beauté","💄"],["Coiffeur","💇"],["Don","🤲"],["Entretiens","🔧"],["Impôts","🏛️"],["Impression","🖨️"],["Journaux","📰"],["Médias","📺"],["Mutuelle","💊"],["Piscine","🏊"],["Réparations","🛠️"],["Santé","🏥"],["Soins","🩺"],["Studio","🎙️"],["Vétérinaire","🐱"]],
   depensesFactures:      [["Abonnements","📦"],["Assurance","🛡️"],["Box Internet","🌐"],["Charges","🏢"],["Cinéma","🎬"],["Eau","💧"],["Électricité","⚡"],["Frais bancaires","🏦"],["Gaz","🔥"],["Impôts","⚖️"],["Loyer","🏠"],["Site Web","🖥️"],["Taxes","🏛️"],["Téléphone","📱"]],
-  depensesMateriels:     [["Accessoires","👜"],["Bricolage","🪛"],["Chaussures","👟"],["Cuisine","🍳"],["Déco","🖼️"],["Électroménager","🫧"],["High-tech","📱"],["Immobilier","🏗️"],["Informatique","💻"],["Jardinage","🌱"],["Livres","📚"],["Loisirs","🎮"],["Mobilier","🪑"],["Outils","🔨"],["Papeterie","✏️"],["Pièces mécaniques","⚙️"],["Sport","⚽"],["Vêtements","👗"]],
+  depensesMateriels:     [["Accessoires","👜"],["Animalerie","🐾"],["Bricolage","🪛"],["Chaussures","👟"],["Cuisine","🍳"],["Déco","🖼️"],["Électroménager","🫧"],["High-tech","📱"],["Immobilier","🏗️"],["Informatique","💻"],["Jardinage","🌱"],["Livres","📚"],["Loisirs","🎮"],["Mobilier","🪑"],["Outils","🔨"],["Papeterie","✏️"],["Pièces mécaniques","⚙️"],["Sport","⚽"],["Vêtements","👗"]],
   depensesTransports:    [["Bus","🚌"],["Carburant","⛽"],["Covoiturage","🚗"],["Métro","🚇"],["Train","🚆"],["Tram","🚊"],["Trottinette","🛵"],["Taxi","🚕"],["VTC","🚖"],["Vélo","🚲"],["Vol","✈️"]],
   depensesSorties:       [["Bar","🍺"],["Café","☕"],["Cinéma","🎬"],["Club","🕺"],["Coffee Shop","🧋"],["Concert","🎵"],["Festival","🎪"],["Musée","🏛️"],["Site Web","🌐"],["Soirée","🎉"],["Spectacle","🎭"]],
 };
@@ -486,6 +650,7 @@ async function chargerDepenses() {
         categorie: d.categorie,
         categorieBase: d.categorie_base,
         etablissement: d.etablissement,
+        compteId: d.compte_id,
         _id: d.id
       });
     }
@@ -514,10 +679,14 @@ async function sauvegarderDepenseDB(cle, depense) {
     montant: parseFloat(depense.montant),
     categorie: depense.categorie,
     categorie_base: depense.categorieBase,
-    etablissement: depense.etablissement || ""
+    etablissement: depense.etablissement || "",
+    compte_id: depense.compteId || null
   }).select().single();
 
   if (error) { console.error("Erreur sauvegarde:", error); return; }
+
+  // Déduire le montant du solde du compte choisi
+  if (depense.compteId) await ajusterSoldeCompte(depense.compteId, -parseFloat(depense.montant));
 
   // Mettre à jour le cache
   if (!cacheDepenses[cle]) cacheDepenses[cle] = [];
@@ -535,6 +704,7 @@ async function supprimerDepenseDB(cle, depense) {
   }
   if (depense._id) {
     await supa.from("depenses").delete().eq("id", depense._id);
+    if (depense.compteId) await ajusterSoldeCompte(depense.compteId, parseFloat(depense.montant));
   }
   cacheDepenses[cle] = (cacheDepenses[cle] || []).filter(x => x._id !== depense._id);
 }
@@ -562,7 +732,68 @@ function getAllSem() {
 function getTotalR(cle, cleS) {
   return getDepenses(cle).filter(x => getCle(x.date) === cleS).reduce((s, x) => s + parseFloat(x.montant || 0), 0);
 }
+// ── COULEUR SEMAINE (même logique que profil) ──
+const PALETTE_SEM = ["#4fc3f7","#2ecc71","#f6c90e","#ef4444"];
+const SAISON_COULEURS_IDX = { 1:"#4fc3f7", 2:"#2ecc71", 3:"#f6c90e", 4:"#f39c12" };
+const SAISON_LABELS = { 1:"❄️ Hiver", 2:"🌸 Printemps", 3:"☀️ Été", 4:"🍂 Automne" };
+
+function getCouleurSemaine(cle) {
+  const [, s] = cle.split("-S");
+  return PALETTE_SEM[(parseInt(s) - 1) % 4];
+}
+function getSaisonDeCle(cle) {
+  // On déduit le trimestre depuis le numéro de semaine (approx)
+  const [, s] = cle.split("-S");
+  const num = parseInt(s);
+  const trim = num <= 13 ? 1 : num <= 26 ? 2 : num <= 39 ? 3 : 4;
+  return { label: SAISON_LABELS[trim], couleur: SAISON_COULEURS_IDX[trim] };
+}
+
+function appliquerCouleurSemaine(cle) {
+  const couleur = getCouleurSemaine(cle);
+  const inner = document.querySelector(".semaine-inner");
+  if (inner) {
+    inner.style.background = `linear-gradient(135deg, ${couleur}22, ${couleur}0a)`;
+    inner.style.borderColor = `${couleur}55`;
+  }
+  const valEl = document.getElementById("totalSemaine");
+  if (valEl) valEl.style.textShadow = `0 0 20px ${couleur}99`;
+  const saison = getSaisonDeCle(cle);
+  const subEl = document.getElementById("labelSemaine");
+  if (subEl) subEl.style.color = couleur;
+}
+
+
 let semaines = [], idx = 0;
+
+// Met à jour uniquement le header semaine sans reconstruire la liste des rubriques
+function afficherHeader() {
+  semaines = getAllSem();
+  const cleA = semaines[idx];
+  document.getElementById("labelType").textContent = idx === 0 ? "Semaine en cours" : labelSem(cleA);
+  document.getElementById("labelSemaine").textContent = labelSem(cleA);
+  document.getElementById("btnSemNext").disabled = idx <= 0;
+  document.getElementById("btnSemPrev").disabled = idx >= semaines.length - 1;
+  const total = RUBRIQUES.reduce((s, r) => s + getTotalR(r.cle, cleA), 0);
+  document.getElementById("totalSemaine").textContent = total.toFixed(2) + " €";
+  appliquerCouleurSemaine(cleA);
+  // Mettre à jour les montants sur les cartes rubriques sans les reconstruire
+  const maxR = Math.max(1, ...RUBRIQUES.map(r => getTotalR(r.cle, cleA)));
+  RUBRIQUES.forEach(r => {
+    const t = getTotalR(r.cle, cleA);
+    const pct = t > 0 ? Math.min(100, (t / maxR) * 100) : 0;
+    // Chercher la carte par son contenu (nom de la rubrique)
+    document.querySelectorAll(".rubrique-card").forEach(card => {
+      if (card.querySelector(".nom")?.textContent === r.nom) {
+        const montEl = card.querySelector(".montant-rubrique");
+        if (montEl) { montEl.textContent = t.toFixed(2) + " €"; montEl.className = "montant-rubrique" + (t === 0 ? " zero" : ""); }
+        const fill = card.querySelector(".bar-fill");
+        if (fill) fill.style.width = pct + "%";
+      }
+    });
+  });
+}
+
 function afficher() {
   semaines = getAllSem();
   const cleA = semaines[idx], cleP = semaines[idx + 1] || null;
@@ -573,6 +804,7 @@ function afficher() {
   const totaux = RUBRIQUES.map(r => ({ ...r, total: getTotalR(r.cle, cleA) }));
   const total = totaux.reduce((s, r) => s + r.total, 0);
   document.getElementById("totalSemaine").textContent = total.toFixed(2) + " €";
+  appliquerCouleurSemaine(cleA);
   const maxR = Math.max(1, ...totaux.map(r => r.total));
   const liste = document.getElementById("listeRubriques");
   liste.innerHTML = "";
@@ -598,21 +830,9 @@ function afficher() {
       <div id="sub_saisie_${r.cle}" style="overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.22,1,0.36,1);">
         <div style="padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);margin-top:2px;">
           <form onsubmit="sauvegarderInline(event,'${r.cle}'); return false;">
-            <div class="acc-champ"><label>Date</label><div class="date-wrap"><input type="date" id="ai_date_${r.cle}"><span class="date-icon">📅</span></div></div>
-            <div class="acc-champ">
-              <label>Catégorie</label>
-              <select id="ai_cat_${r.cle}"><option value="">-- Choisir --</option>${opts}</select>
-              <button type="button" class="btn-gerer-cats" onclick="toggleAjouterCatRub('${r.cle}')" style="margin-top:5px;">➕ Ajouter une catégorie</button>
-              <div id="panel_cat_rub_${r.cle}" style="display:none;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px;margin-top:6px;">
-                <div style="display:flex;gap:6px;margin-bottom:8px;">
-                  <input type="text" id="new_cat_rub_${r.cle}" placeholder="Nom de la catégorie..." style="flex:1;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.07);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.82em;">
-                  <button type="button" onclick="validerAjoutCatRub('${r.cle}')" style="padding:7px 12px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),#8b83ff);color:white;font-family:'Outfit',sans-serif;font-size:0.8em;font-weight:700;cursor:pointer;white-space:nowrap;">Ajouter</button>
-                </div>
-                <div style="font-size:0.68em;color:var(--muted);margin-bottom:5px;">Choisir un emoji :</div>
-                <div class="emoji-picker-grid" id="epicker_rub_${r.cle}"></div>
-              </div>
-            </div>
+            <div class="acc-champ"><label>Date</label><div class="date-wrap" onclick="this.querySelector('input').showPicker && this.querySelector('input').showPicker()"><input type="date" id="ai_date_${r.cle}"></div></div>
             <div class="acc-champ"><label>Établissement</label><input type="text" id="ai_etab_${r.cle}" placeholder="Nom du lieu (optionnel)"></div>
+            <div class="acc-champ"><label>Mode de paiement</label><select id="ai_compte_${r.cle}"><option value="">-- Aucun compte sélectionné --</option></select></div>
             <div class="acc-champ"><label>Montant (€)</label><input type="text" id="ai_mont_${r.cle}" placeholder="Ex: 12.50"></div>
             <button type="submit" class="acc-btn">✅ Enregistrer</button>
           </form>
@@ -621,11 +841,20 @@ function afficher() {
       <!-- OUTILS -->
       <div id="sub_outil_${r.cle}" style="overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.22,1,0.36,1);">
         <div style="padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);margin-top:2px;">
-          <div style="display:flex;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:3px;margin-bottom:10px;">
-            <button onclick="setModeOutil('categories','${r.cle}')" id="btnOCat_${r.cle}" style="flex:1;padding:7px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.78em;font-weight:600;cursor:pointer;background:linear-gradient(135deg,var(--accent),#8b83ff);color:white;transition:all 0.2s;">📂 Catégories</button>
-            <button onclick="setModeOutil('etablissements','${r.cle}')" id="btnOEtab_${r.cle}" style="flex:1;padding:7px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.78em;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,0.5);transition:all 0.2s;">🏠 Établissements</button>
+          <div style="display:flex;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:3px;margin-bottom:8px;gap:2px;">
+            <button onclick="setPeriodeOutil('semaine','${r.cle}')" id="btnOPerSemaine_${r.cle}" style="flex:1;padding:6px 2px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.65em;font-weight:600;cursor:pointer;background:linear-gradient(135deg,var(--accent),#8b83ff);color:white;transition:all 0.2s;">🗓️ Sem.</button>
+            <button onclick="setPeriodeOutil('mois','${r.cle}')" id="btnOPerMois_${r.cle}" style="flex:1;padding:6px 2px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.65em;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,0.5);transition:all 0.2s;">📆 Mois</button>
+            <button onclick="setPeriodeOutil('trimestre','${r.cle}')" id="btnOPerTrim_${r.cle}" style="flex:1;padding:6px 2px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.65em;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,0.5);transition:all 0.2s;">📊 Trim.</button>
+            <button onclick="setPeriodeOutil('annee','${r.cle}')" id="btnOPerAnnee_${r.cle}" style="flex:1;padding:6px 2px;border-radius:8px;border:none;font-family:'Outfit',sans-serif;font-size:0.65em;font-weight:600;cursor:pointer;background:transparent;color:rgba(255,255,255,0.5);transition:all 0.2s;">📅 An.</button>
           </div>
-          <canvas id="ai_canvas_outil_${r.cle}" style="width:100%;"></canvas>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <button onclick="navigOutil(1,'${r.cle}')" id="btnOutilPrev_${r.cle}" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:28px;height:28px;border-radius:50%;font-size:1.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">&#8249;</button>
+            <select id="selectOutil_${r.cle}" onchange="navigOutilSelect(this.value,'${r.cle}')" style="flex:1;margin:0 6px;padding:4px 6px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(30,32,50,0.95);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.68em;font-weight:600;outline:none;cursor:pointer;height:28px;"></select>
+            <button onclick="navigOutil(-1,'${r.cle}')" id="btnOutilNext_${r.cle}" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;width:28px;height:28px;border-radius:50%;font-size:1.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">&#8250;</button>
+          </div>
+          <div style="position:relative;width:100%;">
+            <canvas id="ai_canvas_outil_${r.cle}" style="width:100%;display:block;"></canvas>
+          </div>
           <div style="text-align:center;margin-top:6px;font-size:0.85em;color:var(--accent2);font-weight:600;">Total : <span id="ai_total_outil_${r.cle}">—</span> €</div>
         </div>
       </div>
@@ -636,9 +865,6 @@ function afficher() {
     </div>`;
     let ouvert = false;
     card.addEventListener("click", () => {
-      document.querySelectorAll(".acc-rubrique").forEach(a => {
-        if (a !== acc) { a.style.maxHeight = "0"; a.previousSibling.querySelector(".fleche-acc").classList.remove("ouvert"); }
-      });
       ouvert = !ouvert;
       if (ouvert) {
         acc.style.maxHeight = "99999px";
@@ -663,7 +889,6 @@ function afficher() {
     <div style="font-size:0.68em;font-weight:700;color:var(--muted);padding:4px 0;text-transform:uppercase;letter-spacing:0.8px;">Rubrique</div>
     <div style="font-size:0.68em;font-weight:700;color:var(--muted);padding:4px 0;text-align:right;text-transform:uppercase;letter-spacing:0.8px;">Moy. hebdo</div>
   </div>`;
-
   htmlComp += RUBRIQUES.map((r, i) => {
     const moyVal = sommes[i] / nb;
     if (moyVal === 0) return "";
@@ -672,7 +897,6 @@ function afficher() {
       <div style="text-align:right;"><span class="ligne-val" style="font-size:0.85em;">${moyVal.toFixed(2)} €</span></div>
     </div>`;
   }).join("");
-
   htmlComp += `<div style="display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8px 0;margin-top:4px;border-top:1px solid rgba(255,255,255,0.1);">
     <span style="font-size:0.85em;font-weight:700;color:white;">Total</span>
     <div style="text-align:right;"><span class="ligne-val">${totMoy.toFixed(2)} €</span></div>
@@ -687,84 +911,343 @@ function afficher() {
      <div class="stat-box"><div class="stat-v">${nbE}</div><div class="stat-l">Entrées</div></div>
      <div class="stat-box"><div class="stat-v">${nb > 0 ? (totalA / nb).toFixed(0) : 0} €</div><div class="stat-l">Moy. hebdo</div></div>
      <div class="stat-box"><div class="stat-v">${totalA.toFixed(0)} €</div><div class="stat-l">Total enregistré</div></div>`;
+  majSelectsComptes();
 }
-document.getElementById("btnSemPrev").addEventListener("click", () => { idx++; afficher(); if (periodeVE === "semaine" && OUTILS_ETATS.ooutil_vue) dessinerVueEnsemble(); if (OUTILS_ETATS.ooutil_diag) dessinerDiagSem(); });
-document.getElementById("btnSemNext").addEventListener("click", () => { idx--; afficher(); if (periodeVE === "semaine" && OUTILS_ETATS.ooutil_vue) dessinerVueEnsemble(); if (OUTILS_ETATS.ooutil_diag) dessinerDiagSem(); });
+document.getElementById("btnSemPrev").addEventListener("click", () => {
+  idx++; afficher();
+  if (periodeVE === "semaine" && OUTILS_ETATS.ooutil_vue) dessinerVueEnsemble();
+  // Mettre à jour les outils rubriques ouverts en mode semaine
+  RUBRIQUES.forEach(r => {
+    const sub = document.getElementById("sub_outil_" + r.cle);
+    if (sub && sub.style.maxHeight !== "0px" && sub.style.maxHeight !== "" && (periodeOutil[r.cle] || "semaine") === "semaine") {
+      idxOutilSemaine[r.cle] = idx;
+      dessinerDiagOutil(r.cle);
+    }
+  });
+});
+document.getElementById("btnSemNext").addEventListener("click", () => {
+  idx--; afficher();
+  if (periodeVE === "semaine" && OUTILS_ETATS.ooutil_vue) dessinerVueEnsemble();
+  // Mettre à jour les outils rubriques ouverts en mode semaine
+  RUBRIQUES.forEach(r => {
+    const sub = document.getElementById("sub_outil_" + r.cle);
+    if (sub && sub.style.maxHeight !== "0px" && sub.style.maxHeight !== "" && (periodeOutil[r.cle] || "semaine") === "semaine") {
+      idxOutilSemaine[r.cle] = idx;
+      dessinerDiagOutil(r.cle);
+    }
+  });
+});
+document.getElementById("btnAvoirsPrev").addEventListener("click", () => navigAvoirs(1));
+document.getElementById("btnAvoirsNext").addEventListener("click", () => navigAvoirs(-1));
 async function sauvegarderInline(e, cle) {
   e.preventDefault();
   const date = document.getElementById(`ai_date_${cle}`).value;
-  const cat  = document.getElementById(`ai_cat_${cle}`).value;
   const etab = document.getElementById(`ai_etab_${cle}`).value.trim();
-  let mont   = parseFloat(document.getElementById(`ai_mont_${cle}`).value.replace(",","."));
+  const compteId = document.getElementById(`ai_compte_${cle}`)?.value || "";
+  let mont = parseFloat(document.getElementById(`ai_mont_${cle}`).value.replace(",","."));
   if (!date) { alert("Veuillez saisir une date."); return; }
-  if (!cat)  { alert("Veuillez choisir une catégorie."); return; }
   if (isNaN(mont)||mont<=0) { alert("Veuillez entrer un montant valide."); return; }
+  const r = RUBRIQUES.find(x => x.cle === cle);
+  const cat = r ? r.nom : cle;
   const nomCat = etab ? `${cat} — ${etab}` : cat;
-  await sauvegarderDepenseDB(cle, { date, montant: mont, categorie: nomCat, categorieBase: cat, etablissement: etab });
+  await sauvegarderDepenseDB(cle, { date, montant: mont, categorie: nomCat, categorieBase: cat, etablissement: etab, compteId: compteId || null });
   document.getElementById(`ai_mont_${cle}`).value = "";
-  document.getElementById(`ai_cat_${cle}`).value = "";
   document.getElementById(`ai_etab_${cle}`).value = "";
   semaines = getAllSem();
   afficher();
 }
-let diagOutilCharts = {}, modeOutil = {};
+let diagOutilCharts = {};
+let modeOutil = {}, periodeOutil = {}, idxOutilSemaine = {}, idxOutilMois = {}, idxOutilTrim = {}, idxOutilAnnee = {};
+const OUTIL_LIMITES = { mois: 24, trimestre: 12, annee: 6 };
+
 function toggleSub(id) {
-  const el = document.getElementById(id); if (!el) return;
+  const el = document.getElementById(id);
+  if (!el) return;
   const isOpen = el.style.maxHeight !== "0px" && el.style.maxHeight !== "";
+  // Fermer tous les sous-panneaux du même accordéon
   el.closest(".acc-inner").querySelectorAll("[id^='sub_']").forEach(s => { s.style.maxHeight = "0"; });
   if (!isOpen) {
     el.style.maxHeight = "99999px";
     if (id.startsWith("sub_saisie_")) {
-      const cle = id.replace("sub_saisie_","");
+      const cle = id.replace("sub_saisie_", "");
       const dateEl = document.getElementById(`ai_date_${cle}`);
-      if (dateEl && !dateEl.value) { const auj = new Date(); dateEl.value = `${auj.getFullYear()}-${String(auj.getMonth()+1).padStart(2,'0')}-${String(auj.getDate()).padStart(2,'0')}`; }
+      if (dateEl && !dateEl.value) {
+        const auj = new Date();
+        dateEl.value = `${auj.getFullYear()}-${String(auj.getMonth()+1).padStart(2,"0")}-${String(auj.getDate()).padStart(2,"0")}`;
+      }
     } else if (id.startsWith("sub_outil_")) {
-      const cle = id.replace("sub_outil_","");
-      if (!modeOutil[cle]) modeOutil[cle] = "categories";
+      const cle = id.replace("sub_outil_", "");
+      if (!modeOutil[cle])          modeOutil[cle]          = "etablissements";
+      if (!periodeOutil[cle])       periodeOutil[cle]       = "semaine";
+      if (idxOutilSemaine[cle] === undefined) idxOutilSemaine[cle] = idx;
+      if (idxOutilMois[cle]    === undefined) idxOutilMois[cle]    = 0;
+      if (idxOutilTrim[cle]    === undefined) idxOutilTrim[cle]    = 0;
+      if (idxOutilAnnee[cle]   === undefined) idxOutilAnnee[cle]   = 0;
       setTimeout(() => dessinerDiagOutil(cle), 50);
     } else if (id.startsWith("sub_histo_")) {
-      afficherHistoInline(id.replace("sub_histo_",""));
-    }  }
+      const cle = id.replace("sub_histo_", "");
+      afficherHistoInline(cle);
+    }
+  }
 }
-function setModeOutil(mode, cle) {
-  modeOutil[cle] = mode;
-  const btnCat = document.getElementById(`btnOCat_${cle}`), btnEtab = document.getElementById(`btnOEtab_${cle}`);
-  if (btnCat && btnEtab) {
-    btnCat.style.background  = mode==="categories"     ? "linear-gradient(135deg,var(--accent),#8b83ff)" : "transparent";
-    btnCat.style.color       = mode==="categories"     ? "white" : "rgba(255,255,255,0.5)";
-    btnEtab.style.background = mode==="etablissements" ? "linear-gradient(135deg,var(--accent),#8b83ff)" : "transparent";
-    btnEtab.style.color      = mode==="etablissements" ? "white" : "rgba(255,255,255,0.5)";
+
+function setPeriodeOutil(periode, cle) {
+  periodeOutil[cle] = periode;
+  const ids = { semaine:`btnOPerSemaine_${cle}`, mois:`btnOPerMois_${cle}`, trimestre:`btnOPerTrim_${cle}`, annee:`btnOPerAnnee_${cle}` };
+  Object.entries(ids).forEach(([k, id]) => {
+    const btn = document.getElementById(id); if (!btn) return;
+    btn.style.background = k === periode ? "linear-gradient(135deg,var(--accent),#8b83ff)" : "transparent";
+    btn.style.color      = k === periode ? "white" : "rgba(255,255,255,0.5)";
+  });
+  if (periode === "semaine") idxOutilSemaine[cle] = idx;
+  dessinerDiagOutil(cle);
+}
+
+function navigOutil(dir, cle) {
+  const p = periodeOutil[cle] || "semaine";
+  if (p === "semaine") {
+    const n = (idxOutilSemaine[cle] ?? idx) + dir;
+    if (n < 0 || n >= semaines.length) return;
+    idxOutilSemaine[cle] = n;
+    // Synchroniser avec le cadre Mes Dépenses sans reconstruire la liste
+    idx = n;
+    afficherHeader();
+  } else if (p === "mois") {
+    const n = (idxOutilMois[cle] ?? 0) + dir;
+    if (n < 0 || n > OUTIL_LIMITES.mois) return;
+    idxOutilMois[cle] = n;
+  } else if (p === "trimestre") {
+    const n = (idxOutilTrim[cle] ?? 0) + dir;
+    if (n < 0 || n > OUTIL_LIMITES.trimestre) return;
+    idxOutilTrim[cle] = n;
+  } else if (p === "annee") {
+    const n = (idxOutilAnnee[cle] ?? 0) + dir;
+    if (n < 0 || n > OUTIL_LIMITES.annee) return;
+    idxOutilAnnee[cle] = n;
   }
   dessinerDiagOutil(cle);
 }
+
+function navigOutilSelect(value, cle) {
+  const i = parseInt(value);
+  if (isNaN(i)) return;
+  const p = periodeOutil[cle] || "semaine";
+  if (p === "semaine") {
+    idxOutilSemaine[cle] = i;
+    // Synchroniser avec le cadre Mes Dépenses sans reconstruire la liste
+    idx = i;
+    afficherHeader();
+  } else if (p === "mois") {
+    idxOutilMois[cle] = i;
+  } else if (p === "trimestre") {
+    idxOutilTrim[cle] = i;
+  } else if (p === "annee") {
+    idxOutilAnnee[cle] = i;
+  }
+  dessinerDiagOutil(cle);
+}
+
+function remplirSelectOutil(cle) {
+  const sel = document.getElementById("selectOutil_" + cle);
+  if (!sel) return;
+  const p   = periodeOutil[cle] || "semaine";
+  const an  = new Date().getFullYear();
+  const deps = getDepenses(cle);
+  sel.innerHTML = "";
+
+  function totalPeriode(periode, i) {
+    if (periode === "semaine") {
+      const cleSem = semaines[i];
+      return deps.filter(d => getCle(d.date) === cleSem).reduce((s, d) => s + parseFloat(d.montant || 0), 0);
+    }
+    if (periode === "mois") {
+      const { annee, mois } = getMoisCible(i);
+      return deps.filter(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && dt.getMonth() === mois; }).reduce((s, d) => s + parseFloat(d.montant || 0), 0);
+    }
+    if (periode === "trimestre") {
+      const { annee, trimestre } = getTrimestreCible(i);
+      return deps.filter(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && Math.floor(dt.getMonth() / 3) === trimestre; }).reduce((s, d) => s + parseFloat(d.montant || 0), 0);
+    }
+    if (periode === "annee") {
+      return deps.filter(d => d.date && new Date(d.date).getFullYear() === (an - i)).reduce((s, d) => s + parseFloat(d.montant || 0), 0);
+    }
+    return 0;
+  }
+
+  function aDesDonnees(periode, i) { return totalPeriode(periode, i) > 0; }
+
+  function opt(value, label, total, selected) {
+    const o = document.createElement("option");
+    o.value = value;
+    o.textContent = total > 0 ? `${label}  —  ${total.toFixed(2)} €` : label;
+    if (selected) o.selected = true;
+    return o;
+  }
+
+  if (p === "semaine") {
+    if (idxOutilSemaine[cle] === undefined) idxOutilSemaine[cle] = idx;
+    const idxCourant = idxOutilSemaine[cle];
+    semaines.forEach((cle2, i) => {
+      if (i !== 0 && !aDesDonnees("semaine", i)) return;
+      const [y, s] = cle2.split("-S");
+      const label = i === 0 ? "Semaine en cours" : "Semaine " + parseInt(s) + " — " + y;
+      sel.appendChild(opt(i, label, totalPeriode("semaine", i), i === idxCourant));
+    });
+  } else if (p === "mois") {
+    const idxCourant = idxOutilMois[cle] ?? 0;
+    for (let i = 0; i <= OUTIL_LIMITES.mois; i++) {
+      if (i !== 0 && !aDesDonnees("mois", i)) continue;
+      const { annee, mois } = getMoisCible(i);
+      const label = MOIS_NOMS[mois] + " " + annee;
+      sel.appendChild(opt(i, label, totalPeriode("mois", i), i === idxCourant));
+    }
+  } else if (p === "trimestre") {
+    const idxCourant = idxOutilTrim[cle] ?? 0;
+    for (let i = 0; i <= OUTIL_LIMITES.trimestre; i++) {
+      if (i !== 0 && !aDesDonnees("trimestre", i)) continue;
+      const { annee, trimestre } = getTrimestreCible(i);
+      const label = "Trimestre " + (trimestre + 1) + " — " + annee;
+      sel.appendChild(opt(i, label, totalPeriode("trimestre", i), i === idxCourant));
+    }
+  } else if (p === "annee") {
+    const idxCourant = idxOutilAnnee[cle] ?? 0;
+    for (let i = 0; i <= OUTIL_LIMITES.annee; i++) {
+      if (i !== 0 && !aDesDonnees("annee", i)) continue;
+      const label = "Année " + (an - i);
+      sel.appendChild(opt(i, label, totalPeriode("annee", i), i === idxCourant));
+    }
+  }
+}
+
 function dessinerDiagOutil(cle) {
   Chart.register(ChartDataLabels);
-  const mode = modeOutil[cle] || "categories";
-  const depenses = getDepenses(cle);
+  const mode = "etablissements";
+  const periode = periodeOutil[cle] || "semaine";
+  const anneeActuelle = new Date().getFullYear();
+  const toutesDeps = getDepenses(cle);
+
+  let depenses = [];
+  const labelEl = document.getElementById("labelOutilPeriode_" + cle);
+  const btnPrev = document.getElementById("btnOutilPrev_" + cle);
+  const btnNext = document.getElementById("btnOutilNext_" + cle);
+  let label = "", prevDisabled = false, nextDisabled = false;
+
+  if (periode === "semaine") {
+    const i = idxOutilSemaine[cle] ?? idx;
+    if (semaines.length) {
+      const cleSem = semaines[i];
+      const [an, s] = cleSem.split("-S");
+      label = (i === 0 ? "Semaine en cours" : "Semaine " + parseInt(s)) + " — " + an;
+      depenses = toutesDeps.filter(d => getCle(d.date) === cleSem);
+    }
+    prevDisabled = i >= semaines.length - 1;
+    nextDisabled = i <= 0;
+  } else if (periode === "mois") {
+    const i = idxOutilMois[cle] ?? 0;
+    const { annee, mois } = getMoisCible(i);
+    label = (i === 0 ? "Mois en cours — " : "") + MOIS_NOMS[mois] + " " + annee;
+    depenses = toutesDeps.filter(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && dt.getMonth() === mois; });
+    prevDisabled = i >= OUTIL_LIMITES.mois;
+    nextDisabled = i <= 0;
+  } else if (periode === "trimestre") {
+    const i = idxOutilTrim[cle] ?? 0;
+    const { annee, trimestre } = getTrimestreCible(i);
+    label = (i === 0 ? "Trimestre en cours — " : "") + "T" + (trimestre + 1) + " " + annee;
+    depenses = toutesDeps.filter(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && Math.floor(dt.getMonth() / 3) === trimestre; });
+    prevDisabled = i >= OUTIL_LIMITES.trimestre;
+    nextDisabled = i <= 0;
+  } else if (periode === "annee") {
+    const i = idxOutilAnnee[cle] ?? 0;
+    const anneeCible = anneeActuelle - i;
+    label = (i === 0 ? "Année en cours — " : "") + anneeCible;
+    depenses = toutesDeps.filter(d => d.date && new Date(d.date).getFullYear() === anneeCible);
+    prevDisabled = i >= OUTIL_LIMITES.annee;
+    nextDisabled = i <= 0;
+  }
+
+  if (labelEl) labelEl.textContent = label;
+  if (btnPrev) { btnPrev.disabled = prevDisabled; btnPrev.style.opacity = prevDisabled ? "0.25" : "1"; }
+  if (btnNext) { btnNext.disabled = nextDisabled; btnNext.style.opacity = nextDisabled ? "0.25" : "1"; }
+  remplirSelectOutil(cle);
+
   const raw = {};
   depenses.forEach(d => {
-    const key = mode==="categories" ? (d.categorieBase||d.categorie||"").split("—")[0].split(" - ")[0].trim() : ((d.etablissement||"").trim()||"Sans enseigne");
-    if (!key) return; raw[key] = (raw[key]||0) + parseFloat(d.montant||0);
+    const key = mode === "categories"
+      ? (d.categorieBase || d.categorie || "").split("—")[0].split(" - ")[0].trim()
+      : ((d.etablissement || "").trim() || "Sans enseigne");
+    if (!key) return;
+    raw[key] = (raw[key] || 0) + parseFloat(d.montant || 0);
   });
-  const tri = Object.entries(raw).sort((a,b)=>b[1]-a[1]);
-  const grands = tri.filter((_,i) => i < Math.ceil(tri.length/2));
-  const petits = tri.filter((_,i) => i >= Math.ceil(tri.length/2)).reverse();
-  const entrees = [];
-  for (let i = 0; i < Math.max(grands.length, petits.length); i++) {
-    if (i < grands.length) entrees.push(grands[i]);
-    if (i < petits.length) entrees.push(petits[i]);
-  }
-  const labels = entrees.map(e=>e[0]), data = entrees.map(e=>e[1]), total = data.reduce((a,b)=>a+b,0);
-  document.getElementById(`ai_total_outil_${cle}`).textContent = total.toFixed(2);
+
+  const tri = Object.entries(raw).sort((a, b) => b[1] - a[1]);
+  const total = tri.reduce((a, b) => a + b[1], 0);
+  const totalEl = document.getElementById("ai_total_outil_" + cle);
+  if (totalEl) totalEl.textContent = total.toFixed(2);
   const couleurs = ["#ff6384","#36a2eb","#ffce56","#4bc0c0","#9966ff","#ff9f40","#e67e22","#2ecc71","#e91e63","#00bcd4"];
-  if (diagOutilCharts[cle]) diagOutilCharts[cle].destroy();
-  diagOutilCharts[cle] = new Chart(document.getElementById(`ai_canvas_outil_${cle}`), {
-    type:"doughnut", data:{ labels, datasets:[{ data, backgroundColor:couleurs.slice(0,labels.length), cutout:"48%", borderWidth:2, borderColor:"rgba(255,255,255,0.1)" }] },
-    options:{ responsive:true, maintainAspectRatio:true, layout:{padding:60}, plugins:{ legend:{display:false}, datalabels:{display:false}, tooltip:{enabled:false} } },
-    plugins:[{ id:"clo", afterDatasetsDraw(chart){ const meta=chart.getDatasetMeta(0); if(!meta.data.length) return; const {x,y}=meta.data[0]; const c=chart.ctx; c.save(); c.textAlign="center"; c.textBaseline="middle"; c.fillStyle="#fff"; c.font="bold 11px Outfit,Arial"; c.fillText("Total",x,y-8); c.font="bold 14px Arial"; c.fillText(total.toFixed(2)+" €",x,y+8); c.restore(); }},
-    { id:"llo", afterDatasetsDraw(chart){ const meta=chart.getDatasetMeta(0); if(!meta.data.length) return; const c=chart.ctx,cx=meta.data[0].x,cy=meta.data[0].y,re=meta.data[0].outerRadius; meta.data.forEach((arc,i)=>{ const angle=(arc.startAngle+arc.endAngle)/2,xT=cx+Math.cos(angle)*(re+14),yT=cy+Math.sin(angle)*(re+14); c.textAlign=Math.cos(angle)>=0?"left":"right"; c.textBaseline="middle"; c.fillStyle="#fff"; c.font="bold 9px Arial"; c.fillText(labels[i],xT,yT-5); c.fillStyle="rgba(255,255,255,0.7)"; c.font="8px Arial"; c.fillText(data[i].toFixed(2)+"€",xT,yT+5); }); }}]
+
+  if (!tri.length) {
+    if (diagOutilCharts[cle]) { diagOutilCharts[cle].destroy(); diagOutilCharts[cle] = null; }
+    const cv = document.getElementById("ai_canvas_outil_" + cle);
+    if (cv) cv.style.height = "0px";
+    return;
+  }
+
+  if (diagOutilCharts[cle]) { diagOutilCharts[cle].destroy(); diagOutilCharts[cle] = null; }
+
+  const canvas = document.getElementById("ai_canvas_outil_" + cle);
+  if (!canvas) return;
+
+  const labelsF = tri.map(e => e[0]);
+  const dataF   = tri.map(e => e[1]);
+  const maxVal  = Math.max(...dataF, 1);
+
+  // Bâtons horizontaux — hauteur dynamique
+  canvas.style.height = Math.min(260, Math.max(80, labelsF.length * 30)) + "px";
+
+  diagOutilCharts[cle] = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: labelsF,
+      datasets: [{
+        data: dataF,
+        backgroundColor: couleurs.slice(0, labelsF.length),
+        borderRadius: 5,
+        borderSkipped: false,
+        barPercentage: 0.6,
+        categoryPercentage: 0.75
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 500, easing: "easeInOutQuart" },
+      layout: { padding: { right: 52, top: 4, bottom: 4, left: 4 } },
+      plugins: {
+        legend:  { display: false },
+        tooltip: { enabled: false },
+        datalabels: {
+          display: true,
+          color: "#fff",
+          font: { weight: "bold", size: 10, family: "Outfit,Arial" },
+          anchor: "end", align: "end",
+          formatter: v => v.toFixed(2) + " €"
+        }
+      },
+      onHover: (evt) => { evt.native.target.style.cursor = "pointer"; },
+      onClick: ()    => { ouvrirHistoRub(cle); },
+      scales: {
+        x: { display: false, beginAtZero: true, max: maxVal * 1.3 },
+        y: {
+          ticks: { color: "#fff", font: { size: 11, family: "Outfit,Arial" }, maxRotation: 0 },
+          grid:  { display: false },
+          border:{ display: false }
+        }
+      }
+    }
   });
 }
+
 function afficherHistoInline(cle) {
   const container = document.getElementById(`ai_histo_${cle}`);
   const depenses = getDepenses(cle);
@@ -791,7 +1274,7 @@ function afficherHistoInline(cle) {
   depSemaine.forEach(d => {
     const ligne = document.createElement("div");
     ligne.style.cssText = "display:flex;justify-content:space-between;align-items:center;padding:5px 4px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78em;gap:6px;";
-    ligne.innerHTML = `<span style="color:var(--muted);white-space:nowrap;flex-shrink:0;">${d.date}</span><span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.categorie||""}</span><span style="font-weight:700;color:var(--accent2);white-space:nowrap;flex-shrink:0;">${parseFloat(d.montant||0).toFixed(2)} €</span>`;
+    ligne.innerHTML = `<span style="color:var(--muted);white-space:nowrap;flex-shrink:0;">${d.date}</span><span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.etablissement||""}</span><span style="font-weight:700;color:var(--accent2);white-space:nowrap;flex-shrink:0;">${parseFloat(d.montant||0).toFixed(2)} €</span>`;
     const btnSuppr = document.createElement("button");
     btnSuppr.textContent = "🗑️";
     btnSuppr.style.cssText = "background:rgba(239,68,68,0.1);border:none;color:rgba(239,68,68,0.7);width:24px;height:24px;border-radius:5px;cursor:pointer;font-size:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;";
@@ -808,6 +1291,369 @@ function afficherHistoInline(cle) {
     });
 }
 
+// ── MES AVOIRS / COMPTES ──
+let cacheComptes = [];
+let cacheSnapshotsAvoirs = []; // [{semaine, total}] triés du plus récent au plus ancien
+let idxAvoirs = 0; // 0 = semaine en cours (temps réel), 1+ = semaines passées (figées)
+let modeAvoirs = false;
+
+const TYPES_COMPTE = {
+  banque:  { emoji: "🏦", label: "Compte bancaire", couleur: "linear-gradient(135deg,#2980b9,#4fc3f7)" },
+  especes: { emoji: "💵", label: "Espèces",          couleur: "linear-gradient(135deg,#27ae60,#2ecc71)" },
+  cheque:  { emoji: "📝", label: "Chèque",            couleur: "linear-gradient(135deg,#e67e22,#f39c12)" },
+  epargne: { emoji: "🐷", label: "Épargne",           couleur: "linear-gradient(135deg,#6a0572,#9b59b6)" },
+};
+
+async function chargerComptes() {
+  const { data: { session } } = await supa.auth.getSession();
+  if (!session) { cacheComptes = []; return; }
+  const { data, error } = await supa.from("comptes").select("*").eq("user_id", session.user.id).order("created_at", { ascending: true });
+  if (error) { console.error("Erreur chargement comptes:", error); cacheComptes = []; return; }
+  cacheComptes = data || [];
+}
+
+// ── SNAPSHOTS HEBDOMADAIRES DES AVOIRS ──
+async function chargerEtMajSnapshotsAvoirs() {
+  const { data: { session } } = await supa.auth.getSession();
+  if (!session) { cacheSnapshotsAvoirs = []; return; }
+
+  const { data, error } = await supa.from("avoirs_snapshots").select("*").eq("user_id", session.user.id).order("semaine", { ascending: false });
+  if (error) { console.error("Erreur chargement snapshots:", error); cacheSnapshotsAvoirs = []; return; }
+  cacheSnapshotsAvoirs = data || [];
+
+  // Créer rétroactivement le(s) snapshot(s) manquant(s) pour la/les semaine(s) précédente(s)
+  // (le total figé au lundi 00h00 = dernier total connu juste avant)
+  const cleSemActuelle = getCle(new Date().toISOString());
+  const totalActuel = cacheComptes.reduce((s, c) => s + parseFloat(c.solde || 0), 0);
+
+  if (!cacheSnapshotsAvoirs.some(s => s.semaine === cleSemActuelle)) {
+    // On n'a pas encore de figé pour la semaine en cours — normal, elle n'est pas terminée.
+    // On vérifie juste qu'on ne manque pas une semaine passée (cas où l'utilisateur ne s'est pas connecté depuis longtemps).
+  }
+
+  // Identifier la dernière semaine "complète" précédente (idx 1 par rapport à aujourd'hui)
+  const toutesSemaines = getAllSem(); // réutilise la même logique que pour les dépenses
+  // On ajoute la semaine en cours si absente (au cas où aucune dépense n'a encore été saisie cette semaine)
+  if (!toutesSemaines.includes(cleSemActuelle)) toutesSemaines.unshift(cleSemActuelle);
+  toutesSemaines.sort((a,b) => b.localeCompare(a));
+
+  // Pour chaque semaine strictement antérieure à la semaine en cours, s'assurer qu'un snapshot existe
+  const semainesPassees = toutesSemaines.filter(s => s !== cleSemActuelle);
+  for (const sem of semainesPassees) {
+    if (!cacheSnapshotsAvoirs.some(s => s.semaine === sem)) {
+      // Pas de snapshot pour cette semaine passée → on le crée avec le total connu actuel
+      // (meilleure estimation possible rétroactivement, vu qu'on n'a pas eu de relevé exact à l'époque)
+      const { data: nouveau, error: errIns } = await supa.from("avoirs_snapshots")
+        .insert({ user_id: session.user.id, semaine: sem, total: totalActuel })
+        .select().single();
+      if (!errIns && nouveau) cacheSnapshotsAvoirs.push(nouveau);
+    }
+  }
+  cacheSnapshotsAvoirs.sort((a,b) => b.semaine.localeCompare(a.semaine));
+}
+
+function majSelectsComptes() {
+  const html = '<option value="">-- Aucun compte sélectionné --</option>' +
+    cacheComptes.map(c => `<option value="${c.id}">${c.emoji} ${c.nom} (${parseFloat(c.solde).toFixed(2)} €)</option>`).join("");
+  document.querySelectorAll('select[id^="outilCompte"], select[id^="ai_compte_"]').forEach(sel => {
+    const valActuelle = sel.value;
+    sel.innerHTML = html;
+    if ([...sel.options].some(o => o.value === valActuelle)) sel.value = valActuelle;
+  });
+}
+
+async function ajusterSoldeCompte(compteId, delta) {
+  const compte = cacheComptes.find(c => c.id === compteId);
+  if (!compte) return;
+  const nouveauSolde = parseFloat(compte.solde) + delta;
+  const { error } = await supa.from("comptes").update({ solde: nouveauSolde }).eq("id", compteId);
+  if (error) { console.error("Erreur mise à jour solde:", error); return; }
+  compte.solde = nouveauSolde;
+}
+
+function toggleModeAvoirs() {
+  modeAvoirs = !modeAvoirs;
+  document.getElementById("titrePageMode").textContent = modeAvoirs ? "Mes Avoirs" : "Mes Dépenses";
+  document.getElementById("vueModeDepenses").style.display = modeAvoirs ? "none" : "block";
+  document.getElementById("vueModeAvoirs").style.display = modeAvoirs ? "block" : "none";
+  document.getElementById("mainDepenses").style.display = modeAvoirs ? "none" : "block";
+  const knob = document.getElementById("toggleAvoirsKnob");
+  if (knob) knob.style.transform = modeAvoirs ? "translateX(98px)" : "translateX(0)";
+  const labelDep = document.getElementById("toggleAvoirsLabelDep");
+  const labelAvoirs = document.getElementById("toggleAvoirsLabelAvoirs");
+  if (labelDep) labelDep.style.color = modeAvoirs ? "rgba(255,255,255,0.5)" : "white";
+  if (labelAvoirs) labelAvoirs.style.color = modeAvoirs ? "white" : "rgba(255,255,255,0.5)";
+  if (modeAvoirs) { idxAvoirs = 0; afficherComptes(); }
+}
+
+function navigAvoirs(dir) {
+  const n = idxAvoirs + dir;
+  if (n < 0 || n > cacheSnapshotsAvoirs.length) return;
+  idxAvoirs = n;
+  afficherComptes();
+}
+
+function afficherComptes() {
+  const liste = document.getElementById("listeComptes");
+  const totalEl = document.getElementById("totalAvoirs");
+  const nbEl = document.getElementById("nbComptes");
+  const labelEl = document.getElementById("labelTypeAvoirs");
+  const btnPrev = document.getElementById("btnAvoirsPrev");
+  const btnNext = document.getElementById("btnAvoirsNext");
+  if (!liste) return;
+
+  const totalTempsReel = cacheComptes.reduce((s, c) => s + parseFloat(c.solde || 0), 0);
+  const cleSemActuelle = getCle(new Date().toISOString());
+
+  // Navigation : idx 0 = temps réel, idx 1+ = cacheSnapshotsAvoirs[idx-1] (en excluant la semaine en cours si présente)
+  const snapshotsPasses = cacheSnapshotsAvoirs.filter(s => s.semaine !== cleSemActuelle);
+
+  if (btnPrev) { btnPrev.disabled = idxAvoirs >= snapshotsPasses.length; btnPrev.style.opacity = btnPrev.disabled ? "0.25" : "1"; }
+  if (btnNext) { btnNext.disabled = idxAvoirs <= 0; btnNext.style.opacity = btnNext.disabled ? "0.25" : "1"; }
+
+  let total, listeAffichee, modeFige;
+
+  if (idxAvoirs === 0) {
+    // Semaine en cours — temps réel
+    total = totalTempsReel;
+    listeAffichee = cacheComptes;
+    modeFige = false;
+    if (labelEl) labelEl.textContent = "Cette semaine (en direct)";
+  } else {
+    const snap = snapshotsPasses[idxAvoirs - 1];
+    total = snap ? parseFloat(snap.total) : 0;
+    listeAffichee = null; // le détail par compte n'est pas conservé historiquement, seul le total est figé
+    modeFige = true;
+    if (labelEl && snap) {
+      const [an, s] = snap.semaine.split("-S");
+      labelEl.textContent = `Figé — Semaine ${parseInt(s)} — ${an}`;
+    }
+  }
+
+  if (totalEl) totalEl.textContent = total.toFixed(2) + " €";
+  if (nbEl) nbEl.textContent = modeFige ? "Montant figé au lundi 00h00" : (cacheComptes.length + " compte" + (cacheComptes.length > 1 ? "s" : ""));
+
+  // Couleur selon la semaine (même logique que Mes Dépenses)
+  const cleAvoirs = idxAvoirs === 0 ? cleSemActuelle : (snapshotsPasses[idxAvoirs - 1]?.semaine || cleSemActuelle);
+  const innerAvoirs = document.querySelector("#vueModeAvoirs .semaine-inner");
+  if (innerAvoirs && cleAvoirs) {
+    const coul = getCouleurSemaine(cleAvoirs);
+    innerAvoirs.style.background = `linear-gradient(135deg, ${coul}22, ${coul}0a)`;
+    innerAvoirs.style.borderColor = `${coul}55`;
+    if (totalEl) totalEl.style.textShadow = `0 0 20px ${coul}99`;
+    if (labelEl) labelEl.style.color = coul;
+  }
+
+  if (modeFige) {
+    liste.innerHTML = "";
+    return;
+  }
+
+  if (cacheComptes.length === 0) {
+    liste.innerHTML = '<div class="vide" style="padding:20px 0;">Aucun compte enregistré pour le moment.</div>';
+    return;
+  }
+
+  liste.innerHTML = cacheComptes.map(c => {
+    const type = TYPES_COMPTE[c.type] || TYPES_COMPTE.banque;
+    return `<div>
+      <div onclick="toggleHistoCompte('${c.id}')" style="cursor:pointer;border-radius:16px;padding:16px 18px;background:${type.couleur};color:white;display:flex;align-items:center;gap:14px;">
+        <span style="font-size:1.8em;flex-shrink:0;">${c.emoji || type.emoji}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.92em;font-weight:700;">${c.nom}</div>
+          <div style="font-size:0.72em;opacity:0.8;">${type.label}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:1.2em;font-weight:800;">${parseFloat(c.solde).toFixed(2)} €</div>
+          <button onclick="event.stopPropagation();ouvrirCorrectionSolde('${c.id}')" style="background:rgba(255,255,255,0.2);border:none;color:white;font-size:0.7em;padding:4px 10px;border-radius:8px;cursor:pointer;margin-top:4px;">✏️ Corriger</button>
+        </div>
+        <span id="flecheCompte_${c.id}" style="font-size:0.75em;opacity:0.7;transition:transform 0.3s;flex-shrink:0;">▼</span>
+      </div>
+      <div id="histoCompte_${c.id}" style="overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.22,1,0.36,1);background:rgba(13,15,26,0.95);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 14px 14px;">
+        <div id="histoCompteContenu_${c.id}" style="padding:12px 14px;"></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function toggleHistoCompte(compteId) {
+  const acc = document.getElementById(`histoCompte_${compteId}`);
+  const fleche = document.getElementById(`flecheCompte_${compteId}`);
+  if (!acc) return;
+  const ouvert = acc.style.maxHeight !== "0px" && acc.style.maxHeight !== "";
+
+  // Fermer tous les autres historiques de compte ouverts
+  cacheComptes.forEach(c => {
+    if (c.id !== compteId) {
+      const a = document.getElementById(`histoCompte_${c.id}`);
+      const f = document.getElementById(`flecheCompte_${c.id}`);
+      if (a) a.style.maxHeight = "0";
+      if (f) f.style.transform = "rotate(0deg)";
+    }
+  });
+
+  if (ouvert) {
+    acc.style.maxHeight = "0";
+    if (fleche) fleche.style.transform = "rotate(0deg)";
+  } else {
+    afficherHistoCompte(compteId);
+    acc.style.maxHeight = "99999px";
+    if (fleche) fleche.style.transform = "rotate(180deg)";
+  }
+}
+
+function afficherHistoCompte(compteId) {
+  const container = document.getElementById(`histoCompteContenu_${compteId}`);
+  if (!container) return;
+
+  // Rassembler toutes les dépenses de toutes les rubriques liées à ce compte
+  let toutes = [];
+  RUBRIQUES.forEach(r => {
+    getDepenses(r.cle).forEach(d => {
+      if (d.compteId === compteId) toutes.push({ ...d, rubNom: r.nom, rubEmoji: r.emoji });
+    });
+  });
+  toutes.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+  if (!toutes.length) {
+    container.innerHTML = '<div class="vide" style="padding:10px 0;">Aucune dépense enregistrée sur ce compte.</div>';
+    return;
+  }
+
+  // Grouper par semaine
+  const groupes = {};
+  toutes.forEach(d => { const c = getCle(d.date); if (!c) return; if (!groupes[c]) groupes[c] = []; groupes[c].push(d); });
+  const clesTri = Object.keys(groupes).sort((a,b) => b.localeCompare(a));
+
+  let html = "";
+  clesTri.forEach(cleS => {
+    const items = groupes[cleS];
+    const [an, s] = cleS.split("-S");
+    const tot = items.reduce((acc,d) => acc + parseFloat(d.montant||0), 0);
+    html += `<div style="font-size:0.7em;font-weight:700;color:var(--muted);letter-spacing:1px;margin:8px 0 4px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.07);">📅 Semaine ${parseInt(s)} — ${an} · <span style="color:#fff;font-weight:800;">${tot.toFixed(2)} €</span></div>`;
+    items.forEach(d => {
+      html += `<div style="display:flex;align-items:center;gap:8px;padding:6px 2px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.8em;">
+        <span style="flex-shrink:0;">${d.rubEmoji}</span>
+        <span style="color:var(--muted);white-space:nowrap;flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.85em;">${d.date}</span>
+        <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.etablissement || ""}</span>
+        <span style="font-weight:700;color:var(--accent2);white-space:nowrap;flex-shrink:0;">${parseFloat(d.montant||0).toFixed(2)} €</span>
+      </div>`;
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+async function creerCompte() {
+  const nom = document.getElementById("nouveauCompteNom").value.trim();
+  const type = document.getElementById("nouveauCompteType").value;
+  const solde = parseFloat(document.getElementById("nouveauCompteSolde").value.replace(",", ".")) || 0;
+  if (!nom) { alert("Veuillez donner un nom au compte."); return; }
+
+  const { data: { session } } = await supa.auth.getSession();
+  if (!session) return;
+
+  const emoji = (TYPES_COMPTE[type] || TYPES_COMPTE.banque).emoji;
+  const { data, error } = await supa.from("comptes").insert({
+    user_id: session.user.id, nom, type, emoji, solde
+  }).select().single();
+
+  if (error) { alert("Erreur lors de la création du compte."); console.error(error); return; }
+
+  cacheComptes.push(data);
+  document.getElementById("nouveauCompteNom").value = "";
+  document.getElementById("nouveauCompteSolde").value = "";
+  // Refermer l'accordéon
+  const acc = document.getElementById("ooutil_ajout_compte");
+  const fleche = document.getElementById("flecheAjoutCompte");
+  if (acc) acc.style.maxHeight = "0";
+  if (fleche) fleche.style.transform = "rotate(0deg)";
+  OUTILS_ETATS.ooutil_ajout_compte = false;
+  afficherComptes();
+  majSelectsComptes();
+}
+
+function ouvrirModifTotal() {
+  const totalEl = document.getElementById("totalAvoirs");
+  const actuelEl = document.getElementById("modifTotalActuel");
+  const input = document.getElementById("modifTotalInput");
+  if (actuelEl) actuelEl.textContent = totalEl?.textContent || "—";
+  if (input) { input.value = ""; setTimeout(() => input.focus(), 100); }
+  document.getElementById("modalModifTotal").classList.add("actif");
+}
+
+function fermerModifTotal() {
+  document.getElementById("modalModifTotal").classList.remove("actif");
+}
+
+async function validerModifTotal() {
+  const input = document.getElementById("modifTotalInput");
+  const val = parseFloat(input?.value?.replace(",", "."));
+  if (isNaN(val) || val < 0) { alert("Veuillez entrer un montant valide."); return; }
+
+  const { data: { session } } = await supa.auth.getSession();
+  if (!session) { alert("Vous devez être connecté."); return; }
+
+  // Ajuster tous les comptes proportionnellement pour que le total corresponde
+  const totalActuel = cacheComptes.reduce((s, c) => s + parseFloat(c.solde || 0), 0);
+  const diff = val - totalActuel;
+
+  if (cacheComptes.length === 0) {
+    alert("Aucun compte enregistré. Ajoutez d'abord un compte.");
+    fermerModifTotal();
+    return;
+  }
+
+  // Répartir la différence sur le premier compte
+  const premierCompte = cacheComptes[0];
+  const nouveauSolde = parseFloat(premierCompte.solde) + diff;
+  await corrigerSoldeCompte(premierCompte.id, nouveauSolde);
+
+  fermerModifTotal();
+  afficherComptes();
+  majSelectsComptes();
+}
+
+
+let _correctionCompteId = null;
+
+function ouvrirCorrectionSolde(compteId) {
+  const compte = cacheComptes.find(c => c.id === compteId);
+  if (!compte) return;
+  _correctionCompteId = compteId;
+  const titreEl = document.getElementById("correctionSoldeTitre");
+  const actuelEl = document.getElementById("correctionSoldeActuel");
+  const input = document.getElementById("correctionSoldeInput");
+  if (titreEl) titreEl.textContent = "✏️ " + compte.nom;
+  if (actuelEl) actuelEl.textContent = parseFloat(compte.solde).toFixed(2) + " €";
+  if (input) { input.value = parseFloat(compte.solde).toFixed(2); setTimeout(() => { input.focus(); input.select(); }, 100); }
+  document.getElementById("modalCorrectionSolde").classList.add("actif");
+}
+
+function fermerCorrectionSolde() {
+  document.getElementById("modalCorrectionSolde").classList.remove("actif");
+  _correctionCompteId = null;
+}
+
+async function validerCorrectionSolde() {
+  const input = document.getElementById("correctionSoldeInput");
+  const val = parseFloat(input?.value?.replace(",", "."));
+  if (isNaN(val)) { alert("Montant invalide."); return; }
+  await corrigerSoldeCompte(_correctionCompteId, val);
+  fermerCorrectionSolde();
+}
+
+
+async function corrigerSoldeCompte(compteId, nouveauSolde) {
+  const { error } = await supa.from("comptes").update({ solde: nouveauSolde }).eq("id", compteId);
+  if (error) { alert("Erreur lors de la correction du solde."); console.error(error); return; }
+  const compte = cacheComptes.find(c => c.id === compteId);
+  if (compte) compte.solde = nouveauSolde;
+  afficherComptes();
+  majSelectsComptes();
+}
+// ── FIN MES AVOIRS ──
+
 // ── CATÉGORIES PERSONNALISÉES ──
 let cacheCatsPerso = {};
 
@@ -815,13 +1661,13 @@ let cacheCatsPerso = {};
 const EMOJIS_PAR_RUBRIQUE = {
   alimentations: ["🛒","🥦","🥩","🍞","🥛","🧀","🍎","🥕","🌶️","🍇","🍳","🥚","🍯","🧅","🧄","🍌","🍓","🥬","🍅","🌽","🐟","🍚","🍒","🍑","🍋","🍉","🍍","🥥","🥒","🍆","🥔","🍠","🌰","🥜","🍙","🍘","🥨","🥖","🧈","🍖","🥓","🍤","🦐","🦀","🍗","🌭","🥪","🧇","🍮","🍫"],
   restaurants:   ["🍕","🍣","🍔","🌮","🥙","🍜","🍛","🍱","🍝","🥘","🍲","🍰","🧁","☕","🍷","🍺","🥂","🍦","🍪","🥗","🧋","🍩","🍳","🥞","🌯","🥟","🍢","🍡","🍧","🍨","🥃","🍸","🍹","🧉","🫖","🍵","🥮","🥯","🍿","🦞","🦪","🌶️","🧆","🥓","🍖","🍤","🦐","🥩","🌭","🥪"],
-  services:      ["💇","💈","💄","🧴","🩺","💊","🏥","🛡️","⚖️","🎙️","🖨️","📰","📺","🤲","🏊","🔧","🛠️","🚿","✂️","🧖","🩹","🧑‍⚕️","🧽","🪒","🧼","🦷","👓","🌡️","💉","🧬","🔬","🎓","📖","🖊️","📝","🪪","🛂","🏤","📮","✉️","🚓","👮","🏛️","📋","🗳️","🧑‍🏫","🧑‍🎓","🚴‍♀️","🏃‍♀️","🤸"],
+  services:      ["💇","💈","💄","🧴","🩺","💊","🏥","🛡️","⚖️","🎙️","🖨️","📰","📺","🤲","🏊","🔧","🛠️","🚿","✂️","🧖","🩹","🧑‍⚕️","🧽","🪒","🧼","🦷","👓","🌡️","💉","🧬","🔬","🎓","📖","🖊️","📝","🪪","🛂","🏤","📮","✉️","🚓","👮","🏛️","📋","🗳️","🧑‍🏫","🧑‍🎓","🚴‍♀️","🏃‍♀️","🤸","🐱","🐶","🐰","🐹","🐭","🦜","🐢","🐠"],
   factures:      ["💧","⚡","🔥","📱","🌐","🏠","🏦","🧾","⚖️","🎬","📦","🔑","🧹","💳","🏢","🛡️","🧯","📡","🔌","🪪","🚰","🛢️","🪫","🔋","💸","🏧","📊","📈","📉","📑","📃","🖋️","📬","📭","🚪","🪟","🛏️","🚽","🛁","🪠","🧺","🗑️","🚮","🏚️","🏘️","🏬","🏭","🧰"],
-  materiels:     ["💻","📱","🖥️","🪑","🛋️","🧹","🪒","🔨","🪛","⚙️","🧰","📚","✏️","🎮","👗","👟","👜","🖼️","🌱","🫧","🧸","🪴","👔","👕","👖","🧥","🧦","🩳","👒","🧢","👓","🕶️","💍","💎","🧳","🪞","🪜","🪚","🪤","🔌","🎁","🪅","🪄","🧵","🪡","🧶","🖇️","📐","📏","🗂️"],
+  materiels:     ["💻","📱","🖥️","🪑","🛋️","🧹","🪒","🔨","🪛","⚙️","🧰","📚","✏️","🎮","👗","👟","👜","🖼️","🌱","🫧","🧸","🪴","👔","👕","👖","🧥","🧦","🩳","👒","🧢","👓","🕶️","💍","💎","🧳","🪞","🪜","🪚","🪤","🔌","🎁","🪅","🪄","🧵","🪡","🧶","🖇️","📐","📏","🗂️","🐱","🐶","🐰","🐹","🐭","🦜","🐢","🐠"],
   transports:    ["🚗","🚌","🚇","🚆","🚊","🚲","🛵","🚕","✈️","⛽","🅿️","🚦","🚤","🚂","🛺","🚠","🛹","🚀","🛶","🚁","🚙","🚐","🚓","🚒","🚑","🛻","🚛","🚜","🏎️","🛣️","🌉","🚉","🛤️","🚝","🚞","🎫","🛂","🧳","🗺️","🧭","🚣","⛴️","🛥️","🚢","🛸","🦽","🦼","🛞"],
   sorties:       ["🎉","🎬","🎵","🎭","🎪","🎮","🎳","🎯","🎲","🏖️","🎡","🎢","🍿","🕺","💃","🎤","🎸","🏛️","🌃","🧩","🎨","📸","🎷","🎺","🎻","🥁","🎹","🎧","🎟️","🏟️","🏰","🗽","🎠","🛝","🏊","🏄","🏂","⛷️","🚣","🎣","🏹","🤿","🕹️","🃏","♟️","🎰","🪩","🎙️","🎫","🪇"]
 };
-const EMOJIS_PICKER = ["📌","🛍️","🎁","🔑","🏋️","🧘","🚴","🎯","🎲","🎨","✂️","🪡","🧵","⌚","👜","👟","🎒","🌿","💊","🍷"];
+const EMOJIS_PICKER = ["📌","🛍️","🎁","🔑","🏋️","🧘","🚴","🎯","🎲","🎨","✂️","🪡","🧵","⌚","👜","👟","🎒","🌿","💊","🍷","🐱","🐶","🐰","🐹","🐭","🐻","🦊","🐼","🦁","🐯","🐮","🐷","🐸","🐵","🦜","🐢","🐠"];
 
 async function chargerCatsPerso() {
   const { data: { session } } = await supa.auth.getSession();
@@ -903,10 +1749,8 @@ function selectEmoji(btn, cle) {
 }
 
 // ── FIN CATÉGORIES PERSONNALISÉES ──
-let diagSemChart = null, diagSemDataActuelle = [];
-
-const OUTILS_ETATS = { ooutil_nouvelle: false, ooutil_diag: false, ooutil_vue: false, ooutil_import: false };
-const OUTILS_FLECHES = { ooutil_nouvelle: "flecheNouvelle", ooutil_diag: "flecheDiag", ooutil_vue: "flecheVue", ooutil_import: "flecheImport" };
+const OUTILS_ETATS = { ooutil_nouvelle: false, ooutil_vue: false, ooutil_import: false, ooutil_ajout_compte: false };
+const OUTILS_FLECHES = { ooutil_nouvelle: "flecheNouvelle", ooutil_vue: "flecheVue", ooutil_import: "flecheImport", ooutil_ajout_compte: "flecheAjoutCompte" };
 
 function toggleOutil(id) {
   const el = document.getElementById(id); if (!el) return;
@@ -926,34 +1770,37 @@ function toggleOutil(id) {
     if (id === "ooutil_nouvelle") {
       const dateEl = document.getElementById("outilDate");
       if (dateEl && !dateEl.value) { const auj = new Date(); dateEl.value = `${auj.getFullYear()}-${String(auj.getMonth()+1).padStart(2,'0')}-${String(auj.getDate()).padStart(2,'0')}`; }
-    } else if (id === "ooutil_diag") {
-      setTimeout(() => dessinerDiagSem(), 500);
     } else if (id === "ooutil_vue") {
-      setTimeout(() => dessinerVueEnsemble(), 500);
-    } else if (id === "ooutil_import") {
-      setTimeout(() => {
-        if (document.getElementById("chatMessages").children.length === 0) chatDemarrer();
-      }, 500);
+      setTimeout(() => { dessinerVueEnsemble(); majRecapRubriques(); }, 500);
     }
   }
 }
 
 const CATS_OUTILS = {
-  alimentations:["🍷 Alcool","🌿 Bio","🥤 Boissons","🥩 Boucherie","🥖 Boulangerie","💄 Cosmétique","🏪 Épicerie","🛒 Grande surface","🌽 Marché","🏬 Petite surface","💊 Pharmacie","🐟 Poissonnerie","🛒 Supermarché","🍱 Traiteur"],
+  alimentations:["🍷 Alcool","🐾 Animaux","🌿 Bio","🥤 Boissons","🥩 Boucherie","🥖 Boulangerie","💄 Cosmétique","🏪 Épicerie","🛒 Grande surface","🌽 Marché","🏬 Petite surface","💊 Pharmacie","🐟 Poissonnerie","🛒 Supermarché","🍱 Traiteur"],
   restaurants:  ["🍺 Brasserie","🥄 Cafétéria","🥗 Cantine","🍔 Fast Food","🍟 Friterie","🥙 Kebab","🍕 Pizza","🍗 Poulet Braisé","🍽️ Restaurant","🍛 Resto Indien","🍣 Sushi"],
-  services:     ["🏊 Activités Sportives","⚖️ Amende","🛡️ Assurance","💄 Beauté","💇 Coiffeur","🤲 Don","🔧 Entretiens","🏛️ Impôts","🖨️ Impression","📰 Journaux","📺 Médias","💊 Mutuelle","🏊 Piscine","🛠️ Réparations","🏥 Santé","🩺 Soins","🎙️ Studio"],
+  services:     ["🏊 Activités Sportives","⚖️ Amende","🛡️ Assurance","💄 Beauté","💇 Coiffeur","🤲 Don","🔧 Entretiens","🏛️ Impôts","🖨️ Impression","📰 Journaux","📺 Médias","💊 Mutuelle","🏊 Piscine","🛠️ Réparations","🏥 Santé","🩺 Soins","🎙️ Studio","🐱 Vétérinaire"],
   factures:     ["📦 Abonnements","🛡️ Assurance","🌐 Box Internet","🏢 Charges","🎬 Cinéma","💧 Eau","⚡ Électricité","🏦 Frais bancaires","🔥 Gaz","⚖️ Impôts","🏠 Loyer","🖥️ Site Web","🏛️ Taxes","📱 Téléphone"],
-  materiels:    ["👜 Accessoires","🪛 Bricolage","👟 Chaussures","🍳 Cuisine","🖼️ Déco","🫧 Électroménager","📱 High-tech","🏗️ Immobilier","💻 Informatique","🌱 Jardinage","📚 Livres","🎮 Loisirs","🪑 Mobilier","🔨 Outils","✏️ Papeterie","⚙️ Pièces mécaniques","⚽ Sport","👗 Vêtements"],
+  materiels:    ["👜 Accessoires","🐾 Animalerie","🪛 Bricolage","👟 Chaussures","🍳 Cuisine","🖼️ Déco","🫧 Électroménager","📱 High-tech","🏗️ Immobilier","💻 Informatique","🌱 Jardinage","📚 Livres","🎮 Loisirs","🪑 Mobilier","🔨 Outils","✏️ Papeterie","⚙️ Pièces mécaniques","⚽ Sport","👗 Vêtements"],
   transports:   ["🚌 Bus","⛽ Carburant","🚗 Covoiturage","🚇 Métro","🚆 Train","🚊 Tram","🛵 Trottinette","🚕 Taxi","🚖 VTC","🚲 Vélo","✈️ Vol"],
   sorties:      ["🍺 Bar","☕ Café","🎬 Cinéma","🕺 Club","🧋 Coffee Shop","🎵 Concert","🎪 Festival","🏛️ Musée","🌐 Site Web","🎉 Soirée","🎭 Spectacle"],
 };
 function majCatsOutil() {
-  const rub = document.getElementById("outilRubrique").value;
-  const sel = document.getElementById("outilCategorie");
-  const wrap = document.getElementById("outil_ajouter_cat_wrap");
-  sel.innerHTML = '<option value="">-- Choisir --</option>';
-  if (!rub) { if (wrap) wrap.style.display = "none"; return; }
-  if (wrap) wrap.style.display = "block";
+  const rub  = document.getElementById("outilRubrique").value;
+  const wrap = document.getElementById("outilRubriqueWrap");
+  // Arc-en-ciel si une rubrique est choisie
+  if (wrap) {
+    if (rub) {
+      wrap.classList.add("rubrique-rainbow");
+    } else {
+      wrap.classList.remove("rubrique-rainbow");
+    }
+  }
+  const sel  = document.getElementById("outilCategorie");
+  const catWrap = document.getElementById("outil_ajouter_cat_wrap");
+  if (sel) sel.innerHTML = '<option value="">-- Choisir --</option>';
+  if (catWrap) catWrap.style.display = "none";
+  if (!rub) return;
 
   const picker = document.getElementById("epicker_outil");
   if (picker) {
@@ -1046,25 +1893,31 @@ function validerAjoutCatOutil() {
   });
   nomEl.value = "";
   document.querySelectorAll("#epicker_outil .emoji-opt").forEach(b => b.classList.remove("selected"));
-  document.getElementById("panel_ajouter_cat").style.display = "none";
+  const panelCat = document.getElementById("panel_ajouter_cat");
+  if (panelCat) panelCat.style.display = "none";
 }
 
 async function sauvegarderOutilDepense() {
   const date = document.getElementById("outilDate").value;
   const rubrique = document.getElementById("outilRubrique").value;
-  const categorie = document.getElementById("outilCategorie").value;
   const etablissement = document.getElementById("outilEtablissement").value.trim();
+  const compteId = document.getElementById("outilCompte")?.value || "";
   let montant = parseFloat(document.getElementById("outilMontant").value.replace(",","."));
   if (!date)               { alert("Veuillez saisir une date."); return; }
   if (!rubrique)           { alert("Veuillez choisir une rubrique."); return; }
-  if (!categorie)          { alert("Veuillez choisir une catégorie."); return; }
   if (isNaN(montant)||montant<=0) { alert("Veuillez entrer un montant valide."); return; }
   const cle = CLE_STORAGE[rubrique];
+  const r = RUBRIQUES.find(x => x.cle === cle);
+  const categorie = r ? r.nom : rubrique;
   const nomCategorie = etablissement ? `${categorie} — ${etablissement}` : categorie;
-  await sauvegarderDepenseDB(cle, { date, montant, categorie: nomCategorie, categorieBase: categorie, etablissement });
+  await sauvegarderDepenseDB(cle, { date, montant, categorie: nomCategorie, categorieBase: categorie, etablissement, compteId: compteId || null });
   document.getElementById("outilMontant").value = "";
-  document.getElementById("outilCategorie").value = "";
   document.getElementById("outilEtablissement").value = "";
+  document.getElementById("outilRubrique").value = "";
+  const wrap = document.getElementById("outilRubriqueWrap");
+  if (wrap) wrap.classList.remove("rubrique-rainbow");
+  const wrapC = document.getElementById("outilCompteWrap");
+  if (wrapC) wrapC.classList.remove("rubrique-rainbow");
   semaines = getAllSem();
   afficher();
 }
@@ -1072,6 +1925,7 @@ async function sauvegarderOutilDepense() {
 // ── VUE D'ENSEMBLE GLOBALE ──
 let vueEnsembleChart = null;
 let periodeVE = "semaine"; // "semaine", "mois", "trimestre", "annee"
+let typeVE = "barre"; // barre uniquement désormais
 let idxMoisVE = 0, idxTrimVE = 0, idxAnneeVE = 0; // 0 = période en cours (mois/trimestre/année)
 let veData = [], veLabels = [], veTotal = 0;
 const VE_COULEURS = ["#ef4444","#f7971e","#eab308","#22c55e","#4fc3f7","#7c4dff","#a855f7"];
@@ -1099,7 +1953,6 @@ function navigVE(dir) {
     idx = n;
     afficher();
     dessinerVueEnsemble();
-    if (OUTILS_ETATS.ooutil_diag) dessinerDiagSem();
     return;
   } else if (periodeVE === "mois") {
     const n = idxMoisVE + dir;
@@ -1113,6 +1966,23 @@ function navigVE(dir) {
     const n = idxAnneeVE + dir;
     if (n < 0 || n > VE_LIMITES.annee) return;
     idxAnneeVE = n;
+  }
+  dessinerVueEnsemble();
+}
+
+function navigVESelect(value) {
+  const i = parseInt(value);
+  if (isNaN(i)) return;
+  if (periodeVE === "semaine") {
+    if (i < 0 || i >= semaines.length) return;
+    idx = i;
+    afficher();
+  } else if (periodeVE === "mois") {
+    idxMoisVE = i;
+  } else if (periodeVE === "trimestre") {
+    idxTrimVE = i;
+  } else if (periodeVE === "annee") {
+    idxAnneeVE = i;
   }
   dessinerVueEnsemble();
 }
@@ -1133,45 +2003,163 @@ function getTrimestreCible(offset) {
   return { annee: d.getFullYear(), trimestre: Math.floor(d.getMonth() / 3) };
 }
 
+function dessinerSelectVE() {
+  const sel = document.getElementById("veSelectPeriode");
+  const btnP = document.getElementById("veBtnPrev");
+  const btnN = document.getElementById("veBtnNext");
+  if (!sel) return;
+  const an = new Date().getFullYear();
+  sel.innerHTML = "";
+  if (periodeVE === "semaine") {
+    semaines.forEach((cle, i) => {
+      const [y, s] = cle.split("-S");
+      const o = document.createElement("option");
+      o.value = i;
+      o.textContent = i === 0 ? "Semaine en cours" : "Semaine " + parseInt(s) + " — " + y;
+      if (i === idx) o.selected = true;
+      sel.appendChild(o);
+    });
+    if (btnP) { btnP.disabled = idx >= semaines.length-1; btnP.style.opacity = btnP.disabled?"0.25":"1"; }
+    if (btnN) { btnN.disabled = idx <= 0; btnN.style.opacity = btnN.disabled?"0.25":"1"; }
+  } else if (periodeVE === "mois") {
+    for (let i = 0; i <= VE_LIMITES.mois; i++) {
+      const { annee, mois } = getMoisCible(i);
+      const o = document.createElement("option");
+      o.value = i;
+      o.textContent = MOIS_NOMS[mois] + " " + annee;
+      if (i === idxMoisVE) o.selected = true;
+      sel.appendChild(o);
+    }
+    if (btnP) { btnP.disabled = idxMoisVE >= VE_LIMITES.mois; btnP.style.opacity = btnP.disabled?"0.25":"1"; }
+    if (btnN) { btnN.disabled = idxMoisVE <= 0; btnN.style.opacity = btnN.disabled?"0.25":"1"; }
+  } else if (periodeVE === "trimestre") {
+    for (let i = 0; i <= VE_LIMITES.trimestre; i++) {
+      const { annee, trimestre } = getTrimestreCible(i);
+      const o = document.createElement("option");
+      o.value = i;
+      o.textContent = "Trimestre " + (trimestre+1) + " — " + annee;
+      if (i === idxTrimVE) o.selected = true;
+      sel.appendChild(o);
+    }
+    if (btnP) { btnP.disabled = idxTrimVE >= VE_LIMITES.trimestre; btnP.style.opacity = btnP.disabled?"0.25":"1"; }
+    if (btnN) { btnN.disabled = idxTrimVE <= 0; btnN.style.opacity = btnN.disabled?"0.25":"1"; }
+  } else if (periodeVE === "annee") {
+    for (let i = 0; i <= VE_LIMITES.annee; i++) {
+      const o = document.createElement("option");
+      o.value = i;
+      o.textContent = "Année " + (an - i);
+      if (i === idxAnneeVE) o.selected = true;
+      sel.appendChild(o);
+    }
+    if (btnP) { btnP.disabled = idxAnneeVE >= VE_LIMITES.annee; btnP.style.opacity = btnP.disabled?"0.25":"1"; }
+    if (btnN) { btnN.disabled = idxAnneeVE <= 0; btnN.style.opacity = btnN.disabled?"0.25":"1"; }
+  }
+}
+
 function dessinerVueEnsemble() {
   Chart.register(ChartDataLabels);
   const anneeActuelle = new Date().getFullYear();
 
-  // Mettre à jour le label + flèches de navigation
-  const navLabel = document.getElementById("veLabelSemaine");
+  // Peupler le menu déroulant (seulement les périodes avec données) + flèches
+  const veSelect = document.getElementById("veSelectPeriode");
   const btnPrev = document.getElementById("veBtnPrev"), btnNext = document.getElementById("veBtnNext");
-  let label = "", prevDisabled = false, nextDisabled = false;
+  let prevDisabled = false, nextDisabled = false;
 
-  if (periodeVE === "semaine" && semaines.length) {
-    const cle = semaines[idx];
-    const [an, s] = cle.split("-S");
-    label = (idx === 0 ? "Semaine en cours" : "Semaine " + parseInt(s)) + " — " + an;
-    prevDisabled = idx >= semaines.length - 1;
-    nextDisabled = idx <= 0;
-  } else if (periodeVE === "mois") {
-    const { annee, mois } = getMoisCible(idxMoisVE);
-    label = (idxMoisVE === 0 ? "Mois en cours — " : "") + MOIS_NOMS[mois] + " " + annee;
-    prevDisabled = idxMoisVE >= VE_LIMITES.mois;
-    nextDisabled = idxMoisVE <= 0;
-  } else if (periodeVE === "trimestre") {
-    const { annee, trimestre } = getTrimestreCible(idxTrimVE);
-    label = (idxTrimVE === 0 ? "Trimestre en cours — " : "") + "T" + (trimestre + 1) + " " + annee;
-    prevDisabled = idxTrimVE >= VE_LIMITES.trimestre;
-    nextDisabled = idxTrimVE <= 0;
-  } else if (periodeVE === "annee") {
-    const anneeCible = anneeActuelle - idxAnneeVE;
-    label = (idxAnneeVE === 0 ? "Année en cours — " : "") + anneeCible;
-    prevDisabled = idxAnneeVE >= VE_LIMITES.annee;
-    nextDisabled = idxAnneeVE <= 0;
+  const toutesDepenses = RUBRIQUES.flatMap(r => getDepenses(r.cle));
+
+  function aDesDonnees(periode, i) {
+    if (periode === "semaine") {
+      const cle = semaines[i];
+      return toutesDepenses.some(d => getCle(d.date) === cle);
+    }
+    if (periode === "mois") {
+      const { annee, mois } = getMoisCible(i);
+      return toutesDepenses.some(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && dt.getMonth() === mois; });
+    }
+    if (periode === "trimestre") {
+      const { annee, trimestre } = getTrimestreCible(i);
+      return toutesDepenses.some(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && Math.floor(dt.getMonth() / 3) === trimestre; });
+    }
+    if (periode === "annee") {
+      const anneeCible = anneeActuelle - i;
+      return toutesDepenses.some(d => d.date && new Date(d.date).getFullYear() === anneeCible);
+    }
+    return false;
   }
 
-  if (navLabel) navLabel.textContent = label;
+  if (veSelect) {
+    veSelect.innerHTML = "";
+
+    function totalVE(periode, i) {
+      return RUBRIQUES.reduce((s, r) => {
+        const deps = getDepenses(r.cle);
+        if (periode === "semaine") {
+          return s + deps.filter(d => getCle(d.date) === semaines[i]).reduce((a,d) => a + parseFloat(d.montant||0), 0);
+        }
+        if (periode === "mois") {
+          const { annee, mois } = getMoisCible(i);
+          return s + deps.filter(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear()===annee && dt.getMonth()===mois; }).reduce((a,d) => a + parseFloat(d.montant||0), 0);
+        }
+        if (periode === "trimestre") {
+          const { annee, trimestre } = getTrimestreCible(i);
+          return s + deps.filter(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear()===annee && Math.floor(dt.getMonth()/3)===trimestre; }).reduce((a,d) => a + parseFloat(d.montant||0), 0);
+        }
+        if (periode === "annee") {
+          return s + deps.filter(d => d.date && new Date(d.date).getFullYear()===(anneeActuelle-i)).reduce((a,d) => a + parseFloat(d.montant||0), 0);
+        }
+        return s;
+      }, 0);
+    }
+
+    function mkOpt(value, label, total, selected) {
+      const o = document.createElement("option");
+      o.value = value;
+      o.textContent = total > 0 ? `${label}  —  ${total.toFixed(2)} €` : label;
+      if (selected) o.selected = true;
+      return o;
+    }
+
+    if (periodeVE === "semaine") {
+      semaines.forEach((cle, i) => {
+        const [an, s] = cle.split("-S");
+        const label = i === 0 ? "Semaine en cours" : "Semaine " + parseInt(s) + " — " + an;
+        veSelect.appendChild(mkOpt(i, label, totalVE("semaine", i), i === idx));
+      });
+      prevDisabled = idx >= semaines.length - 1;
+      nextDisabled = idx <= 0;
+    } else if (periodeVE === "mois") {
+      for (let i = 0; i <= VE_LIMITES.mois; i++) {
+        if (i !== 0 && !aDesDonnees("mois", i)) continue;
+        const { annee, mois } = getMoisCible(i);
+        veSelect.appendChild(mkOpt(i, MOIS_NOMS[mois] + " " + annee, totalVE("mois", i), i === idxMoisVE));
+      }
+      prevDisabled = idxMoisVE >= VE_LIMITES.mois;
+      nextDisabled = idxMoisVE <= 0;
+    } else if (periodeVE === "trimestre") {
+      for (let i = 0; i <= VE_LIMITES.trimestre; i++) {
+        if (i !== 0 && !aDesDonnees("trimestre", i)) continue;
+        const { annee, trimestre } = getTrimestreCible(i);
+        veSelect.appendChild(mkOpt(i, "Trimestre " + (trimestre + 1) + " — " + annee, totalVE("trimestre", i), i === idxTrimVE));
+      }
+      prevDisabled = idxTrimVE >= VE_LIMITES.trimestre;
+      nextDisabled = idxTrimVE <= 0;
+    } else if (periodeVE === "annee") {
+      for (let i = 0; i <= VE_LIMITES.annee; i++) {
+        if (i !== 0 && !aDesDonnees("annee", i)) continue;
+        const anneeCible = anneeActuelle - i;
+        veSelect.appendChild(mkOpt(i, "Année " + anneeCible, totalVE("annee", i), i === idxAnneeVE));
+      }
+      prevDisabled = idxAnneeVE >= VE_LIMITES.annee;
+      nextDisabled = idxAnneeVE <= 0;
+    }
+  }
+
   if (btnPrev) { btnPrev.disabled = prevDisabled; btnPrev.style.opacity = prevDisabled ? "0.25" : "1"; }
   if (btnNext) { btnNext.disabled = nextDisabled; btnNext.style.opacity = nextDisabled ? "0.25" : "1"; }
 
   // Totaux par rubrique selon la période choisie
   veLabels = RUBRIQUES.map(r => r.emoji + " " + r.nom);
-  veData   = RUBRIQUES.map(r => {
+  veData = RUBRIQUES.map(r => {
     const depenses = getDepenses(r.cle);
     if (periodeVE === "semaine") {
       const cleSem = semaines[idx];
@@ -1185,243 +2173,243 @@ function dessinerVueEnsemble() {
       const { annee, trimestre } = getTrimestreCible(idxTrimVE);
       return depenses.filter(d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && Math.floor(dt.getMonth() / 3) === trimestre; }).reduce((s, d) => s + parseFloat(d.montant || 0), 0);
     }
-    // annee
     const anneeCible = anneeActuelle - idxAnneeVE;
     return depenses.filter(d => d.date && new Date(d.date).getFullYear() === anneeCible).reduce((s, d) => s + parseFloat(d.montant || 0), 0);
   });
-  veTotal = veData.reduce((a,b) => a+b, 0);
+  veTotal = veData.reduce((a, b) => a + b, 0);
 
   const canvas = document.getElementById("canvasVueEnsemble"); if (!canvas) return;
 
-  if (vueEnsembleChart) {
-    // Mise à jour animée : Chart.js anime les parts depuis leurs valeurs précédentes
-    vueEnsembleChart.data.datasets[0].data = [...veData];
+  if (vueEnsembleChart && vueEnsembleChart.config.type === "bar") {
+    vueEnsembleChart.data.datasets[0].data = veData.map(v => veTotal > 0 ? (v / veTotal) * 100 : 0);
     vueEnsembleChart.update();
+    majRecapRubriques();
     return;
   }
 
+  if (vueEnsembleChart) { vueEnsembleChart.destroy(); vueEnsembleChart = null; }
+
+  const wrapBar = document.getElementById("veCanvasWrap");
+  if (wrapBar) wrapBar.style.height = "280px";
+  const vePourcentages = veData.map(v => veTotal > 0 ? (v / veTotal) * 100 : 0);
   vueEnsembleChart = new Chart(canvas, {
-    type: "doughnut",
-    data: { labels: veLabels, datasets: [{ data: veData, backgroundColor: VE_COULEURS, cutout: "48%", borderWidth: 1.5, borderColor: "#0d0f1a", borderRadius: 2 }] },
+    type: "bar",
+    data: { labels: RUBRIQUES.map(r => r.emoji), datasets: [{ data: vePourcentages, backgroundColor: VE_COULEURS, borderRadius: 8, borderSkipped: false }] },
     options: {
-      responsive: true, maintainAspectRatio: true, layout: { padding: 95 },
+      responsive: true, maintainAspectRatio: false,
       animation: { duration: 700, easing: "easeInOutQuart" },
-      plugins: { legend: { display: false }, datalabels: { display: false }, tooltip: { enabled: false } },
-      onHover: (evt, elements) => { evt.native.target.style.cursor = elements.length ? "pointer" : "default"; },
-      onClick: (evt, elements) => {
-        if (!elements.length) return;
-        const i = elements[0].index;
-        if (veData[i] === 0) return;
-        ouvrirHistoRub(RUBRIQUES[i].cle);
+      layout: { padding: { top: 42, right: 8, bottom: 30, left: 8 } },
+      plugins: {
+        legend: { display: false }, tooltip: { enabled: false },
+        datalabels: {
+          display: ctx => veData[ctx.dataIndex] > 0,
+          color: "#fff", font: { weight: "bold", size: 10, family: "Outfit,Arial" },
+          anchor: "end", align: "end",
+          formatter: (v, ctx) => veData[ctx.dataIndex] > 0 ? Math.round(veData[ctx.dataIndex]) + "€" : ""
+        }
+      },
+      // Curseur pointer partout
+      onHover: (evt) => { evt.native.target.style.cursor = "pointer"; },
+      onClick: () => {}, // géré par le listener natif ci-dessous
+      scales: {
+        x: { ticks: { color: "transparent", font: { size: 20 }, maxRotation: 0 }, grid: { display: false }, border: { display: false } },
+        y: { display: false, beginAtZero: true, max: 100 }
       }
     },
     plugins: [
-      { id:"cVE", afterDatasetsDraw(chart) {
-        const meta = chart.getDatasetMeta(0); if (!meta.data.length) return;
-        const {x,y} = meta.data[0]; const c = chart.ctx;
-        c.save(); c.textAlign="center"; c.textBaseline="middle";
-        c.fillStyle="#fff"; c.font="bold 12px Outfit,Arial"; c.fillText("Total",x,y-10);
-        c.font="bold 15px Arial"; c.fillText(veTotal.toFixed(2)+" €",x,y+10);
+      { id: "totalBarre", afterDatasetsDraw(chart) {
+        const c = chart.ctx, w = chart.width;
+        c.save(); c.textAlign = "center"; c.textBaseline = "top";
+        c.fillStyle = "#fff"; c.font = "bold 11px Outfit,Arial"; c.fillText("Total", w/2, 4);
+        c.fillStyle = "#a89fff"; c.font = "bold 14px Arial"; c.fillText(Math.round(veTotal) + " €", w/2, 18);
         c.restore();
       }},
-      { id:"lVE", afterDatasetsDraw(chart) {
-        const meta = chart.getDatasetMeta(0); if (!meta.data.length) return;
-        const c=chart.ctx, cx=meta.data[0].x, cy=meta.data[0].y, re=meta.data[0].outerRadius;
-        meta.data.forEach((arc, i) => {
-          if (veData[i] === 0) return;
-          const angle = (arc.startAngle + arc.endAngle) / 2;
-          const xT = cx + Math.cos(angle) * (re + 16);
-          const yT = cy + Math.sin(angle) * (re + 16);
-          c.textAlign = Math.cos(angle) >= 0 ? "left" : "right";
-          c.textBaseline = "middle";
-          // Emoji + nom rubrique sur la même ligne, emoji devant
-          const parts = veLabels[i].split(" ");
-          const emoji = parts[0];
-          const nom = parts.slice(1).join(" ");
-          const align = c.textAlign;
-          if (align === "left") {
-            c.fillStyle = "#fff"; c.font = "bold 13px Arial"; c.fillText(emoji, xT, yT - 7);
-            c.font = "bold 12px Outfit,Arial";
-            const wEmoji = c.measureText(emoji).width;
-            c.fillText(nom, xT + wEmoji + 4, yT - 7);
-          } else {
-            c.fillStyle = "#fff"; c.font = "bold 12px Outfit,Arial"; c.fillText(nom, xT, yT - 7);
-            const wNom = c.measureText(nom).width;
-            c.font = "bold 13px Arial";
-            c.fillText(emoji, xT - wNom - 4, yT - 7);
+      { id: "emojisBas", afterDraw(chart) {
+        // Dessiner les emojis cliquables sous chaque barre avec un fond rond
+        const c = chart.ctx;
+        const meta = chart.getDatasetMeta(0);
+        const chartArea = chart.chartArea;
+        const nbBarres  = RUBRIQUES.length;
+        const largeurCol = (chartArea.right - chartArea.left) / nbBarres;
+        RUBRIQUES.forEach((r, i) => {
+          const cx = chartArea.left + largeurCol * i + largeurCol / 2;
+          const cy = chartArea.bottom + 18;
+          // Fond rond si la rubrique a des données
+          if (veData[i] > 0) {
+            c.save();
+            c.beginPath();
+            c.arc(cx, cy, 14, 0, Math.PI * 2);
+            c.fillStyle = "rgba(108,99,255,0.25)";
+            c.fill();
+            c.restore();
           }
-          c.fillStyle = "rgba(255,255,255,0.7)"; c.font = "10px Arial"; c.fillText(veData[i].toFixed(2)+"€", xT, yT + 9);
+          c.save();
+          c.font = "20px serif";
+          c.textAlign = "center";
+          c.textBaseline = "middle";
+          c.fillText(r.emoji, cx, cy);
+          c.restore();
         });
       }}
     ]
   });
+
+  // Listener natif couvrant toute la hauteur du canvas (barres + emojis en bas)
+  canvas.onclick = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const chart = vueEnsembleChart;
+    if (!chart) return;
+    const chartArea = chart.chartArea;
+    const nbBarres = RUBRIQUES.length;
+    const largeurCol = (chartArea.right - chartArea.left) / nbBarres;
+    const colIdx = Math.floor((x - chartArea.left) / largeurCol);
+    if (colIdx >= 0 && colIdx < nbBarres && veData[colIdx] > 0) {
+      ouvrirHistoRub(RUBRIQUES[colIdx].cle);
+    }
+  };
+  canvas.style.cursor = "pointer";
+
+  majRecapRubriques();
 }
 
-// ── CHATBOT DESCRIPTION DÉPENSES ──
-let chatDepenses = [];       // dépenses collectées durant la conversation
-let chatEtape = "accueil";   // état courant du chatbot
-let chatDepEnCours = {};     // dépense en cours de saisie
+function getCouleursRubrique(cls) {
+  const map = { "c-rouge":"#ef4444","c-orange":"#f97316","c-jaune":"#eab308","c-vert":"#22c55e","c-bleuclair":"#4fc3f7","c-indigo":"#7c4dff","c-violet":"#a855f7" };
+  return map[cls] || "var(--accent)";
+}
 
-const CHAT_RUBRIQUES = RUBRIQUES.map(r => ({ cle: r.cle, nom: r.nom, emoji: r.emoji }));
+function majRecapRubriques() {
+  const contenu = document.getElementById("recapContenu");
+  const labelEl = document.getElementById("labelRecapPeriode");
+  if (!contenu) return;
+  const anneeActuelle = new Date().getFullYear();
+  let label = "";
+  if (periodeVE === "semaine" && semaines.length) {
+    const [an, s] = semaines[idx].split("-S");
+    label = (idx === 0 ? "Semaine en cours" : "Semaine " + parseInt(s)) + " — " + an;
+  } else if (periodeVE === "mois") {
+    const { annee, mois } = getMoisCible(idxMoisVE);
+    label = MOIS_NOMS[mois] + " " + annee;
+  } else if (periodeVE === "trimestre") {
+    const { annee, trimestre } = getTrimestreCible(idxTrimVE);
+    label = "T" + (trimestre + 1) + " " + annee;
+  } else if (periodeVE === "annee") {
+    label = String(anneeActuelle - idxAnneeVE);
+  }
+  if (labelEl) labelEl.textContent = label;
 
-function chatMsg(texte, type = "bot", suggestions = []) {
-  const msgs = document.getElementById("chatMessages");
-  if (!msgs) return;
-  const bulle = document.createElement("div");
-  bulle.style.cssText = type === "bot"
-    ? "align-self:flex-start;background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.25);border-radius:12px 12px 12px 4px;padding:10px 14px;font-size:0.85em;color:var(--text);max-width:88%;line-height:1.5;"
-    : "align-self:flex-end;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:12px 12px 4px 12px;padding:10px 14px;font-size:0.85em;color:var(--text);max-width:88%;line-height:1.5;";
-  bulle.innerHTML = texte;
-  msgs.appendChild(bulle);
-  msgs.scrollTop = msgs.scrollHeight;
+  const lignes = RUBRIQUES.map((r, i) => ({ r, montant: veData[i] || 0 }))
+    .filter(l => l.montant > 0)
+    .sort((a, b) => b.montant - a.montant);
 
-  // Suggestions (boutons de réponse rapide)
-  const sugg = document.getElementById("chatSuggestions");
-  sugg.innerHTML = "";
-  suggestions.forEach(s => {
-    const btn = document.createElement("button");
-    btn.textContent = s;
-    btn.style.cssText = "padding:6px 12px;border-radius:20px;border:1px solid rgba(108,99,255,0.4);background:rgba(108,99,255,0.1);color:#a89fff;font-family:'Outfit',sans-serif;font-size:0.78em;font-weight:600;cursor:pointer;";
-    btn.onclick = () => { document.getElementById("chatInput").value = s; envoyerChat(); };
-    sugg.appendChild(btn);
+  if (!lignes.length) {
+    contenu.innerHTML = '<div style="color:var(--muted);font-size:0.82em;text-align:center;padding:12px 0;">Aucune dépense sur cette période</div>';
+    return;
+  }
+
+  const total = lignes.reduce((s, l) => s + l.montant, 0);
+
+  // Construire les accordéons
+  contenu.innerHTML = '<div style="display:flex;flex-direction:column;gap:4px;" id="recapAccordeons"></div>'
+    + '<div style="display:flex;justify-content:space-between;padding:8px 10px;border-top:1px solid rgba(255,255,255,0.1);margin-top:4px;">'
+    + '<span style="font-size:0.82em;font-weight:700;color:var(--muted);">Total période</span>'
+    + '<span style="font-size:0.92em;font-weight:800;color:var(--text);">' + total.toFixed(2) + ' €</span>'
+    + '</div>';
+
+  const container = document.getElementById("recapAccordeons");
+
+  lignes.forEach(function(item) {
+    const r = item.r, montant = item.montant;
+    const pct = total > 0 ? (montant / total * 100) : 0;
+    const couleur = getCouleursRubrique(r.cls);
+    const accId = "recapAcc_" + r.cle;
+    const flecheId = "recapFleche_" + r.cle;
+
+    // Récupérer les dépenses filtrées selon la période active
+    const deps = getDepensesRecap(r.cle);
+
+    // Bloc accordéon
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);";
+
+    // En-tête cliquable
+    const header = document.createElement("div");
+    header.style.cssText = "display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;transition:background 0.15s;";
+    header.onmouseover = () => header.style.background = "rgba(255,255,255,0.06)";
+    header.onmouseout  = () => header.style.background = "transparent";
+    header.innerHTML =
+        '<span style="font-size:1.1em;flex-shrink:0;">' + r.emoji + '</span>'
+      + '<div style="flex:1;min-width:0;">'
+      + '  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">'
+      + '    <span style="font-size:0.82em;font-weight:700;color:var(--text);">' + r.nom + '</span>'
+      + '    <span style="font-size:0.82em;font-weight:800;color:var(--accent2);margin-left:8px;">' + montant.toFixed(2) + ' €</span>'
+      + '  </div>'
+      + '  <div style="height:4px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;">'
+      + '    <div style="height:100%;width:' + pct.toFixed(1) + '%;background:' + couleur + ';border-radius:3px;"></div>'
+      + '  </div>'
+      + '</div>'
+      + '<span id="' + flecheId + '" style="font-size:0.7em;color:var(--muted);margin-left:4px;transition:transform 0.3s;flex-shrink:0;">▼</span>';
+
+    // Corps accordéon (historique)
+    const body = document.createElement("div");
+    body.id = accId;
+    body.style.cssText = "overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.22,1,0.36,1);border-top:0px solid rgba(255,255,255,0.07);";
+
+    // Contenu de l'historique
+    let bodyHtml = '<div style="padding:0 12px 10px;">';
+    if (!deps.length) {
+      bodyHtml += '<div style="color:var(--muted);font-size:0.78em;padding:8px 0;text-align:center;">Aucune dépense</div>';
+    } else {
+      deps.forEach(d => {
+        bodyHtml += '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.78em;">'
+          + '<span style="color:var(--muted);white-space:nowrap;flex-shrink:0;font-family:\'DM Mono\',monospace;font-size:0.85em;">' + d.date + '</span>'
+          + '<span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + (d.etablissement || "") + '</span>'
+          + '<span style="font-weight:700;color:var(--accent2);white-space:nowrap;flex-shrink:0;">' + parseFloat(d.montant || 0).toFixed(2) + ' €</span>'
+          + '</div>';
+      });
+    }
+    bodyHtml += '</div>';
+    body.innerHTML = bodyHtml;
+
+    // Toggle accordéon au clic
+    header.addEventListener("click", () => {
+      const ouvert = body.style.maxHeight !== "0px" && body.style.maxHeight !== "";
+      // Fermer tous les autres
+      document.querySelectorAll("[id^='recapAcc_']").forEach(el => { el.style.maxHeight = "0"; el.style.borderTopWidth = "0"; });
+      document.querySelectorAll("[id^='recapFleche_']").forEach(el => { el.style.transform = "rotate(0deg)"; });
+      if (!ouvert) {
+        body.style.maxHeight = "99999px";
+        body.style.borderTopWidth = "1px";
+        document.getElementById(flecheId).style.transform = "rotate(180deg)";
+      }
+    });
+
+    wrap.appendChild(header);
+    wrap.appendChild(body);
+    container.appendChild(wrap);
   });
 }
 
-function chatReset() {
-  chatDepenses = [];
-  chatEtape = "accueil";
-  chatDepEnCours = {};
-  document.getElementById("chatMessages").innerHTML = "";
-  document.getElementById("chatSuggestions").innerHTML = "";
-  document.getElementById("importPreview").style.display = "none";
-  document.getElementById("chatInputZone").style.display = "flex";
-  chatDemarrer();
+function getDepensesRecap(cle) {
+  const deps = getDepenses(cle);
+  const anneeActuelle = new Date().getFullYear();
+  let filtre;
+  if (periodeVE === "semaine") {
+    const cleSem = semaines[idx];
+    filtre = d => getCle(d.date) === cleSem;
+  } else if (periodeVE === "mois") {
+    const { annee, mois } = getMoisCible(idxMoisVE);
+    filtre = d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && dt.getMonth() === mois; };
+  } else if (periodeVE === "trimestre") {
+    const { annee, trimestre } = getTrimestreCible(idxTrimVE);
+    filtre = d => { if (!d.date) return false; const dt = new Date(d.date); return dt.getFullYear() === annee && Math.floor(dt.getMonth() / 3) === trimestre; };
+  } else {
+    const anneeCible = anneeActuelle - idxAnneeVE;
+    filtre = d => d.date && new Date(d.date).getFullYear() === anneeCible;
+  }
+  return deps.filter(filtre).sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-function chatDemarrer() {
-  chatMsg("👋 Bonjour ! Je suis là pour t'aider à saisir tes dépenses rapidement.<br><br>Décris-moi une dépense — par exemple :<br><em>\"J'ai dépensé 25€ chez Carrefour hier\"</em><br>ou simplement<br><em>\"Pizza 12€\"</em>", "bot", ["J'ai dépensé...", "Commencer"]);
-  chatEtape = "attente";
-}
-
-function envoyerChat() {
-  const input = document.getElementById("chatInput");
-  const texte = input.value.trim();
-  if (!texte) return;
-  chatMsg(texte, "user");
-  input.value = "";
-  document.getElementById("chatSuggestions").innerHTML = "";
-  setTimeout(() => traiterMessageChat(texte), 300);
-}
-
-function traiterMessageChat(texte) {
-  const t = texte.toLowerCase();
-
-  // Extraire montant — supporte 4,30 / 4.30 / 12,50€ / 12.50 €
-  const montantMatch = texte.match(/(\d+[\.,]\d{2})\s*€?|(\d+)\s*€/);
-  const montant = montantMatch
-    ? parseFloat((montantMatch[1] || montantMatch[2]).replace(",", "."))
-    : null;
-
-  // Extraire date
-  let date = new Date().toISOString().slice(0,10); // aujourd'hui par défaut
-  if (/hier/i.test(t)) {
-    const d = new Date(); d.setDate(d.getDate()-1);
-    date = d.toISOString().slice(0,10);
-  } else if (/avant[\s-]hier/i.test(t)) {
-    const d = new Date(); d.setDate(d.getDate()-2);
-    date = d.toISOString().slice(0,10);
-  }
-  const dateMatch = texte.match(/(\d{1,2})[\/\.](\d{1,2})(?:[\/\.](\d{2,4}))?/);
-  if (dateMatch) {
-    const j = dateMatch[1].padStart(2,"0"), m = dateMatch[2].padStart(2,"0");
-    const a = dateMatch[3] ? (dateMatch[3].length===2?"20"+dateMatch[3]:dateMatch[3]) : new Date().getFullYear();
-    date = `${a}-${m}-${j}`;
-  }
-
-  // Identifier rubrique et établissement
-  let rubrique = null, etablissement = "", categorie = "", confiance = "faible";
-  for (const e of ENSEIGNES) {
-    if (e.regex.test(texte)) {
-      rubrique = e.rubrique;
-      etablissement = e.etab;
-      categorie = e.categorie;
-      confiance = e.confiance;
-      break;
-    }
-  }
-
-  if (chatEtape === "attente" || chatEtape === "autre") {
-    if (!montant || montant <= 0) {
-      chatMsg("Je n'ai pas trouvé de montant. Peux-tu préciser ? Par exemple : <em>\"Supermarché 35€\"</em>", "bot", ["35€", "12.50€", "100€"]);
-      return;
-    }
-
-    chatDepEnCours = { date, montant, etablissement, rubrique, categorie };
-
-    if (!rubrique) {
-      // Demander la rubrique
-      chatEtape = "demande_rubrique";
-      const opts = CHAT_RUBRIQUES.map(r => `${r.emoji} ${r.nom}`);
-      chatMsg(`J'ai noté <strong>${montant.toFixed(2)} €</strong>${etablissement ? " chez <strong>"+etablissement+"</strong>" : ""} le <strong>${date}</strong>.<br><br>Dans quelle rubrique ?`, "bot", opts);
-      return;
-    }
-
-    // Tout trouvé — demander confirmation
-    chatEtape = "confirmation";
-    const rub = CHAT_RUBRIQUES.find(r => r.cle === rubrique);
-    chatMsg(`J'ai noté :<br>📅 <strong>${date}</strong><br>${rub?.emoji} <strong>${rub?.nom}</strong> — ${categorie}<br>🏪 ${etablissement || "—"}<br>💰 <strong>${montant.toFixed(2)} €</strong><br><br>C'est correct ?`, "bot", ["✅ Oui, ajouter", "✏️ Modifier", "➕ Autre dépense"]);
-
-  } else if (chatEtape === "demande_rubrique") {
-    const rub = CHAT_RUBRIQUES.find(r => t.includes(r.nom.toLowerCase()) || t.includes(r.emoji));
-    if (!rub) {
-      chatMsg("Je n'ai pas reconnu la rubrique. Choisis parmi :", "bot", CHAT_RUBRIQUES.map(r => `${r.emoji} ${r.nom}`));
-      return;
-    }
-    chatDepEnCours.rubrique = rub.cle;
-    if (!chatDepEnCours.categorie) chatDepEnCours.categorie = rub.nom;
-    chatEtape = "confirmation";
-    chatMsg(`J'ai noté :<br>📅 <strong>${chatDepEnCours.date}</strong><br>${rub.emoji} <strong>${rub.nom}</strong><br>🏪 ${chatDepEnCours.etablissement || "—"}<br>💰 <strong>${chatDepEnCours.montant.toFixed(2)} €</strong><br><br>C'est correct ?`, "bot", ["✅ Oui, ajouter", "✏️ Modifier", "➕ Autre dépense"]);
-
-  } else if (chatEtape === "confirmation") {
-    if (t.includes("oui") || t.includes("ajouter") || t.includes("✅")) {
-      chatDepenses.push({ ...chatDepEnCours, confiance: "haute", raison: "Saisi via chatbot" });
-      chatDepEnCours = {};
-      chatEtape = "attente";
-      chatMsg(`✅ Dépense ajoutée ! Tu en as <strong>${chatDepenses.length}</strong> en attente.<br><br>Tu veux ajouter une autre dépense ou enregistrer ?`, "bot", ["➕ Autre dépense", "💾 Enregistrer tout"]);
-      mettreAJourPreview();
-    } else if (t.includes("enregistrer") || t.includes("💾") || t.includes("terminer")) {
-      if (chatDepenses.length === 0) { chatMsg("Aucune dépense à enregistrer pour l'instant.", "bot"); return; }
-      mettreAJourPreview();
-      document.getElementById("chatInputZone").style.display = "none";
-      document.getElementById("chatSuggestions").innerHTML = "";
-      chatMsg(`📋 Voici le récapitulatif de tes <strong>${chatDepenses.length}</strong> dépense${chatDepenses.length>1?"s":""}. Clique sur <strong>Enregistrer</strong> pour les sauvegarder.`, "bot");
-    } else if (t.includes("autre") || t.includes("➕")) {
-      chatDepEnCours = {};
-      chatEtape = "attente";
-      chatMsg("Super ! Décris-moi ta prochaine dépense.", "bot");
-    } else {
-      chatMsg("Dis-moi si c'est correct ou si tu veux modifier quelque chose.", "bot", ["✅ Oui, ajouter", "✏️ Modifier", "➕ Autre dépense"]);
-    }
-  }
-
-  // Shortcut : "enregistrer" depuis n'importe où
-  if (chatEtape === "attente" && (t.includes("enregistrer") || t.includes("💾") || t.includes("terminer") || t.includes("c'est tout") || t.includes("fini"))) {
-    if (chatDepenses.length === 0) { chatMsg("Tu n'as pas encore saisi de dépenses.", "bot"); return; }
-    mettreAJourPreview();
-    document.getElementById("chatInputZone").style.display = "none";
-    chatMsg(`📋 Récapitulatif de tes <strong>${chatDepenses.length}</strong> dépense${chatDepenses.length>1?"s":""}. Clique sur <strong>Enregistrer</strong> pour les sauvegarder.`, "bot");
-  }
-}
-
-function mettreAJourPreview() {
-  importDepensesDetectees = chatDepenses;
-  if (chatDepenses.length > 0) {
-    document.getElementById("importPreview").style.display = "block";
-    afficherPreviewImport(chatDepenses);
-  }
-}
-
-function importAnnuler() { chatReset(); }
 
 // ── DICTIONNAIRE D'ENSEIGNES ──
 const ENSEIGNES = [
@@ -1723,10 +2711,86 @@ function majCatsImport(i) {
   }
 }
 
+// ── SCAN DE TICKET DE CAISSE ──
+let importDepensesDetectees = [];
+
+function ticketFichierChoisi(input) {
+  const fichier = input.files[0];
+  if (!fichier) return;
+  if (!fichier.type.startsWith("image/")) { alert("Merci de choisir une image."); return; }
+  traiterTicketPhoto(fichier);
+  input.value = "";
+}
+
+async function traiterTicketPhoto(fichier) {
+  const statut = document.getElementById("ticketStatut");
+  const apercu = document.getElementById("ticketApercu");
+  const apercuImg = document.getElementById("ticketApercuImg");
+  const zoneUpload = document.getElementById("ticketZoneUpload");
+  const preview = document.getElementById("importPreview");
+  preview.style.display = "none";
+
+  // Afficher l'aperçu de la photo
+  const dataUrl = await new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.readAsDataURL(fichier);
+  });
+  apercuImg.src = dataUrl;
+  apercu.style.display = "block";
+
+  statut.style.display = "block";
+  statut.textContent = "🔍 Lecture du ticket en cours...";
+
+  try {
+    const base64 = dataUrl.split(",")[1];
+    const mediaType = fichier.type;
+
+    const response = await fetch("/.netlify/functions/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: base64, mediaType })
+    });
+
+    if (!response.ok) throw new Error("Le service d'analyse n'a pas répondu correctement.");
+    const resultat = await response.json();
+    if (resultat.error) throw new Error(resultat.error);
+
+    const depense = {
+      date: resultat.date || new Date().toISOString().slice(0,10),
+      montant: parseFloat(resultat.montant) || 0,
+      etablissement: resultat.etablissement || "",
+      rubrique: resultat.rubrique || "depensesAlimentations",
+      categorie: resultat.categorie || "À classifier",
+      confiance: resultat.confiance || "moyenne",
+      raison: "Détecté depuis la photo du ticket"
+    };
+
+    if (!depense.montant || depense.montant <= 0) throw new Error("Montant non détecté sur le ticket.");
+
+    importDepensesDetectees = [depense];
+    statut.style.display = "none";
+    preview.style.display = "block";
+    afficherPreviewImport(importDepensesDetectees);
+
+  } catch (err) {
+    statut.textContent = "❌ " + err.message + " — Tu peux saisir la dépense manuellement via le bouton ➕ Nouvelle dépense.";
+  }
+}
+
+function ticketReset() {
+  document.getElementById("importPreview").style.display = "none";
+  document.getElementById("importLignes").innerHTML = "";
+  document.getElementById("ticketStatut").style.display = "none";
+  document.getElementById("ticketApercu").style.display = "none";
+  document.getElementById("ticketApercuImg").src = "";
+  importDepensesDetectees = [];
+}
+
 async function importValider() {
   const btn = document.getElementById("btnImportValider");
   btn.disabled = true;
-  btn.textContent = "⏳ Import en cours...";
+  btn.textContent = "⏳ Enregistrement...";
 
   const { data: { session } } = await supa.auth.getSession();
   if (!session) { btn.textContent = "❌ Non connecté"; btn.disabled = false; return; }
@@ -1754,24 +2818,15 @@ async function importValider() {
     nb++;
   }
 
-  btn.textContent = `✅ ${nb} dépense${nb > 1 ? "s" : ""} importée${nb > 1 ? "s" : ""} !`;
+  btn.textContent = nb > 0 ? "✅ Dépense enregistrée !" : "⚠️ Rien à enregistrer";
   setTimeout(() => {
-    importAnnuler();
+    ticketReset();
     btn.disabled = false;
-    btn.textContent = "✅ Importer les dépenses sélectionnées";
+    btn.textContent = "✅ Enregistrer";
     chargerDepenses().then(() => { semaines = getAllSem(); afficher(); });
   }, 1500);
 }
-
-function importAnnuler() {
-  document.getElementById("importPreview").style.display = "none";
-  document.getElementById("importStatut").style.display = "none";
-  document.getElementById("importLignes").innerHTML = "";
-  const ta = document.getElementById("importTexte");
-  if (ta) ta.value = "";
-  importDepensesDetectees = [];
-}
-// ── FIN IMPORT RELEVÉ ──
+// ── FIN SCAN DE TICKET ──
 function ouvrirHistoRub(cle) {
   const r = RUBRIQUES.find(x => x.cle === cle);
   const anneeActuelle = new Date().getFullYear();
@@ -1817,7 +2872,7 @@ function ouvrirHistoRub(cle) {
     deps.forEach(d => {
       html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 4px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.82em;gap:8px;">
         <span style="color:var(--muted);white-space:nowrap;flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.85em;">${d.date}</span>
-        <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.categorie || ""}</span>
+        <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.etablissement || ""}</span>
         <span style="font-weight:700;color:var(--accent2);white-space:nowrap;flex-shrink:0;">${parseFloat(d.montant||0).toFixed(2)} €</span>
       </div>`;
     });
@@ -1842,7 +2897,7 @@ function ouvrirHistoRub(cle) {
       items.forEach(d => {
         html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 4px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.82em;gap:8px;">
           <span style="color:var(--muted);white-space:nowrap;flex-shrink:0;font-family:'DM Mono',monospace;font-size:0.85em;">${d.date}</span>
-          <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.categorie || ""}</span>
+          <span style="flex:1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.etablissement || ""}</span>
           <span style="font-weight:700;color:var(--accent2);white-space:nowrap;flex-shrink:0;">${parseFloat(d.montant||0).toFixed(2)} €</span>
         </div>`;
       });
@@ -1854,79 +2909,6 @@ function ouvrirHistoRub(cle) {
 }
 function fermerHistoRub() { document.getElementById("modalHistoRub").classList.remove("actif"); }
 
-function navigDiagSem(dir) {
-  const n = idx + dir;
-  if (n < 0 || n >= semaines.length) return;
-  idx = n;
-  afficher();
-  if (periodeVE === "semaine" && OUTILS_ETATS.ooutil_vue) dessinerVueEnsemble();
-  setTimeout(() => dessinerDiagSem(), 20);
-}
-function dessinerDiagSem() {
-  if (!semaines || semaines.length === 0) return;
-  if (idx >= semaines.length) idx = 0;
-  const cleA = semaines[idx];
-  const cleP = semaines[idx + 1] || null;
-  const parts = cleA.split("-S"), sem = parseInt(parts[1]), an = parts[0];
-
-  const btnP = document.getElementById("diagSemBtnPrev");
-  const btnN = document.getElementById("diagSemBtnNext");
-  if (btnP) { btnP.disabled = idx >= semaines.length-1; btnP.style.opacity = idx >= semaines.length-1 ? "0.25" : "1"; }
-  if (btnN) { btnN.disabled = idx <= 0; btnN.style.opacity = idx <= 0 ? "0.25" : "1"; }
-
-  const titreEl = document.getElementById("diagSemTitre");
-  const totalEl = document.getElementById("diagSemTotal");
-  if (titreEl) titreEl.textContent = (idx === 0 ? "Semaine en cours" : "Semaine " + sem) + " — " + an;
-
-  const COULEURS = ["#ef4444","#f7971e","#eab308","#22c55e","#4fc3f7","#7c4dff","#a855f7"];
-  const dataActuelle = RUBRIQUES.map(r => getTotalR(r.cle, cleA));
-  const total = dataActuelle.reduce((a,b) => a+b, 0);
-  if (totalEl) totalEl.textContent = total.toFixed(2) + " €";
-
-  const canvas = document.getElementById("canvasDiagSem");
-  if (!canvas) return;
-
-  const maxY = Math.ceil(Math.max(...dataActuelle, 1) * 1.35 / 10) * 10;
-  diagSemDataActuelle = dataActuelle;
-
-  if (diagSemChart) {
-    // Mettre à jour le graphique existant : Chart.js anime automatiquement
-    // depuis les valeurs précédentes vers les nouvelles valeurs
-    diagSemChart.data.datasets[0].data = [...dataActuelle];
-    diagSemChart.options.scales.y.max = maxY;
-    diagSemChart.update();
-    return;
-  }
-
-  diagSemChart = new Chart(canvas, {
-    type: "bar",
-    data: {
-      labels: RUBRIQUES.map(r => r.emoji),
-      datasets: [{ data: [...dataActuelle], backgroundColor: COULEURS, borderRadius: 6, borderSkipped: false }]
-    },
-    options: {
-      responsive: false,
-      maintainAspectRatio: false,
-      animation: { duration: 800, easing: "easeInOutQuart" },
-      layout: { padding: { top: 24, right: 6, bottom: 0, left: 6 } },
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false },
-        datalabels: {
-          display: ctx => diagSemDataActuelle[ctx.dataIndex] > 0,
-          color: "#fff",
-          font: { weight: "bold", size: 10, family: "Outfit,Arial" },
-          anchor: "end", align: "end",
-          formatter: (v, ctx) => diagSemDataActuelle[ctx.dataIndex] > 0 ? diagSemDataActuelle[ctx.dataIndex].toFixed(0) + "€" : ""
-        }
-      },
-      scales: {
-        x: { ticks: { color: "#fff", font: { size: 18 }, maxRotation: 0 }, grid: { display: false }, border: { display: false } },
-        y: { display: false, beginAtZero: true, max: maxY }
-      }
-    }
-  });
-}
 let diagChart=null, idxDiag=0;
 function ouvrirDiagrammeSemaine(){idxDiag=idx;dessinerDiag();document.getElementById("modalDiag").classList.add("actif");}
 function navigDiag(dir){const n=idxDiag+dir;if(n<0||n>=semaines.length)return;idxDiag=n;dessinerDiag();}
@@ -1949,7 +2931,7 @@ function dessinerDiag(){
   requestAnimationFrame(animer);
 }
 function fermerDiag(){document.getElementById("modalDiag").classList.remove("actif");}
-const CATEGORIES_PAR_RUBRIQUE={alimentations:["🍷 Alcool","🌿 Bio","🥤 Boissons","🥩 Boucherie","🥖 Boulangerie","💄 Cosmétique","🏪 Épicerie","🛒 Grande surface","🌽 Marché","🏬 Petite surface","💊 Pharmacie","🐟 Poissonnerie","🛒 Supermarché","🍱 Traiteur"],restaurants:["🍺 Brasserie","🥄 Cafétéria","🥗 Cantine","🍔 Fast Food","🍟 Friterie","🥙 Kebab","🍕 Pizza","🍗 Poulet Braisé","🍽️ Restaurant","🍛 Resto Indien","🍣 Sushi"],services:["🏊 Activités Sportives","⚖️ Amende","🛡️ Assurance","💄 Beauté","💇 Coiffeur","🤲 Don","🔧 Entretiens","🏛️ Impôts","🖨️ Impression","📰 Journaux","📺 Médias","💊 Mutuelle","🏊 Piscine","🛠️ Réparations","🏥 Santé","🩺 Soins","🎙️ Studio"],factures:["📦 Abonnements","🛡️ Assurance","🌐 Box Internet","🏢 Charges","🎬 Cinéma","💧 Eau","⚡ Électricité","🏦 Frais bancaires","🔥 Gaz","⚖️ Impôts","🏠 Loyer","🖥️ Site Web","🏛️ Taxes","📱 Téléphone"],materiels:["👜 Accessoires","🪛 Bricolage","👟 Chaussures","🍳 Cuisine","🖼️ Déco","🫧 Électroménager","📱 High-tech","🏗️ Immobilier","💻 Informatique","🌱 Jardinage","📚 Livres","🎮 Loisirs","🪑 Mobilier","🔨 Outils","✏️ Papeterie","⚙️ Pièces mécaniques","⚽ Sport","👗 Vêtements"],transports:["🚌 Bus","⛽ Carburant","🚗 Covoiturage","🚇 Métro","🚆 Train","🚊 Tram","🛵 Trottinette","🚕 Taxi","🚖 VTC","🚲 Vélo","✈️ Vol"],sorties:["🍺 Bar","☕ Café","🎬 Cinéma","🕺 Club","🧋 Coffee Shop","🎵 Concert","🎪 Festival","🏛️ Musée","🌐 Site Web","🎉 Soirée","🎭 Spectacle"]};
+const CATEGORIES_PAR_RUBRIQUE={alimentations:["🍷 Alcool","🐾 Animaux","🌿 Bio","🥤 Boissons","🥩 Boucherie","🥖 Boulangerie","💄 Cosmétique","🏪 Épicerie","🛒 Grande surface","🌽 Marché","🏬 Petite surface","💊 Pharmacie","🐟 Poissonnerie","🛒 Supermarché","🍱 Traiteur"],restaurants:["🍺 Brasserie","🥄 Cafétéria","🥗 Cantine","🍔 Fast Food","🍟 Friterie","🥙 Kebab","🍕 Pizza","🍗 Poulet Braisé","🍽️ Restaurant","🍛 Resto Indien","🍣 Sushi"],services:["🏊 Activités Sportives","⚖️ Amende","🛡️ Assurance","💄 Beauté","💇 Coiffeur","🤲 Don","🔧 Entretiens","🏛️ Impôts","🖨️ Impression","📰 Journaux","📺 Médias","💊 Mutuelle","🏊 Piscine","🛠️ Réparations","🏥 Santé","🩺 Soins","🎙️ Studio","🐱 Vétérinaire"],factures:["📦 Abonnements","🛡️ Assurance","🌐 Box Internet","🏢 Charges","🎬 Cinéma","💧 Eau","⚡ Électricité","🏦 Frais bancaires","🔥 Gaz","⚖️ Impôts","🏠 Loyer","🖥️ Site Web","🏛️ Taxes","📱 Téléphone"],materiels:["👜 Accessoires","🐾 Animalerie","🪛 Bricolage","👟 Chaussures","🍳 Cuisine","🖼️ Déco","🫧 Électroménager","📱 High-tech","🏗️ Immobilier","💻 Informatique","🌱 Jardinage","📚 Livres","🎮 Loisirs","🪑 Mobilier","🔨 Outils","✏️ Papeterie","⚙️ Pièces mécaniques","⚽ Sport","👗 Vêtements"],transports:["🚌 Bus","⛽ Carburant","🚗 Covoiturage","🚇 Métro","🚆 Train","🚊 Tram","🛵 Trottinette","🚕 Taxi","🚖 VTC","🚲 Vélo","✈️ Vol"],sorties:["🍺 Bar","☕ Café","🎬 Cinéma","🕺 Club","🧋 Coffee Shop","🎵 Concert","🎪 Festival","🏛️ Musée","🌐 Site Web","🎉 Soirée","🎭 Spectacle"]};
 const CLE_STORAGE={alimentations:"depensesAlimentations",restaurants:"depensesRestaurants",services:"depensesServices",factures:"depensesFactures",materiels:"depensesMateriels",transports:"depensesTransports",sorties:"depensesSorties"};
 function ouvrirModal(e){e.preventDefault();const auj=new Date();document.getElementById("modalDate").value=`${auj.getFullYear()}-${String(auj.getMonth()+1).padStart(2,'0')}-${String(auj.getDate()).padStart(2,'0')}`;document.getElementById("modalRubrique").value="";document.getElementById("modalCategorie").innerHTML='<option value="">-- Choisir une rubrique d\'abord --</option>';document.getElementById("modalEtablissement").value="";document.getElementById("modalMontant").value="";document.getElementById("modalOverlay").classList.add("actif");}
 function fermerModal(){document.getElementById("modalOverlay").classList.remove("actif");}
@@ -2030,7 +3012,83 @@ async function sInscrire() {
   const ok = document.getElementById("okInscription");
   ok.textContent = "✅ Compte créé ! Bienvenue " + prenom + " !";
   ok.classList.add("visible");
-  setTimeout(() => { fermerAuth(); majNavbar(); }, 1200);
+  setTimeout(async () => {
+    fermerAuth();
+    await majNavbar();
+    await chargerDepenses();
+    await chargerCatsPerso();
+    await chargerComptes();
+    await chargerEtMajSnapshotsAvoirs();
+    semaines = getAllSem();
+    afficher();
+    majSelectsComptes();
+  }, 1200);
+}
+
+// ── CONNEXION SOCIALE (Google) ──
+async function connexionGoogle() {
+  const { error } = await supa.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: window.location.origin + "/index.html" }
+  });
+  if (error) {
+    const errEl = document.getElementById("errConnexion") || document.getElementById("errInscription");
+    if (errEl) { errEl.textContent = "Connexion Google indisponible pour le moment."; errEl.classList.add("visible"); }
+  }
+}
+
+// ── MOT DE PASSE OUBLIÉ ──
+async function demanderResetMdp() {
+  const email = document.getElementById("connEmail").value.trim().toLowerCase();
+  const errEl = document.getElementById("errConnexion");
+  const okEl = document.getElementById("okConnexion");
+  errEl.classList.remove("visible");
+  if (!email || !email.includes("@")) {
+    errEl.textContent = "Entre d'abord ton email ci-dessus pour recevoir le lien.";
+    errEl.classList.add("visible");
+    return;
+  }
+  const { error } = await supa.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + "/index.html"
+  });
+  if (error) {
+    errEl.textContent = error.message;
+    errEl.classList.add("visible");
+    return;
+  }
+  okEl.textContent = "📩 Email envoyé ! Vérifie ta boîte de réception.";
+  okEl.classList.add("visible");
+}
+
+function ouvrirResetMdpPopup() {
+  document.getElementById("overlayInscription").classList.remove("actif");
+  document.getElementById("overlayConnexion").classList.remove("actif");
+  document.getElementById("overlayResetMdp").classList.add("actif");
+}
+
+async function changerMdpDepuisLien() {
+  const mdp1 = document.getElementById("resetMdp1").value;
+  const mdp2 = document.getElementById("resetMdp2").value;
+  const errEl = document.getElementById("errResetMdp");
+  const okEl = document.getElementById("okResetMdp");
+  errEl.classList.remove("visible");
+
+  if (mdp1.length < 8) { errEl.textContent = "Le mot de passe doit faire 8 caractères minimum."; errEl.classList.add("visible"); return; }
+  if (mdp1 !== mdp2)   { errEl.textContent = "Les mots de passe ne correspondent pas."; errEl.classList.add("visible"); return; }
+
+  const { error } = await supa.auth.updateUser({ password: mdp1 });
+  if (error) { errEl.textContent = error.message; errEl.classList.add("visible"); return; }
+
+  document.getElementById("formResetMdp").style.display = "none";
+  okEl.textContent = "✅ Mot de passe mis à jour ! Tu es maintenant connecté(e).";
+  okEl.classList.add("visible");
+  setTimeout(() => {
+    document.getElementById("overlayResetMdp").classList.remove("actif");
+    document.getElementById("formResetMdp").style.display = "block";
+    okEl.classList.remove("visible");
+    // Nettoyer l'URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }, 2000);
 }
 
 async function seConnecter() {
@@ -2048,13 +3106,27 @@ async function seConnecter() {
   const session = { id: user.id, prenom, nom, email: user.email };
   localStorage.setItem("patacompta_session", JSON.stringify(session));
   fermerAuth();
-  majNavbar();
+  await majNavbar();
+  await chargerDepenses();
+  await chargerCatsPerso();
+  await chargerComptes();
+  await chargerEtMajSnapshotsAvoirs();
+  semaines = getAllSem();
+  afficher();
+  majSelectsComptes();
 }
 
 async function seDeconnecter() {
   await supa.auth.signOut();
   localStorage.removeItem("patacompta_session");
-  majNavbar();
+  await majNavbar();
+  await chargerDepenses();
+  await chargerCatsPerso();
+  await chargerComptes();
+  await chargerEtMajSnapshotsAvoirs();
+  semaines = getAllSem();
+  afficher();
+  majSelectsComptes();
 }
 
 async function majNavbar() {
@@ -2067,49 +3139,127 @@ async function majNavbar() {
       const { data: profilDB } = await supa.from("profils").select("photo").eq("id", session.id).single();
       if (profilDB && profilDB.photo) avatarContenu = `<img src="${profilDB.photo}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
     } catch (e) {}
-    nav.innerHTML = `<div class="nav-user">
-      <a href="profil.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
-        <div class="nav-avatar">${avatarContenu}</div>
-        <span class="nav-username">${session.prenom}</span>
-      </a>
-      <button class="nav-deconnexion nav-btn nav-btn-ghost" onclick="seDeconnecter()">Déconnexion</button>
-    </div>`;
+    nav.innerHTML = `<button class="nav-menu-btn" onclick="toggleDropdown()" id="navMenuBtn">
+      <div class="nav-menu-avatar">${avatarContenu}</div>
+      <span class="nav-menu-name">${session.prenom}</span>
+      <span class="nav-menu-chevron" id="navMenuChevron">▼</span>
+    </button>`;
+    const nomEl = document.getElementById("dropdownNom");
+    const emailEl = document.getElementById("dropdownEmail");
+    if (nomEl) nomEl.textContent = (session.prenom || "") + " " + (session.nom || "");
+    if (emailEl) emailEl.textContent = session.email || "";
   } else {
     nav.innerHTML = `<a href="#" class="nav-btn nav-btn-ghost" onclick="ouvrirAuth('connexion');return false;">Connexion</a>
       <a href="#" class="nav-btn nav-btn-primary" onclick="ouvrirAuth('inscription');return false;">Créer un compte</a>`;
   }
 }
 
+function toggleDropdown() {
+  const dd = document.getElementById("navDropdown");
+  const chevron = document.getElementById("navMenuChevron");
+  const isVisible = dd.classList.contains("visible");
+  dd.classList.toggle("visible");
+  if (chevron) chevron.classList.toggle("ouvert", !isVisible);
+}
+
+function fermerDropdown() {
+  const dd = document.getElementById("navDropdown");
+  const chevron = document.getElementById("navMenuChevron");
+  dd.classList.remove("visible");
+  if (chevron) chevron.classList.remove("ouvert");
+}
+
+// Fermer le menu si on clique ailleurs
+document.addEventListener("click", e => {
+  const btn = document.getElementById("navMenuBtn");
+  const dd = document.getElementById("navDropdown");
+  if (dd && btn && !btn.contains(e.target) && !dd.contains(e.target)) fermerDropdown();
+});
+
 // Vérifier session Supabase au chargement
-(async () => {
-  const { data } = await supa.auth.getSession();
-  if (data.session) {
-    const user = data.session.user;
-    const prenom = user.user_metadata?.prenom || "";
-    const nom    = user.user_metadata?.nom || "";
-    const session = { id: user.id, prenom, nom, email: user.email };
-    localStorage.setItem("patacompta_session", JSON.stringify(session));
-  } else {
-    localStorage.removeItem("patacompta_session");
+let initDejaFait = false;
+let dernierUserId = undefined; // permet de détecter un vrai changement d'état de connexion
+
+async function initApp(session) {
+  const userId = session?.user?.id || null;
+  if (initDejaFait && userId === dernierUserId) return;
+  initDejaFait = true;
+  dernierUserId = userId;
+
+  try {
+    if (session) {
+      const user = session.user;
+      const prenom = user.user_metadata?.prenom || user.user_metadata?.full_name?.split(" ")[0] || "";
+      const nom    = user.user_metadata?.nom || user.user_metadata?.full_name?.split(" ").slice(1).join(" ") || "";
+      const sessionLS = { id: user.id, prenom, nom, email: user.email };
+      localStorage.setItem("patacompta_session", JSON.stringify(sessionLS));
+
+      const { data: profilExistant } = await supa.from("profils").select("id").eq("id", user.id).single();
+      if (!profilExistant) {
+        await supa.from("profils").insert({ id: user.id, prenom, nom });
+      }
+    } else {
+      localStorage.removeItem("patacompta_session");
+    }
+    majNavbar();
+    await chargerDepenses();
+    await chargerCatsPerso();
+    await chargerComptes();
+    await chargerEtMajSnapshotsAvoirs();
+    semaines = getAllSem();
+    afficher();
+    majSelectsComptes();
+  } catch(err) {
+    console.error("[PataCompta] Erreur initApp:", err);
+  } finally {
+    // Toujours afficher la page même si une erreur survient
+    const spinner = document.getElementById("navMiniSpinner");
+    if (spinner) spinner.style.display = "none";
+    const contenu = document.getElementById("contenuPage");
+    if (contenu) contenu.style.opacity = "1";
   }
-  const startTime = performance.now();
-  majNavbar();
-  await chargerDepenses();
-  await chargerCatsPerso();
-  semaines = getAllSem();
-  afficher();
-  // Synchroniser la durée du cercle avec le temps de chargement réel
-  const elapsed = performance.now() - startTime;
-  const overlay = document.getElementById("loadingOverlay");
-  if (overlay) {
-    const progress = overlay.querySelector(".progress");
-    if (progress) progress.style.setProperty("--load-duration", Math.max(elapsed, 500) + "ms");
-    progress?.addEventListener("animationend", () => {
-      overlay.classList.add("masquer");
-      setTimeout(() => overlay.remove(), 500);
-    }, { once: true });
+
+  const estResetMdp = window.location.hash.includes("type=recovery") || new URLSearchParams(window.location.search).get("type") === "recovery";
+  if (estResetMdp) ouvrirResetMdpPopup();
+
+  // Ouvrir automatiquement un outil via ?ouvrir=
+  const params = new URLSearchParams(window.location.search);
+  const ouvrir = params.get("ouvrir");
+  if (ouvrir) {
+    setTimeout(() => {
+      if (ouvrir === "nouvelle") {
+        toggleOutil("ooutil_nouvelle");
+        document.getElementById("ooutil_nouvelle")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else if (ouvrir === "vue") {
+        toggleOutil("ooutil_vue");
+        document.getElementById("ooutil_vue")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (ouvrir === "ticket") {
+        toggleOutil("ooutil_import");
+        document.getElementById("ooutil_import")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      // Nettoyer l'URL sans recharger la page
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }, 800);
   }
-})();
+}
+
+// Écoute fiable de l'état de session Supabase (gère le délai de restauration au premier chargement
+// ET le retour de redirection OAuth Google, qui peut déclencher plusieurs événements successifs)
+supa.auth.onAuthStateChange((event, session) => {
+  console.log("[PataCompta] onAuthStateChange:", event, session ? "session présente" : "pas de session");
+  initApp(session);
+});
+
+// Filets de sécurité successifs : si onAuthStateChange n'a toujours rien déclenché de fiable,
+// on force la vérification à plusieurs intervalles (utile après un retour OAuth lent)
+[800, 2000, 4000].forEach(delai => {
+  setTimeout(async () => {
+    const { data, error } = await supa.auth.getSession();
+    console.log(`[PataCompta] Vérification forcée à ${delai}ms :`, data.session ? "connecté" : "non connecté", error || "");
+    // On rejoue toujours initApp ici (elle se charge elle-même de ne rien refaire si l'état est identique)
+    initApp(data.session);
+  }, delai);
+});
 </script>
 </body>
 </html>
